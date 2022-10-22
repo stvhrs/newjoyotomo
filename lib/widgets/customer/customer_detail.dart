@@ -96,68 +96,66 @@ class _CustomerDetailsState extends State<CustomerDetails> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-              
-                 
-                  InteractiveViewer(
-                    clipBehavior: Clip.none,
-                    transformationController: _trans,
-                    child: Container(
-                        margin: const EdgeInsets.only(right: 20),
-                        decoration: BoxDecoration(
-                            color: Colors.blue,
-                            borderRadius: BorderRadius.circular(8)),
-                        height: 297,
-                        width: 210,
-                        child: MouseRegion(
-                            cursor: SystemMouseCursors.zoomIn,
-                            onExit: (event) {
-                              _trans.value = Matrix4.identity();
-                            },
-                            onEnter: (value) {
-                              _trans.value = Matrix4(
-                                1.8,
-                                0,
-                                0,
-                                0,
-                                0,
-                                1.8,
-                                0,
-                                0,
-                                0,
-                                0,
-                                1.8,
-                                0,
-                                -100,
-                                -150,
-                                0,
-                                1,
-                              );
-                            },
-                            // onTap: () {
-                            //
-                            // },
-                            child: Center(
-                                child: InkWell(
-                                    onTap: () {
-                                      Navigator.of(context)
-                                          .push(MaterialPageRoute(
-                                        builder: (context) => SpkDoc(
-                                            customer: value.selectedCustomer),
-                                      ));
-                                    },
-                                    child:  PdfPreview(useActions: false,
-                              shouldRepaint: true,
-                                      loadingWidget: Image.asset(
-                                        'images/logo.png',
-                                        width: 100,
-                                      ),
-                                      previewPageMargin:
-                                          const EdgeInsets.all(0),
-                                      build: (format) =>generateCalendar
-                                          (value.selectedCustomer,value.selectedCustomer.spk.target!),
-                                    ))))),
-                  ),
-                
+                InteractiveViewer(
+                  clipBehavior: Clip.none,
+                  transformationController: _trans,
+                  child: Container(
+                      margin: const EdgeInsets.only(right: 20),
+                      decoration: BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.circular(8)),
+                      height: 297,
+                      width: 210,
+                      child: MouseRegion(
+                          cursor: SystemMouseCursors.zoomIn,
+                          onExit: (event) {
+                            _trans.value = Matrix4.identity();
+                          },
+                          onEnter: (value) {
+                            _trans.value = Matrix4(
+                              1.8,
+                              0,
+                              0,
+                              0,
+                              0,
+                              1.8,
+                              0,
+                              0,
+                              0,
+                              0,
+                              1.8,
+                              0,
+                              -100,
+                              -150,
+                              0,
+                              1,
+                            );
+                          },
+                          // onTap: () {
+                          //
+                          // },
+                          child: Center(
+                              child: InkWell(
+                                  onTap: () {
+                                    Navigator.of(context)
+                                        .push(MaterialPageRoute(
+                                      builder: (context) => SpkDoc(
+                                          customer: value.selectedCustomer),
+                                    ));
+                                  },
+                                  child: PdfPreview(
+                                    useActions: false,
+                                    shouldRepaint: true,
+                                    loadingWidget: Image.asset(
+                                      'images/logo.png',
+                                      width: 100,
+                                    ),
+                                    previewPageMargin: const EdgeInsets.all(0),
+                                    build: (format) => generateCalendar(
+                                        value.selectedCustomer,
+                                        value.selectedCustomer.spk.target!),
+                                  ))))),
+                ),
                 InteractiveViewer(
                   clipBehavior: Clip.none,
                   transformationController: _trans2,
@@ -296,9 +294,13 @@ class _CustomerDetailsState extends State<CustomerDetails> {
                           child: Center(
                             child: InkWell(
                                 onTap: () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) =>
-                                          const InvoiceDoc()));
+                                  if (value.selectedCustomer.realization.target!
+                                      .done) {
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const InvoiceDoc()));
+                                  }
                                 },
                                 child: Hero(
                                     tag: 4,
@@ -310,15 +312,17 @@ class _CustomerDetailsState extends State<CustomerDetails> {
                                             BuildContext toHeroContext) =>
                                         Material(child: toHeroContext.widget),
                                     child: PdfPreview(
-                                      useActions: false,shouldRepaint: true,
+                                      useActions: false,
+                                      shouldRepaint: true,
                                       loadingWidget: Image.asset(
                                         'images/logo.png',
                                         width: 100,
                                       ),
                                       previewPageMargin:
                                           const EdgeInsets.all(0),
-                                      build: (format) =>generateCalendar
-                                          (value.selectedCustomer,value.selectedCustomer.spk.target!),
+                                      build: (format) => generateCalendar(
+                                          value.selectedCustomer,
+                                          value.selectedCustomer.spk.target!),
                                     ))),
                           ))),
                 ),

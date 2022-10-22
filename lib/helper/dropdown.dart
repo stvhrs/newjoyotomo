@@ -42,7 +42,7 @@ class DropDownField extends FormField<String> {
           fontWeight: FontWeight.bold, color: Colors.black, fontSize: 14.0),
       this.setter,
       this.onValueChanged,
-      this.itemsVisibleInDropdown = 3,
+      this.itemsVisibleInDropdown = 1,
       this.enabled = true,
       this.strict = true})
       : super(
@@ -56,16 +56,16 @@ class DropDownField extends FormField<String> {
                 border: InputBorder.none,
                 filled: true,
                 icon: icon,
-                suffixIcon: IconButton(
-                    icon: const Icon(Icons.arrow_drop_down,
-                        size: 30.0, color: Colors.black),
-                    onPressed: () {
-                      SystemChannels.textInput.invokeMethod('TextInput.hide');
-                      // ignore: invalid_use_of_protected_member
-                      state.setState(() {
-                        state._showdropdown = !state._showdropdown;
-                      });
-                    }),
+                // suffixIcon: IconButton(
+                //     icon: const Icon(Icons.arrow_drop_down,
+                //         size: 30.0, color: Colors.black),
+                //     onPressed: () {
+                //       SystemChannels.textInput.invokeMethod('TextInput.hide');
+                //       // ignore: invalid_use_of_protected_member
+                //       state.setState(() {
+                //         state._showdropdown = !state._showdropdown;
+                //       });
+                //     }),
                 hintStyle: hintStyle,
                 labelStyle: labelStyle,
                 hintText: hintText,
@@ -121,13 +121,13 @@ class DropDownField extends FormField<String> {
                         height: itemsVisibleInDropdown *
                             48.0, //limit to default 3 items in dropdownlist view and then remaining scrolls
                         width: MediaQuery.of(field.context).size.width,
-                        child: ListView(
+                        child: ListView(padding: EdgeInsets.zero,
                           cacheExtent: 0.0,
                           scrollDirection: Axis.vertical,
                           controller: _scrollController,
-                          padding: const EdgeInsets.only(left:10),
+                        
                           children: items!.isNotEmpty
-                              ? ListTile.divideTiles(color: Colors.grey.shade800,
+                              ? ListTile.divideTiles(color: Color.fromARGB(255, 0, 0, 0),
                                       context: field.context,
                                       tiles: state._getChildren(state._items!))
                                   .toList()

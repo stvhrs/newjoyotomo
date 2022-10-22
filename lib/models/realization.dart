@@ -16,10 +16,9 @@ class Realization {
   Realization({
     this.id = 0,
     required this.rlId,
-    // required this.mpiCost,
-    // required this.partCost,
-    required this.selesai,
-    required this.biyaya,
-    required this.done,
+    
+     this.selesai=0,
+     this.biyaya=0,
+    this.done=false,
   });
 }
