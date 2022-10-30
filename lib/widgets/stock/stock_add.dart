@@ -129,6 +129,6 @@ class AddPartName extends StatelessWidget {
               });
         },
         icon: const Icon(Icons.add),
-        label: const Text('Add Number'));
+        label: const Text('Add Partnumber'));
   }
 }

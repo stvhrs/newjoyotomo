@@ -31,19 +31,15 @@ class _MpiDocState extends State<MpiDoc> {
       NumberFormat.currency(locale: "id_ID", decimalDigits: 0, symbol: 'Rp ');
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: LayoutBuilder(builder: (context, BoxConstraints constraints) {
-      return Center(
-        child: Container(
-          decoration: BoxDecoration(border: Border.all()),
-          width: constraints.maxHeight / 1.4,
-          height: constraints.maxHeight,
-          child: InteractiveViewer(
-              child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              InkWell(
-                  onTap: () {
+    return Scaffold(floatingActionButton: Row(children: [
+          const Spacer(),
+          Padding(
+              padding: const EdgeInsets.all(5),
+              child: FloatingActionButton(
+                  heroTag: null,
+                  backgroundColor: Colors.blue.shade600,
+                  child: const Icon(Icons.save_as_rounded),
+                  onPressed: () {
                     Customer asu = widget.customer;
                     asu.mpi.target =
                         Mpi(mpiId: widget.customer.mpi.target!.mpiId);
@@ -57,8 +53,67 @@ class _MpiDocState extends State<MpiDoc> {
                     }
 
                     objectBox.insertCustomer(asu);
-                  },
-                  child: const Text('SAVE')),
+                  })),
+          Padding(
+              padding: const EdgeInsets.all(5),
+              child: FloatingActionButton(
+                  heroTag: null,
+                  backgroundColor: Colors.red.shade400,
+                  child: const Icon(Icons.picture_as_pdf),
+                  onPressed: () {})),
+          Container(
+            padding: const EdgeInsets.all(10.0),
+            child: FloatingActionButton(
+                heroTag: null,
+                backgroundColor: Colors.green,
+                child: const Icon(Icons.print),
+                onPressed: () {}),
+          )
+        ]),
+        body: LayoutBuilder(builder: (context, BoxConstraints constraints) {
+      return Center(
+        child:Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage(
+                          'images/icon.jpg',
+                        ),
+                        opacity: 0.3,
+                        repeat: ImageRepeat.repeat,
+                        scale: 20)),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                     Container( height: MediaQuery.of(context).size.height,
+                          width: MediaQuery.of(context).size.height / 1.4142,
+                          padding: const EdgeInsets.all(10),
+                          margin: const EdgeInsets.only(top: 20, bottom: 10),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: [
+                              BoxShadow(
+                                color: const Color.fromARGB(255, 78, 77, 77)
+                                    .withOpacity(0.5),
+                                spreadRadius: 5,
+                                blurRadius: 7,
+                                offset: const Offset(
+                                    0, 3), // changes position of shadow
+                              ),
+                            ],
+                          ),
+                         
+                          child: Container(
+          decoration: BoxDecoration(border: Border.all()),
+          width: constraints.maxHeight / 1.4,
+          height: constraints.maxHeight,
+          child: InteractiveViewer(
+              child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              
               Center(
                 child: InkWell(
                   onTap: () {
@@ -81,7 +136,7 @@ class _MpiDocState extends State<MpiDoc> {
                     child: const Text('Checked and Okay',
                         style: TextStyle(
                             fontSize: 11, fontWeight: FontWeight.bold)),
-                    width: constraints.maxHeight / 1.4 / 3.2,
+                    width: constraints.maxHeight / 1.4 / 3.3,
                   ),
                   Container(
                     alignment: Alignment.center,
@@ -90,7 +145,7 @@ class _MpiDocState extends State<MpiDoc> {
                     child: const Text('Attention Recomended',
                         style: TextStyle(
                             fontSize: 11, fontWeight: FontWeight.bold)),
-                    width: constraints.maxHeight / 1.4 / 3.2,
+                    width: constraints.maxHeight / 1.4 / 3.3,
                   ),
                   Container(
                     alignment: Alignment.center,
@@ -99,7 +154,7 @@ class _MpiDocState extends State<MpiDoc> {
                     child: const Text('Attention Required',
                         style: TextStyle(
                             fontSize: 11, fontWeight: FontWeight.bold)),
-                    width: constraints.maxHeight / 1.4 / 3.2,
+                    width: constraints.maxHeight / 1.4 / 3.3,
                   )
                 ],
               ),
@@ -118,7 +173,7 @@ class _MpiDocState extends State<MpiDoc> {
                     children: [
                       Container(
                         padding: const EdgeInsets.all(4),
-                        width: constraints.maxHeight / 1.4 / 2.928,
+                        width: constraints.maxHeight / 1.4 / 3.2,
                         child: const Text('BRAKES - TIRES - ALIGNMENT',
                             style: TextStyle(
                                 fontSize: 11, fontWeight: FontWeight.bold)),
@@ -126,8 +181,10 @@ class _MpiDocState extends State<MpiDoc> {
                       const VerticalDivider(
                         color: Colors.black,
                       ),
-                      const SizedBox(
-                        width: 102.5,
+                      Container(
+                        padding: const EdgeInsets.all(4),
+                        width: constraints.maxHeight / 1.4 / 4,
+                       
                         child: Text('PRICE',
                             style: TextStyle(
                                 fontSize: 11, fontWeight: FontWeight.bold)),
@@ -135,8 +192,10 @@ class _MpiDocState extends State<MpiDoc> {
                       const VerticalDivider(
                         color: Colors.black,
                       ),
-                      const SizedBox(
-                        width: 100,
+                       Container(
+                        padding: const EdgeInsets.all(4),
+                        width: constraints.maxHeight / 1.4 / 4,
+                      
                         child: Text('REMARK',
                             style: TextStyle(
                                 fontSize: 11, fontWeight: FontWeight.bold)),
@@ -182,7 +241,7 @@ class _MpiDocState extends State<MpiDoc> {
                           child: Row(
                             children: [
                               Container(
-                                width: constraints.maxHeight / 1.4 / 2.8,
+                                width: constraints.maxHeight / 1.4 / 2.9,
                                 decoration: const BoxDecoration(
                                   border: Border(
                                     right: BorderSide(
@@ -342,7 +401,7 @@ class _MpiDocState extends State<MpiDoc> {
             ],
           )),
         ),
-      );
+      )])));
     }));
   }
 }

@@ -271,7 +271,7 @@ final _entities = <ModelEntity>[
   ModelEntity(
       id: const IdUid(6, 2527218249377962499),
       name: 'Invoice',
-      lastPropertyId: const IdUid(10, 2866513939706624850),
+      lastPropertyId: const IdUid(15, 2651825715264364763),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
@@ -290,12 +290,30 @@ final _entities = <ModelEntity>[
             type: 8,
             flags: 0),
         ModelProperty(
-            id: const IdUid(10, 2866513939706624850),
-            name: 'realizationId',
-            type: 11,
-            flags: 520,
-            indexId: const IdUid(6, 4697681690646665617),
-            relationTarget: 'Realization')
+            id: const IdUid(11, 7741817409356762526),
+            name: 'partTotal',
+            type: 8,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(12, 65803539419839041),
+            name: 'serviceTotal',
+            type: 8,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(13, 713766882664108615),
+            name: 'invoiceTotal',
+            type: 8,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(14, 7728377139542406537),
+            name: 'invoiceDate',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(15, 2651825715264364763),
+            name: 'soDate',
+            type: 9,
+            flags: 0)
       ],
       relations: <ModelRelation>[
         ModelRelation(
@@ -494,7 +512,7 @@ final _entities = <ModelEntity>[
   ModelEntity(
       id: const IdUid(13, 4308878737610420297),
       name: 'Realization',
-      lastPropertyId: const IdUid(5, 1528367761199941622),
+      lastPropertyId: const IdUid(6, 6868544810784595524),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
@@ -521,6 +539,11 @@ final _entities = <ModelEntity>[
             id: const IdUid(5, 1528367761199941622),
             name: 'done',
             type: 1,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(6, 6868544810784595524),
+            name: 'dateOut',
+            type: 9,
             flags: 0)
       ],
       relations: <ModelRelation>[
@@ -546,19 +569,9 @@ final _entities = <ModelEntity>[
             type: 6,
             flags: 129),
         ModelProperty(
-            id: const IdUid(2, 7448081966837723398),
-            name: 'name',
-            type: 9,
-            flags: 0),
-        ModelProperty(
             id: const IdUid(3, 8306757576990777807),
             name: 'pay',
             type: 8,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(4, 1217242438299615318),
-            name: 'keterangan',
-            type: 9,
             flags: 0),
         ModelProperty(
             id: const IdUid(5, 5278189875168647559),
@@ -662,7 +675,7 @@ ModelDefinition getObjectBoxModel() {
         5744728585971609639,
         914977901206672287
       ],
-      retiredIndexUids: const [3677240409554458320],
+      retiredIndexUids: const [3677240409554458320, 4697681690646665617],
       retiredPropertyUids: const [
         9091942968690159300,
         3646578591882942623,
@@ -714,7 +727,10 @@ ModelDefinition getObjectBoxModel() {
         7737946404995954756,
         6221755903044557682,
         5752991276839350254,
-        7160171960415368155
+        7160171960415368155,
+        2866513939706624850,
+        7448081966837723398,
+        1217242438299615318
       ],
       retiredRelationUids: const [3757225277181594334],
       modelVersion: 5,
@@ -952,7 +968,7 @@ ModelDefinition getObjectBoxModel() {
         }),
     Invoice: EntityDefinition<Invoice>(
         model: _entities[5],
-        toOneRelations: (Invoice object) => [object.realization],
+        toOneRelations: (Invoice object) => [],
         toManyRelations: (Invoice object) =>
             {RelInfo<Invoice>.toMany(7, object.id): object.payments},
         getId: (Invoice object) => object.id,
@@ -961,11 +977,17 @@ ModelDefinition getObjectBoxModel() {
         },
         objectToFB: (Invoice object, fb.Builder fbb) {
           final invIdOffset = fbb.writeString(object.invId);
-          fbb.startTable(11);
+          final invoiceDateOffset = fbb.writeString(object.invoiceDate);
+          final soDateOffset = fbb.writeString(object.soDate);
+          fbb.startTable(16);
           fbb.addInt64(0, object.id);
           fbb.addOffset(7, invIdOffset);
           fbb.addFloat64(8, object.saldo);
-          fbb.addInt64(9, object.realization.targetId);
+          fbb.addFloat64(10, object.partTotal);
+          fbb.addFloat64(11, object.serviceTotal);
+          fbb.addFloat64(12, object.invoiceTotal);
+          fbb.addOffset(13, invoiceDateOffset);
+          fbb.addOffset(14, soDateOffset);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -977,11 +999,18 @@ ModelDefinition getObjectBoxModel() {
               id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
               invId: const fb.StringReader(asciiOptimization: true)
                   .vTableGet(buffer, rootOffset, 18, ''),
-              saldo: const fb.Float64Reader()
-                  .vTableGet(buffer, rootOffset, 20, 0));
-          object.realization.targetId =
-              const fb.Int64Reader().vTableGet(buffer, rootOffset, 22, 0);
-          object.realization.attach(store);
+              saldo:
+                  const fb.Float64Reader().vTableGet(buffer, rootOffset, 20, 0),
+              partTotal:
+                  const fb.Float64Reader().vTableGet(buffer, rootOffset, 24, 0),
+              invoiceDate: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 30, ''),
+              serviceTotal:
+                  const fb.Float64Reader().vTableGet(buffer, rootOffset, 26, 0),
+              invoiceTotal:
+                  const fb.Float64Reader().vTableGet(buffer, rootOffset, 28, 0),
+              soDate: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 32, ''));
           InternalToManyAccess.setRelInfo(object.payments, store,
               RelInfo<Invoice>.toMany(7, object.id), store.box<Invoice>());
           return object;
@@ -1163,12 +1192,14 @@ ModelDefinition getObjectBoxModel() {
         },
         objectToFB: (Realization object, fb.Builder fbb) {
           final rlIdOffset = fbb.writeString(object.rlId);
-          fbb.startTable(6);
+          final dateOutOffset = fbb.writeString(object.dateOut);
+          fbb.startTable(7);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, rlIdOffset);
           fbb.addInt64(2, object.selesai);
           fbb.addFloat64(3, object.biyaya);
           fbb.addBool(4, object.done);
+          fbb.addOffset(5, dateOutOffset);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -1180,6 +1211,8 @@ ModelDefinition getObjectBoxModel() {
               id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
               rlId: const fb.StringReader(asciiOptimization: true)
                   .vTableGet(buffer, rootOffset, 6, ''),
+              dateOut: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 14, ''),
               selesai:
                   const fb.Int64Reader().vTableGet(buffer, rootOffset, 8, 0),
               biyaya:
@@ -1207,14 +1240,10 @@ ModelDefinition getObjectBoxModel() {
           object.id = id;
         },
         objectToFB: (Payment object, fb.Builder fbb) {
-          final nameOffset = fbb.writeString(object.name);
-          final keteranganOffset = fbb.writeString(object.keterangan);
           final dateOffset = fbb.writeString(object.date);
           fbb.startTable(6);
           fbb.addInt64(0, object.id);
-          fbb.addOffset(1, nameOffset);
           fbb.addFloat64(2, object.pay);
-          fbb.addOffset(3, keteranganOffset);
           fbb.addOffset(4, dateOffset);
           fbb.finish(fbb.endTable());
           return object.id;
@@ -1226,12 +1255,8 @@ ModelDefinition getObjectBoxModel() {
           final object = Payment(
               id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
               pay: const fb.Float64Reader().vTableGet(buffer, rootOffset, 8, 0),
-              name: const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 6, ''),
               date: const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 12, ''),
-              keterangan: const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 10, ''));
+                  .vTableGet(buffer, rootOffset, 12, ''));
 
           return object;
         }),
@@ -1458,9 +1483,25 @@ class Invoice_ {
   /// see [Invoice.saldo]
   static final saldo = QueryDoubleProperty<Invoice>(_entities[5].properties[2]);
 
-  /// see [Invoice.realization]
-  static final realization =
-      QueryRelationToOne<Invoice, Realization>(_entities[5].properties[3]);
+  /// see [Invoice.partTotal]
+  static final partTotal =
+      QueryDoubleProperty<Invoice>(_entities[5].properties[3]);
+
+  /// see [Invoice.serviceTotal]
+  static final serviceTotal =
+      QueryDoubleProperty<Invoice>(_entities[5].properties[4]);
+
+  /// see [Invoice.invoiceTotal]
+  static final invoiceTotal =
+      QueryDoubleProperty<Invoice>(_entities[5].properties[5]);
+
+  /// see [Invoice.invoiceDate]
+  static final invoiceDate =
+      QueryStringProperty<Invoice>(_entities[5].properties[6]);
+
+  /// see [Invoice.soDate]
+  static final soDate =
+      QueryStringProperty<Invoice>(_entities[5].properties[7]);
 
   /// see [Invoice.payments]
   static final payments =
@@ -1611,6 +1652,10 @@ class Realization_ {
   static final done =
       QueryBooleanProperty<Realization>(_entities[9].properties[4]);
 
+  /// see [Realization.dateOut]
+  static final dateOut =
+      QueryStringProperty<Realization>(_entities[9].properties[5]);
+
   /// see [Realization.mpiItems]
   static final mpiItems =
       QueryRelationToMany<Realization, MpiItem>(_entities[9].relations[0]);
@@ -1625,18 +1670,11 @@ class Payment_ {
   /// see [Payment.id]
   static final id = QueryIntegerProperty<Payment>(_entities[10].properties[0]);
 
-  /// see [Payment.name]
-  static final name = QueryStringProperty<Payment>(_entities[10].properties[1]);
-
   /// see [Payment.pay]
-  static final pay = QueryDoubleProperty<Payment>(_entities[10].properties[2]);
-
-  /// see [Payment.keterangan]
-  static final keterangan =
-      QueryStringProperty<Payment>(_entities[10].properties[3]);
+  static final pay = QueryDoubleProperty<Payment>(_entities[10].properties[1]);
 
   /// see [Payment.date]
-  static final date = QueryStringProperty<Payment>(_entities[10].properties[4]);
+  static final date = QueryStringProperty<Payment>(_entities[10].properties[2]);
 }
 
 /// [StockRalization] entity fields to define ObjectBox queries.

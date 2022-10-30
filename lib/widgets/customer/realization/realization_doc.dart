@@ -3,7 +3,9 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:newJoyo/helper/styling.dart';
 import 'package:newJoyo/main.dart';
+import 'package:newJoyo/models/mpi.dart';
 import 'package:newJoyo/models/realization.dart';
 
 import 'package:newJoyo/models/stockService/stock_realization.dart';
@@ -11,9 +13,11 @@ import 'package:provider/provider.dart';
 import '../../../helper/currency.dart';
 import '../../../helper/dropdown.dart';
 import '../../../models/customer.dart';
+import '../../../models/mpi/mpiItem.dart';
 import '../../../models/stock.dart';
 import '../../../provider/trigger.dart';
 import 'dart:math' as mh;
+import 'package:collection/collection.dart';
 
 class RealizationDoc extends StatefulWidget {
   final Customer customer;
@@ -47,7 +51,7 @@ class _RealizationDocState extends State<RealizationDoc> {
   TextStyle small = TextStyle(fontSize: 12);
   final formatCurrendcy =
       NumberFormat.currency(locale: "id_ID", decimalDigits: 0, symbol: 'Rp ');
- int jumlahOpsi=1 ;
+  int jumlahOpsi = 1;
 
   final List<TextEditingController> _partValue = [TextEditingController()];
   final List<TextEditingController> _nameValue = [TextEditingController()];
@@ -107,7 +111,8 @@ class _RealizationDocState extends State<RealizationDoc> {
                     scale: 0.8,
                     alignment: Alignment.centerLeft,
                     child: Container(
-                      child: DropDownField(itemsVisibleInDropdown:1 ,
+                      child: DropDownField(
+                        itemsVisibleInDropdown: 1,
                         textStyle: small,
                         labelStyle: small,
                         controller: _partValue[i],
@@ -181,7 +186,9 @@ class _RealizationDocState extends State<RealizationDoc> {
                     scale: 0.8,
                     alignment: Alignment.centerLeft,
                     child: Container(
-                      child: TextFormField(initialValue:formatCurrency.format(_stockRealization[i].servicePrice) ,
+                      child: TextFormField(
+                        initialValue: formatCurrency
+                            .format(_stockRealization[i].servicePrice),
                         style: small,
                         onChanged: (value) {
                           if (_stockRealization.isNotEmpty &&
@@ -297,24 +304,32 @@ class _RealizationDocState extends State<RealizationDoc> {
     );
   }
 
+  TextEditingController dateinput = TextEditingController();
+  late List<MpiItem> data;
   final formatCurrency =
       NumberFormat.currency(locale: "id_ID", decimalDigits: 0, symbol: 'Rp ');
+  @override
+  void initState() {
+    data = widget.customer.mpi.target!.items;
+
+    dateinput.text = widget.customer.realization.target!.dateOut;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     if (widget.customer.realization.target!.stockItems.isNotEmpty) {
       _stockRealization = widget.customer.realization.target!.stockItems;
-      jumlahOpsi=widget.customer.realization.target!.stockItems.length;
-    for (var i = 0; i <   _stockRealization .length; i++) {
-      _partValue.add(TextEditingController());
-         _nameValue.add(TextEditingController());
-            _priceValue.add(TextEditingController());
-      _partValue[i].text=_stockRealization [i].partname;
-       _nameValue[i].text=_stockRealization [i].name;
-        _priceValue[i].text=formatCurrency.format( _stockRealization [i].price);
-    }
-    }else{
-    
-    }
+      jumlahOpsi = widget.customer.realization.target!.stockItems.length;
+      for (var i = 0; i < _stockRealization.length; i++) {
+        _partValue.add(TextEditingController());
+        _nameValue.add(TextEditingController());
+        _priceValue.add(TextEditingController());
+        _partValue[i].text = _stockRealization[i].partname;
+        _nameValue[i].text = _stockRealization[i].name;
+        _priceValue[i].text = formatCurrency.format(_stockRealization[i].price);
+      }
+    } else {}
 
     log('fuck');
     return Scaffold(
@@ -328,8 +343,17 @@ class _RealizationDocState extends State<RealizationDoc> {
                   backgroundColor: Colors.blue.shade600,
                   child: const Icon(Icons.save_as_rounded),
                   onPressed: () {
+                    for (var element in _stockRealization) {
+                      widget.customer.realization.target!.biyaya =
+                          widget.customer.realization.target!.biyaya +
+                              element.toalPrice;
+                    }
+
                     Customer asu = widget.customer;
                     asu.realization.target = Realization(
+                        selesai: widget.customer.realization.target!.selesai,
+                        biyaya: widget.customer.realization.target!.biyaya,
+                        dateOut: widget.customer.realization.target!.dateOut,
                         rlId: widget.customer.realization.target!.rlId);
                     for (var element in _stockRealization) {
                       asu.realization.target!.stockItems.add(StockRalization(
@@ -341,6 +365,17 @@ class _RealizationDocState extends State<RealizationDoc> {
                           price: element.price,
                           servicePrice: element.servicePrice,
                           toalPrice: element.toalPrice));
+                    }
+                    asu.mpi.target =
+                        Mpi(mpiId: widget.customer.mpi.target!.mpiId);
+                    for (var element in data) {
+                      asu.mpi.target!.items.add(MpiItem(
+                          category: element.category,
+                          name: element.name,
+                          done: element.done,
+                          attention: element.attention,
+                          price: element.price,
+                          remark: element.remark));
                     }
 
                     objectBox.insertCustomer(asu);
@@ -363,7 +398,40 @@ class _RealizationDocState extends State<RealizationDoc> {
         ]),
         body: LayoutBuilder(builder: (context, BoxConstraints constraints) {
           return Center(
-            child: Container(
+            child:Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage(
+                          'images/icon.jpg',
+                        ),
+                        opacity: 0.3,
+                        repeat: ImageRepeat.repeat,
+                        scale: 20)),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                     Container( height: MediaQuery.of(context).size.height,
+                          width: MediaQuery.of(context).size.height / 1.4142,
+                          padding: const EdgeInsets.all(10),
+                          margin: const EdgeInsets.only(top: 20, bottom: 10),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: [
+                              BoxShadow(
+                                color: const Color.fromARGB(255, 78, 77, 77)
+                                    .withOpacity(0.5),
+                                spreadRadius: 5,
+                                blurRadius: 7,
+                                offset: const Offset(
+                                    0, 3), // changes position of shadow
+                              ),
+                            ],
+                          ),
+                         
+                          child: Container(
               decoration: BoxDecoration(border: Border.all()),
               width: constraints.maxHeight / 1.4,
               height: constraints.maxHeight,
@@ -389,13 +457,16 @@ class _RealizationDocState extends State<RealizationDoc> {
                     height: 0,
                     color: Colors.black,
                   ),
-                  top2,
+                  widget.customer.mpi.target!.items
+                          .every((element) => element.attention == 0)
+                      ? SizedBox()
+                      : top2,
                   const Divider(
                     height: 0,
                     color: Colors.black,
                   ),
                   ...widget.customer.mpi.target!.items
-                      .map((element) => element.attention == 0
+                      .mapIndexed((i, element) => element.attention == 0
                           ? const Center()
                           : Container(
                               width: constraints.maxHeight / 1.4,
@@ -452,6 +523,9 @@ class _RealizationDocState extends State<RealizationDoc> {
                                           selected: element.done,
                                           onSelected: (v) {
                                             element.done = !element.done;
+
+                                            widget.customer.mpi.target!.items[i]
+                                                .done = element.done;
                                             setState(() {});
                                           },
                                         ),
@@ -475,6 +549,7 @@ class _RealizationDocState extends State<RealizationDoc> {
                   Row(
                     children: [
                       IconButton(
+                          color: Colors.red,
                           onPressed: () {
                             setState(() {
                               if (jumlahOpsi > 1 &&
@@ -488,6 +563,7 @@ class _RealizationDocState extends State<RealizationDoc> {
                           },
                           icon: const Icon(Icons.remove_circle)),
                       IconButton(
+                          color: Colors.green,
                           onPressed: () {
                             if (jumlahOpsi == _stockRealization.length) {
                               print(jumlahOpsi == _stockRealization.length);
@@ -513,113 +589,293 @@ class _RealizationDocState extends State<RealizationDoc> {
                           icon: const Icon(Icons.add_circle)),
                     ],
                   ),
+                  Divider(
+                    color: Colors.black,
+                    height: 0,
+                  ),
+                  top3,
+                  Divider(
+                    color: Colors.black,
+                    height: 0,
+                  ),
+                  bottom()
                 ],
               ),
             ),
-          );
+          )])));
         }));
   }
-}
 
-Widget top = Row(
-  children: [
-    Expanded(
-      flex: 8,
-      child: Container(
-        margin: EdgeInsets.only(left: 10),
-        child: const Text(
-          "Partname",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+  Widget top = Row(
+    mainAxisAlignment: MainAxisAlignment.spaceAround,
+    children: [
+      Expanded(
+        flex: 8,
+        child: Container(
+          margin: EdgeInsets.only(left: 10),
+          child: const Text(
+            "Partname",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+          ),
         ),
       ),
-    ),
-    Expanded(
-      flex: 8,
-      child: Container(
-        margin: EdgeInsets.only(left: 10),
-        child: const Text(
-          "Name",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+      Expanded(
+        flex: 8,
+        child: Container(
+          margin: EdgeInsets.only(left: 10),
+          child: const Text(
+            "Name",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+          ),
         ),
       ),
-    ),
-    Expanded(
-      flex: 8,
-      child: Container(
-        margin: EdgeInsets.only(left: 10),
+      Expanded(
+        flex: 8,
+        child: Container(
+          margin: EdgeInsets.only(left: 10),
+          child: const Text(
+            "Service",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+          ),
+        ),
+      ),
+      Expanded(
+        flex: 8,
+        child: Container(
+          margin: EdgeInsets.only(left: 10),
+          child: const Text(
+            "Price",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+          ),
+        ),
+      ),
+      Expanded(
+        flex: 5,
+        child: Container(
+          margin: EdgeInsets.only(left: 10),
+          child: const Text(
+            "Count",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+          ),
+        ),
+      ),
+      Expanded(
+        flex: 8,
+        child: Container(
+          margin: EdgeInsets.only(left: 10),
+          child: const Text(
+            "Total",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+          ),
+        ),
+      ),
+      Expanded(
+        flex: 5,
+        child: Container(
+          margin: EdgeInsets.only(left: 10),
+          child: const Text(
+            "Done",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+          ),
+        ),
+      ),
+    ],
+  );
+
+  Widget top3 = Row(
+    children: [
+      Expanded(
+        flex: 14,
+        child: Container(
+          margin: EdgeInsets.only(left: 10),
+          child: const Text(
+            "Est Selesai",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+          ),
+        ),
+      ),
+      Expanded(
+        flex: 14,
+        child: Container(
+          child: const Text(
+            "Est Biyaya",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+          ),
+        ),
+      ),
+      Expanded(
+        flex: 14,
+        child: Container(
+          child: const Text(
+            "Rlt Selesai",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+          ),
+        ),
+      ),
+      Expanded(
+        flex: 14,
+        child: Container(
+          child: const Text(
+            "Rlt Biyaya",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+          ),
+        ),
+      ),
+      Expanded(
+        flex: 17,
+        child: Container(
+          child: const Text(
+            "Date In",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+          ),
+        ),
+      ),
+      Expanded(
+        flex: 17,
+        child: Container(
+          child: const Text(
+            "Date Out",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+          ),
+        ),
+      ),
+    ],
+  );
+  Widget bottom() => Row(
+       mainAxisSize: MainAxisSize.min,
+        children: [
+          Expanded(
+            flex: 14,
+            child: Container(
+              margin: EdgeInsets.only(left: 10),
+              child: Text(
+                widget.customer.spk.target!.estimasiSelesai.toString(),
+                style: TextStyle(fontSize: 10),
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 14,
+            child: Container(
+              child: Text(
+                formatCurrendcy.format( widget.customer.spk.target!.estimasiBiyaya),
+                style: TextStyle(fontSize: 10),
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 14,
+            child: Container(margin: EdgeInsets.only(right: 30),
+              child: TextFormField(decoration: InputDecoration(  isDense: true,isCollapsed: true),
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                ],
+                onChanged: (val) {
+                  widget.customer.realization.target!.selesai = int.parse(val);
+                },
+                initialValue:
+                    widget.customer.realization.target!.selesai.toString(),
+                style: TextStyle(fontSize: 10),
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 14,
+            child: Container(
+              child: Text(
+               formatCurrendcy.format( widget.customer.realization.target!.biyaya,),
+                style: TextStyle(fontSize: 10),
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 17,
+            child: Container(
+              child: Text(
+                widget.customer.spk.target!.date.toString(),
+                style: TextStyle(fontSize: 10),
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 17,child: Container(margin: EdgeInsets.only(right: 30),child:
+             TextFormField(decoration: InputDecoration(  isDense: true,),
+                onTap: () async {
+                  DateTime? pickedDate = await showDatePicker(
+                      builder: (context, child) => Theme(
+                            data: Theme.of(context).copyWith(
+                              colorScheme: const ColorScheme.light(
+                                primary: Color.fromARGB(255, 79, 117,
+                                    134), // header background color
+                              ),
+                              textButtonTheme: TextButtonThemeData(
+                                style: TextButton.styleFrom(
+                                  foregroundColor:
+                                      Colors.green, // button text color
+                                ),
+                              ),
+                            ),
+                            child: child!,
+                          ),
+                      locale: Localizations.localeOf(context),
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(
+                          2022), //DateTime.now() - not to allow to choose before today.
+                      lastDate: DateTime(2101));
+
+                  if (pickedDate != null) {
+                    print(
+                        pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
+                    String formattedDate =
+                        DateFormat('dd/MM/yyyy').format(pickedDate);
+                    print(
+                        formattedDate); //formatted date output using intl package =>  2021-03-16
+                    //you can implement different kind of Date Format here according to your requirement
+
+                    setState(() {
+                      dateinput.text =
+                          formattedDate; //set output date to TextField value.
+                      widget.customer.realization.target!.dateOut =
+                          dateinput.text;
+                    });
+                  } else {
+                    print("Date is not selected");
+                  }
+                },
+                controller: dateinput,
+                style: TextStyle(fontSize: 10),
+              )),
+            
+          ),
+        ],
+      );
+  Widget top2 = Row(
+    children: [
+      Expanded(
+        flex: 6,
+        child: Container(
+          margin: EdgeInsets.only(left: 15),
+          child: const Text(
+            "Inspection",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+          ),
+        ),
+      ),
+      Expanded(
+        flex: 5,
         child: const Text(
           "Service",
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
         ),
       ),
-    ),
-    Expanded(
-      flex: 8,
-      child: Container(
-        margin: EdgeInsets.only(left: 10),
-        child: const Text(
-          "Price",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
-        ),
-      ),
-    ),
-    Expanded(
-      flex: 5,
-      child: Container(
-        margin: EdgeInsets.only(left: 10),
-        child: const Text(
-          "Count",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
-        ),
-      ),
-    ),
-    Expanded(
-      flex: 8,
-      child: Container(
-        margin: EdgeInsets.only(left: 10),
-        child: const Text(
-          "Total",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
-        ),
-      ),
-    ),
-    Expanded(
-      flex: 5,
-      child: Container(
-        margin: EdgeInsets.only(left: 10),
+      Expanded(
+        flex: 1,
         child: const Text(
           "Done",
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
         ),
-      ),
-    ),
-  ],
-);
-Widget top2 = Row(
-  children: [
-    Expanded(
-      flex: 6,
-      child: Container(
-        margin: EdgeInsets.only(left: 15),
-        child: const Text(
-          "Inspection2",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
-        ),
-      ),
-    ),
-    Expanded(
-      flex: 5,
-      child: const Text(
-        "Service",
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
-      ),
-    ),
-    Expanded(
-      flex: 1,
-      child: const Text(
-        "Done",
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
-      ),
-    )
-  ],
-);
+      )
+    ],
+  );
+}

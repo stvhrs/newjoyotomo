@@ -388,13 +388,10 @@ class CustomerAdd extends StatelessWidget {
                                   13,
                                   csId.toString()),
                               saldo: 0);
-                          customer.inv.target!.realization =
-                              customer.realization;
+                          // customer.inv.target!.realization =
+                          //     customer.realization;
                           customer.inv.target!.payments.add(Payment(
-                              pay: 133,
-                              name: 'name',
-                              date: ' date',
-                              keterangan: 'keterangan'));
+                             ));
                           objectBox.insertCustomer(customer);
 
                           Navigator.of(context).pop();

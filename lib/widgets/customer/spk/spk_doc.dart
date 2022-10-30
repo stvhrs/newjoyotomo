@@ -75,9 +75,7 @@ class _SpkDocState extends State<SpkDoc> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Material(
-                      type: MaterialType.transparency,
-                      child: Container(
+                     Container(
                           padding: const EdgeInsets.all(25),
                           margin: const EdgeInsets.only(top: 20, bottom: 10),
                           decoration: BoxDecoration(
@@ -880,7 +878,7 @@ class _SpkDocState extends State<SpkDoc> {
                                   ),
                                 ]),
                           )),
-                    )
+                    
                   ],
                 ))),
         floatingActionButton: Row(children: [

@@ -9,6 +9,7 @@ class Realization {
   String rlId;
   int selesai;
   double biyaya;
+  String dateOut;
   final mpiItems=ToMany<MpiItem>();
   final stockItems=ToMany<StockRalization>();
   bool done;
@@ -16,7 +17,7 @@ class Realization {
   Realization({
     this.id = 0,
     required this.rlId,
-    
+    this.dateOut='',
      this.selesai=0,
      this.biyaya=0,
     this.done=false,

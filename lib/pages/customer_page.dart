@@ -45,6 +45,7 @@ class _CustomerPageState extends State<CustomerPage> {
             } else {
               List<Customer> customers = [];
               if (_search != '') {
+                
                 for (Customer element in snapshot.data!) {
                   if (element.customerName
                           .toLowerCase()

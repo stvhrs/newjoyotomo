@@ -203,7 +203,18 @@ class _CustomerDetailsState extends State<CustomerDetails> {
                                           customer: value.selectedCustomer),
                                     ));
                                   },
-                                  child: const Text('MPI'))))),
+                                  child: PdfPreview(
+                                    useActions: false,
+                                    shouldRepaint: true,
+                                    loadingWidget: Image.asset(
+                                      'images/logo.png',
+                                      width: 100,
+                                    ),
+                                    previewPageMargin: const EdgeInsets.all(0),
+                                    build: (format) => generateCalendar(
+                                        value.selectedCustomer,
+                                        value.selectedCustomer.spk.target!),
+                                  ))))),
                 ),
                 InteractiveViewer(
                   clipBehavior: Clip.none,
@@ -252,7 +263,18 @@ class _CustomerDetailsState extends State<CustomerDetails> {
                                           customer: value.selectedCustomer),
                                     ));
                                   },
-                                  child: const Text('RLT'))))),
+                                  child: PdfPreview(
+                                    useActions: false,
+                                    shouldRepaint: true,
+                                    loadingWidget: Image.asset(
+                                      'images/logo.png',
+                                      width: 100,
+                                    ),
+                                    previewPageMargin: const EdgeInsets.all(0),
+                                    build: (format) => generateCalendar(
+                                        value.selectedCustomer,
+                                        value.selectedCustomer.spk.target!),
+                                  ))))),
                 ),
                 InteractiveViewer(
                   clipBehavior: Clip.none,
@@ -294,13 +316,13 @@ class _CustomerDetailsState extends State<CustomerDetails> {
                           child: Center(
                             child: InkWell(
                                 onTap: () {
-                                  if (value.selectedCustomer.realization.target!
-                                      .done) {
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const InvoiceDoc()));
-                                  }
+                                  // if (value.selectedCustomer.realization.target!
+                                  //     .done) {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => InvoiceDoc(
+                                            customer: value.selectedCustomer,
+                                          )));
+                                  // }
                                 },
                                 child: Hero(
                                     tag: 4,

@@ -119,7 +119,7 @@ class DropDownField extends FormField<String> {
                     : Container(  
                         alignment: Alignment.topCenter,
                         height: itemsVisibleInDropdown *
-                            48.0, //limit to default 3 items in dropdownlist view and then remaining scrolls
+                            60.0, //limit to default 3 items in dropdownlist view and then remaining scrolls
                         width: MediaQuery.of(field.context).size.width,
                         child: ListView(padding: EdgeInsets.zero,
                           cacheExtent: 0.0,

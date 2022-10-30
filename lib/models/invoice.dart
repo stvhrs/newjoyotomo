@@ -9,13 +9,24 @@ class Invoice {
   int id;
   String invId;
   double saldo;
-  ToOne<Realization> realization = ToOne<Realization>();
+  double partTotal;
+  double serviceTotal;
+  double invoiceTotal;
+  String invoiceDate;
+  String soDate;
+  
+ 
     ToMany<Payment> payments = ToMany<Payment>();
-//  Map<String,dynamic> rincianPembayaran;
+
   Invoice({
     this.id = 0,
     required this.invId,
     required this.saldo,
+    this.partTotal=0,
+    this.invoiceDate='',
+    this.serviceTotal=0,
+    this.invoiceTotal=0,
+    this.soDate=''
     // required this.rincianPembayaran,
   });
 }
