@@ -91,16 +91,16 @@ class _SupplierPageState extends State<SupplierPage> {
                         Column(
                           children: [
                             Container(
-                              width: MediaQuery.of(context).size.width / 2,
+                              width: MediaQuery.of(context).size.width / 2.2,
                               padding:
                                   const EdgeInsets.only(left: 16, right: 16),
-                              child: Row(
+                              child: Row(crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Container(
                                     width:
-                                        MediaQuery.of(context).size.width / 4,
+                                        MediaQuery.of(context).size.width / 6,
                                     padding: const EdgeInsets.only(
                                         top: 10, right: 10, bottom: 10),
                                     height: 50,
@@ -139,7 +139,7 @@ class _SupplierPageState extends State<SupplierPage> {
                             ),
                             Expanded(
                               child: SizedBox(
-                                  width: MediaQuery.of(context).size.width / 2,
+                                  width: MediaQuery.of(context).size.width / 2.2,
                                   child: Padding(
                                       padding: const EdgeInsets.only(
                                           top: 8, left: 16, right: 16),
@@ -163,22 +163,23 @@ class _SupplierPageState extends State<SupplierPage> {
                                         columnSpacing: 0,
                                         horizontalMargin: 0,
                                         columns: const [
-                                          DataColumn(
-                                            label: Center(child: Text('Date')),
+                                        
+                                           DataColumn(
+                                            label: Center(child: Text('Tanggal')),
                                           ),
                                           DataColumn(
                                             label:
-                                                Center(child: Text('Supplier')),
+                                                Center(child: Text('Pihak')),
                                           ),
                                           DataColumn(
                                             label: Center(
-                                                child: Text('Total Cost')),
+                                                child: Text('Total Harga')),
                                           ),
                                           DataColumn2(
                                             size: ColumnSize.S,
                                             label: Center(
                                                 child: Text(
-                                              'Count',
+                                              'Jumlah',
                                             )),
                                           ),
                                         ],
@@ -241,7 +242,8 @@ class UserDataTableSource extends DataTableSource {
         },
         index: index,
         cells: [
-          DataCell(Container(
+          
+               DataCell(Container(
               width: double.infinity,
               height: double.infinity,
               color: _selectedSupplier == _user

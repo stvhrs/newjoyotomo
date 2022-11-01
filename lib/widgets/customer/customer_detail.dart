@@ -36,7 +36,7 @@ class _CustomerDetailsState extends State<CustomerDetails> {
   }
 
   final TransformationController _trans = TransformationController();
-
+ final navigatorKey = GlobalKey<NavigatorState>();
   final TransformationController _trans2 = TransformationController();
 
   final TransformationController _trans3 = TransformationController();

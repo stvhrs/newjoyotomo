@@ -8,8 +8,8 @@ import 'package:newJoyo/models/stockService/stock_realization.dart';
 import 'package:newJoyo/widgets/kop.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:pdf/pdf.dart';
-import 'package:pdf/widgets.dart' as pw;
+import 'package:newJoyo/library/pdf/lib/pdf.dart';
+import 'package:newJoyo/library/pdf/lib/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 
 import '../../../models/customer.dart';
@@ -129,11 +129,11 @@ class _InvoiceDocState extends State<InvoiceDoc> {
     Printing.layoutPdf(
         usePrinterSettings: true,
         name: 'Steve',
-        onLayout: (PdfPageFormat format) async => asu2.save());
+        onLayout: (format) async => asu2.save(),);
   }
 
   final bold = TextStyle(fontWeight: FontWeight.bold, fontSize: 11);
-  final small= TextStyle(fontSize: 10);
+  final small = TextStyle(fontSize: 10);
 
   Widget _buildPartName(int i, BuildContext context, StockRalization stocks) {
     return StatefulBuilder(
@@ -150,39 +150,39 @@ class _InvoiceDocState extends State<InvoiceDoc> {
                   Expanded(
                     flex: 8,
                     child: Container(
-                      child: Text(stocks.partname,style: small),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 8,
-                    child: Container(width: 100, child: Text(stocks.name,style: small)),
-                  ),
-                  Expanded(
-                    flex: 8,
-                    child: Container(
-                      child: Text(
-                        formatCurrendcy.format(stocks.servicePrice),style: small
-                      ),
+                      child: Text(stocks.partname, style: small),
                     ),
                   ),
                   Expanded(
                     flex: 8,
                     child: Container(
-                      child: Text(
-                        formatCurrendcy.format(stocks.price),style: small
-                      ),
+                        width: 100, child: Text(stocks.name, style: small)),
+                  ),
+                  Expanded(
+                    flex: 8,
+                    child: Container(
+                      child: Text(formatCurrendcy.format(stocks.servicePrice),
+                          style: small),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 8,
+                    child: Container(
+                      child: Text(formatCurrendcy.format(stocks.price),
+                          style: small),
                     ),
                   ),
                   Expanded(
                     flex: 5,
                     child: Container(
-                      child: Text(stocks.count.toString(),style: small),
+                      child: Text(stocks.count.toString(), style: small),
                     ),
                   ),
                   Expanded(
                     flex: 8,
                     child: Text(
-                      formatCurrendcy.format(stocks.toalPrice),style: small,
+                      formatCurrendcy.format(stocks.toalPrice),
+                      style: small,
                     ),
                   ),
                 ],
@@ -208,12 +208,13 @@ class _InvoiceDocState extends State<InvoiceDoc> {
                         repeat: ImageRepeat.repeat,
                         scale: 20)),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                     Container( height: MediaQuery.of(context).size.height,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                          height: MediaQuery.of(context).size.height,
                           width: MediaQuery.of(context).size.height / 1.4142,
-                          padding: const EdgeInsets.all(20  ),
+                          padding: const EdgeInsets.all(20),
                           margin: const EdgeInsets.only(top: 20, bottom: 10),
                           decoration: BoxDecoration(
                             color: Colors.white,
@@ -229,60 +230,61 @@ class _InvoiceDocState extends State<InvoiceDoc> {
                               ),
                             ],
                           ),
-                         
-                          child:Container(
-                alignment: Alignment.center,
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(border: Border.all()),
-                width: constraints.maxHeight / 1.4,
-                height: constraints.maxHeight,
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const Kop(),
-                      Row(
-                        children: [
-                          Kotak2(
+                          child: Container(
+                              alignment: Alignment.center,
+                              padding: const EdgeInsets.all(20),
+                              decoration: BoxDecoration(border: Border.all()),
+                              width: constraints.maxHeight / 1.4,
+                              height: constraints.maxHeight,
                               child: Column(
-                                children: [
-                                  Text(
-                                    'CUSTOMER',
-                                    style: bold,
-                                  ),
-                                  Divider(
-                                    height: 2,
-                                    color: Colors.black,
-                                  )
-                                ],
-                              ),
-                              height: 270,
-                              width: 250),
-                          Kotak2(
-                              child: Column(
-                                children: [
-                                  Text(
-                                    'CAR DETAILS',
-                                    style: bold,
-                                  ),
-                                  Divider(
-                                    height: 2,
-                                    color: Colors.black,
-                                  )
-                                ],
-                              ),
-                              height: 270,
-                              width: 250),
-                        ],
-                      ),
-                      top,
-                      ...List.generate(
-                          widget.customer.realization.target!.stockItems.length,
-                          (index) => _buildPartName(
-                              index,
-                              context,
-                              widget.customer.realization.target!
-                                  .stockItems[index])),
-                    ])))]));
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    const Kop(),
+                                    Row(
+                                      children: [
+                                        Kotak2(
+                                            child: Column(
+                                              children: [
+                                                Text(
+                                                  'CUSTOMER',
+                                                  style: bold,
+                                                ),
+                                                Divider(
+                                                  height: 2,
+                                                  color: Colors.black,
+                                                )
+                                              ],
+                                            ),
+                                            height: 270,
+                                            width: 250),
+                                        Kotak2(
+                                            child: Column(
+                                              children: [
+                                                Text(
+                                                  'CAR DETAILS',
+                                                  style: bold,
+                                                ),
+                                                Divider(
+                                                  height: 2,
+                                                  color: Colors.black,
+                                                )
+                                              ],
+                                            ),
+                                            height: 270,
+                                            width: 250),
+                                      ],
+                                    ),
+                                    top,
+                                    ...List.generate(
+                                        widget.customer.realization.target!
+                                            .stockItems.length,
+                                        (index) => _buildPartName(
+                                            index,
+                                            context,
+                                            widget.customer.realization.target!
+                                                .stockItems[index])),
+                                  ])))
+                    ]));
           }),
         ),
       ),

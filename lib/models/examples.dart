@@ -5,9 +5,9 @@ import 'dart:typed_data';
 import 'package:newJoyo/models/customer.dart';
 import 'package:flutter/services.dart';
 import 'package:newJoyo/models/spk.dart';
-import 'package:pdf/pdf.dart';
+import 'package:newJoyo/library/pdf/lib/pdf.dart';
 
-import 'package:pdf/widgets.dart' as pw;
+import 'package:newJoyo/library/pdf/lib/widgets.dart' as pw;
 
 Future<Uint8List> generateCalendar(
   Customer customer,Spk spk

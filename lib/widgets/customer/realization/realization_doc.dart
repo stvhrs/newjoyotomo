@@ -16,6 +16,7 @@ import '../../../models/customer.dart';
 import '../../../models/mpi/mpiItem.dart';
 import '../../../models/stock.dart';
 import '../../../provider/trigger.dart';
+import 'package:newJoyo/library/date_picker/web_date_picker.dart';
 import 'dart:math' as mh;
 import 'package:collection/collection.dart';
 
@@ -398,21 +399,22 @@ class _RealizationDocState extends State<RealizationDoc> {
         ]),
         body: LayoutBuilder(builder: (context, BoxConstraints constraints) {
           return Center(
-            child:Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage(
-                          'images/icon.jpg',
-                        ),
-                        opacity: 0.3,
-                        repeat: ImageRepeat.repeat,
-                        scale: 20)),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                     Container( height: MediaQuery.of(context).size.height,
+              child: Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage(
+                            'images/icon.jpg',
+                          ),
+                          opacity: 0.3,
+                          repeat: ImageRepeat.repeat,
+                          scale: 20)),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          height: MediaQuery.of(context).size.height,
                           width: MediaQuery.of(context).size.height / 1.4142,
                           padding: const EdgeInsets.all(10),
                           margin: const EdgeInsets.only(top: 20, bottom: 10),
@@ -430,179 +432,207 @@ class _RealizationDocState extends State<RealizationDoc> {
                               ),
                             ],
                           ),
-                         
                           child: Container(
-              decoration: BoxDecoration(border: Border.all()),
-              width: constraints.maxHeight / 1.4,
-              height: constraints.maxHeight,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Center(
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: const Text(
-                          "REALISASI",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 17),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const Divider(
-                    height: 0,
-                    color: Colors.black,
-                  ),
-                  widget.customer.mpi.target!.items
-                          .every((element) => element.attention == 0)
-                      ? SizedBox()
-                      : top2,
-                  const Divider(
-                    height: 0,
-                    color: Colors.black,
-                  ),
-                  ...widget.customer.mpi.target!.items
-                      .mapIndexed((i, element) => element.attention == 0
-                          ? const Center()
-                          : Container(
-                              width: constraints.maxHeight / 1.4,
-                              child: IntrinsicHeight(
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Expanded(
-                                      flex: 1,
-                                      child: Transform.scale(
-                                          alignment: Alignment.centerLeft,
-                                          scale: 0.6,
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              Container(
-                                                  margin:
-                                                      EdgeInsets.only(left: 15),
-                                                  child: buildAttention(
-                                                      element.attention))
-                                            ],
-                                          )),
-                                    ),
-                                    Expanded(
-                                      flex: 4,
-                                      child: Text(
-                                        element.name,
-                                        maxLines: 2,
-                                        textAlign: TextAlign.left,
-                                        style: const TextStyle(fontSize: 11),
+                            decoration: BoxDecoration(border: Border.all()),
+                            width: constraints.maxHeight / 1.4,
+                            height: constraints.maxHeight,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Center(
+                                    child: InkWell(
+                                      onTap: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: const Text(
+                                        "REALISASI",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 17),
                                       ),
                                     ),
-                                    Expanded(
-                                        flex: 4,
-                                        child: Text(
-                                            formatCurrency
-                                                .format(element.price),
-                                            style: const TextStyle(
-                                              fontSize: 11,
-                                            ))),
-                                    Expanded(
-                                      flex: 1,
-                                      child: Transform.scale(
-                                        scale: 0.6,
-                                        child: ChoiceChip(
-                                          shape: CircleBorder(),
-                                          label: Icon(
-                                            Icons.done,
-                                            color: Colors.white,
-                                          ),
-                                          padding: EdgeInsets.all(0),
-                                          selectedColor: Colors.green,
-                                          selected: element.done,
-                                          onSelected: (v) {
-                                            element.done = !element.done;
+                                  ),
+                                ),
+                                const Divider(
+                                  height: 0,
+                                  color: Colors.black,
+                                ),
+                                widget.customer.mpi.target!.items.every(
+                                        (element) => element.attention == 0)
+                                    ? SizedBox()
+                                    : top2,
+                                const Divider(
+                                  height: 0,
+                                  color: Colors.black,
+                                ),
+                                ...widget.customer.mpi.target!.items
+                                    .mapIndexed((i, element) => element
+                                                .attention ==
+                                            0
+                                        ? const Center()
+                                        : Container(
+                                            width: constraints.maxHeight / 1.4,
+                                            child: IntrinsicHeight(
+                                              child: Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Expanded(
+                                                    flex: 1,
+                                                    child: Transform.scale(
+                                                        alignment: Alignment
+                                                            .centerLeft,
+                                                        scale: 0.6,
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Container(
+                                                                margin: EdgeInsets
+                                                                    .only(
+                                                                        left:
+                                                                            15),
+                                                                child: buildAttention(
+                                                                    element
+                                                                        .attention))
+                                                          ],
+                                                        )),
+                                                  ),
+                                                  Expanded(
+                                                    flex: 4,
+                                                    child: Text(
+                                                      element.name,
+                                                      maxLines: 2,
+                                                      textAlign: TextAlign.left,
+                                                      style: const TextStyle(
+                                                          fontSize: 11),
+                                                    ),
+                                                  ),
+                                                  Expanded(
+                                                      flex: 4,
+                                                      child: Text(
+                                                          formatCurrency.format(
+                                                              element.price),
+                                                          style:
+                                                              const TextStyle(
+                                                            fontSize: 11,
+                                                          ))),
+                                                  Expanded(
+                                                    flex: 1,
+                                                    child: Transform.scale(
+                                                      scale: 0.6,
+                                                      child: ChoiceChip(
+                                                        shape: CircleBorder(),
+                                                        label: Icon(
+                                                          Icons.done,
+                                                          color: Colors.white,
+                                                        ),
+                                                        padding:
+                                                            EdgeInsets.all(0),
+                                                        selectedColor:
+                                                            Colors.green,
+                                                        selected: element.done,
+                                                        onSelected: (v) {
+                                                          element.done =
+                                                              !element.done;
 
-                                            widget.customer.mpi.target!.items[i]
-                                                .done = element.done;
+                                                          widget
+                                                                  .customer
+                                                                  .mpi
+                                                                  .target!
+                                                                  .items[i]
+                                                                  .done =
+                                                              element.done;
+                                                          setState(() {});
+                                                        },
+                                                      ),
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            )))
+                                    .toList(),
+                                const Divider(
+                                  height: 0,
+                                  color: Colors.black,
+                                ),
+                                top,
+                                const Divider(
+                                  height: 0,
+                                  color: Colors.black,
+                                ),
+                                ...List.generate(jumlahOpsi,
+                                    (index) => _buildPartName(index, context)),
+                                Row(
+                                  children: [
+                                    IconButton(
+                                        color: Colors.red,
+                                        onPressed: () {
+                                          setState(() {
+                                            if (jumlahOpsi > 1 &&
+                                                jumlahOpsi ==
+                                                    _stockRealization.length) {
+                                              _stockRealization
+                                                  .removeAt(jumlahOpsi - 1);
+                                              jumlahOpsi = jumlahOpsi - 1;
+                                              _partValue
+                                                  .removeAt(jumlahOpsi - 1);
+                                              _nameValue
+                                                  .removeAt(jumlahOpsi - 1);
+                                            }
+                                          });
+                                        },
+                                        icon: const Icon(Icons.remove_circle)),
+                                    IconButton(
+                                        color: Colors.green,
+                                        onPressed: () {
+                                          if (jumlahOpsi ==
+                                              _stockRealization.length) {
+                                            print(jumlahOpsi ==
+                                                _stockRealization.length);
+
+                                            jumlahOpsi = jumlahOpsi + 1;
+                                            _stockRealization
+                                                .add(StockRalization(
+                                              desc: '',
+                                              name: '',
+                                              partname: '',
+                                              servicePrice: 0.0,
+                                              toalPrice: 0.0,
+                                              done: false,
+                                              price: 0,
+                                              count: 1,
+                                            ));
+                                            _partValue
+                                                .add(TextEditingController());
+                                            _nameValue
+                                                .add(TextEditingController());
+                                            _priceValue
+                                                .add(TextEditingController());
+
                                             setState(() {});
-                                          },
-                                        ),
-                                      ),
-                                    )
+                                          }
+                                        },
+                                        icon: const Icon(Icons.add_circle)),
                                   ],
                                 ),
-                              )))
-                      .toList(),
-                  const Divider(
-                    height: 0,
-                    color: Colors.black,
-                  ),
-                  top,
-                  const Divider(
-                    height: 0,
-                    color: Colors.black,
-                  ),
-                  ...List.generate(
-                      jumlahOpsi, (index) => _buildPartName(index, context)),
-                  Row(
-                    children: [
-                      IconButton(
-                          color: Colors.red,
-                          onPressed: () {
-                            setState(() {
-                              if (jumlahOpsi > 1 &&
-                                  jumlahOpsi == _stockRealization.length) {
-                                _stockRealization.removeAt(jumlahOpsi - 1);
-                                jumlahOpsi = jumlahOpsi - 1;
-                                _partValue.removeAt(jumlahOpsi - 1);
-                                _nameValue.removeAt(jumlahOpsi - 1);
-                              }
-                            });
-                          },
-                          icon: const Icon(Icons.remove_circle)),
-                      IconButton(
-                          color: Colors.green,
-                          onPressed: () {
-                            if (jumlahOpsi == _stockRealization.length) {
-                              print(jumlahOpsi == _stockRealization.length);
-
-                              jumlahOpsi = jumlahOpsi + 1;
-                              _stockRealization.add(StockRalization(
-                                desc: '',
-                                name: '',
-                                partname: '',
-                                servicePrice: 0.0,
-                                toalPrice: 0.0,
-                                done: false,
-                                price: 0,
-                                count: 1,
-                              ));
-                              _partValue.add(TextEditingController());
-                              _nameValue.add(TextEditingController());
-                              _priceValue.add(TextEditingController());
-
-                              setState(() {});
-                            }
-                          },
-                          icon: const Icon(Icons.add_circle)),
-                    ],
-                  ),
-                  Divider(
-                    color: Colors.black,
-                    height: 0,
-                  ),
-                  top3,
-                  Divider(
-                    color: Colors.black,
-                    height: 0,
-                  ),
-                  bottom()
-                ],
-              ),
-            ),
-          )])));
+                                Divider(
+                                  color: Colors.black,
+                                  height: 0,
+                                ),
+                                top3,
+                                Divider(
+                                  color: Colors.black,
+                                  height: 0,
+                                ),
+                                bottom()
+                              ],
+                            ),
+                          ),
+                        )
+                      ])));
         }));
   }
 
@@ -739,10 +769,14 @@ class _RealizationDocState extends State<RealizationDoc> {
           ),
         ),
       ),
+      WebDatePicker(
+        onChange: (v) {},
+        dateformat: 'dd/MM/yyyy',
+      )
     ],
   );
   Widget bottom() => Row(
-       mainAxisSize: MainAxisSize.min,
+        mainAxisSize: MainAxisSize.min,
         children: [
           Expanded(
             flex: 14,
@@ -758,15 +792,18 @@ class _RealizationDocState extends State<RealizationDoc> {
             flex: 14,
             child: Container(
               child: Text(
-                formatCurrendcy.format( widget.customer.spk.target!.estimasiBiyaya),
+                formatCurrendcy
+                    .format(widget.customer.spk.target!.estimasiBiyaya),
                 style: TextStyle(fontSize: 10),
               ),
             ),
           ),
           Expanded(
             flex: 14,
-            child: Container(margin: EdgeInsets.only(right: 30),
-              child: TextFormField(decoration: InputDecoration(  isDense: true,isCollapsed: true),
+            child: Container(
+              margin: EdgeInsets.only(right: 30),
+              child: TextFormField(
+                decoration: InputDecoration(isDense: true, isCollapsed: true),
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
                 ],
@@ -783,7 +820,9 @@ class _RealizationDocState extends State<RealizationDoc> {
             flex: 14,
             child: Container(
               child: Text(
-               formatCurrendcy.format( widget.customer.realization.target!.biyaya,),
+                formatCurrendcy.format(
+                  widget.customer.realization.target!.biyaya,
+                ),
                 style: TextStyle(fontSize: 10),
               ),
             ),
@@ -798,56 +837,66 @@ class _RealizationDocState extends State<RealizationDoc> {
             ),
           ),
           Expanded(
-            flex: 17,child: Container(margin: EdgeInsets.only(right: 30),child:
-             TextFormField(decoration: InputDecoration(  isDense: true,),
-                onTap: () async {
-                  DateTime? pickedDate = await showDatePicker(
-                      builder: (context, child) => Theme(
-                            data: Theme.of(context).copyWith(
-                              colorScheme: const ColorScheme.light(
-                                primary: Color.fromARGB(255, 79, 117,
-                                    134), // header background color
-                              ),
-                              textButtonTheme: TextButtonThemeData(
-                                style: TextButton.styleFrom(
-                                  foregroundColor:
-                                      Colors.green, // button text color
+            flex: 17,
+            child: Container(
+                margin: EdgeInsets.only(right: 30),
+                child: TextFormField(
+                  decoration: InputDecoration(
+                    isDense: true,
+                  ),
+                  onTap: () async {
+                    DateTime? pickedDate = await showDatePicker(
+                        builder: (context, child) => Theme(
+                              data: Theme.of(context).copyWith(
+                                colorScheme: const ColorScheme.light(
+                                  primary: Color.fromARGB(255, 79, 117,
+                                      134), // header background color
+                                ),
+                                textButtonTheme: TextButtonThemeData(
+                                  style: TextButton.styleFrom(
+                                    foregroundColor:
+                                        Colors.green, // button text color
+                                  ),
                                 ),
                               ),
+                              child: child!,
                             ),
-                            child: child!,
-                          ),
-                      locale: Localizations.localeOf(context),
-                      context: context,
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime(
-                          2022), //DateTime.now() - not to allow to choose before today.
-                      lastDate: DateTime(2101));
+                        locale: Localizations.localeOf(context),
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(
+                            2022), //DateTime.now() - not to allow to choose before today.
+                        lastDate: DateTime(2101));
 
-                  if (pickedDate != null) {
-                    print(
-                        pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
-                    String formattedDate =
-                        DateFormat('dd/MM/yyyy').format(pickedDate);
-                    print(
-                        formattedDate); //formatted date output using intl package =>  2021-03-16
-                    //you can implement different kind of Date Format here according to your requirement
+                    if (pickedDate != null) {
+                      print(
+                          pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
+                      String formattedDate =
+                          DateFormat('dd/MM/yyyy').format(pickedDate);
+                      print(
+                          formattedDate); //formatted date output using intl package =>  2021-03-16
+                      //you can implement different kind of Date Format here according to your requirement
 
-                    setState(() {
-                      dateinput.text =
-                          formattedDate; //set output date to TextField value.
-                      widget.customer.realization.target!.dateOut =
-                          dateinput.text;
-                    });
-                  } else {
-                    print("Date is not selected");
-                  }
-                },
-                controller: dateinput,
-                style: TextStyle(fontSize: 10),
-              )),
-            
+                      setState(() {
+                        dateinput.text =
+                            formattedDate; //set output date to TextField value.
+                        widget.customer.realization.target!.dateOut =
+                            dateinput.text;
+                      });
+                    } else {
+                      print("Date is not selected");
+                    }
+                  },
+                  controller: dateinput,
+                  style: TextStyle(fontSize: 10),
+                )),
           ),
+          WebDatePicker(
+            width: 100,
+            height: 50,
+            onChange: (v) {},
+            dateformat: 'dd/MM/yyy',
+          )
         ],
       );
   Widget top2 = Row(

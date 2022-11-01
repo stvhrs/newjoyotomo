@@ -1,7 +1,10 @@
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:newJoyo/pages/customer_page.dart';
+import 'package:newJoyo/pages/daftar_pelanggan.dart';
+import 'package:newJoyo/pages/daftar_supplier.dart';
+import 'package:newJoyo/pages/riwayat_pemakaian.dart';
 
-import 'package:newJoyo/pages/supplier_page.dart';
+import 'package:newJoyo/pages/riwayat_pembelian.dart';
 import 'package:newJoyo/pages/stock_page.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_sidemenu/easy_sidemenu.dart';
@@ -68,7 +71,7 @@ class Side extends StatefulWidget {
   _SideState createState() => _SideState();
 }
 
-bool mode = false;
+bool mode = true;
 
 class _SideState extends State<Side> {
   PageController page = PageController();
@@ -122,6 +125,7 @@ class _SideState extends State<Side> {
                     //   print(mode);
                     // },
                     style: SideMenuStyle(
+                      openSideMenuWidth: 200,
                       toggleColor: Colors.white,
                       displayMode: mode
                           ? SideMenuDisplayMode.open
@@ -163,29 +167,53 @@ class _SideState extends State<Side> {
                     items: [
                       SideMenuItem(
                         priority: 0,
-                        title: 'Stock',
+                        title: 'Daftar Stock',
                         onTap: () {
                           page.jumpToPage(0);
                         },
-                        icon: const Icon(Icons.menu_book_rounded),
+                        icon: const Icon(Icons.home_work),
                       ),
                       SideMenuItem(
                         priority: 1,
-                        title: 'Supplier',
+                        title: 'Riwayat Pembelian',
                         onTap: () {
                           page.jumpToPage(1);
                         },
-                        icon: const Icon(Icons.document_scanner_sharp),
+                        icon: const Icon(Icons.shopify_rounded),
                       ),
                       SideMenuItem(
                         priority: 2,
-                        title: 'Customer',
+                        title: 'Riwayat Pemakaian',
                         onTap: () {
                           page.jumpToPage(2);
                         },
+                        icon:
+                            const Icon(Icons.format_textdirection_l_to_r_sharp),
+                      ),
+                      SideMenuItem(
+                        priority: 3,
+                        title: 'Pekerjaan',
+                        onTap: () {
+                          page.jumpToPage(3);
+                        },
                         icon: const Icon(Icons.engineering_rounded),
                       ),
-                     
+                      SideMenuItem(
+                        priority: 4,
+                        title: 'Daftar Supplier',
+                        onTap: () {
+                          page.jumpToPage(4);
+                        },
+                        icon: const Icon(Icons.apartment_sharp),
+                      ),
+                      SideMenuItem(
+                        priority: 5,
+                        title: 'Daftar Pelanggan',
+                        onTap: () {
+                          page.jumpToPage(5);
+                        },
+                        icon: const Icon(Icons.people_alt),
+                      ),
                     ],
                   ),
                   Expanded(
@@ -194,9 +222,10 @@ class _SideState extends State<Side> {
                       children: const [
                         StockPage(),
                         SupplierPage(),
-                        
-                     
+                        RiwayatPemakaian(),
                         CustomerPage(),
+                        DaftarPelanggan(),
+                        DaftarSupplier()
                       ],
                     ),
                   ),

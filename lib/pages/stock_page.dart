@@ -82,7 +82,7 @@ class _StockPageState extends State<StockPage> {
                         Column(
                           children: [
                             Container(
-                              width: MediaQuery.of(context).size.width / 2,
+                              width: MediaQuery.of(context).size.width / 2.2,
                               padding:
                                   const EdgeInsets.only(left: 16, right: 16),
                               child: Row(
@@ -91,7 +91,7 @@ class _StockPageState extends State<StockPage> {
                                 children: [
                                   Container(
                                     width:
-                                        MediaQuery.of(context).size.width / 4,
+                                        MediaQuery.of(context).size.width / 6,
                                     padding: const EdgeInsets.only(
                                         top: 10, right: 10, bottom: 10),
                                     height: 50,
@@ -133,10 +133,10 @@ class _StockPageState extends State<StockPage> {
                             ),
                             Expanded(
                               child: SizedBox(
-                                  width: MediaQuery.of(context).size.width / 2,
+                                  width: MediaQuery.of(context).size.width / 2.2,
                                   child: Padding(
                                       padding: const EdgeInsets.only(
-                                          top: 8, left: 16, right: 16),
+                                          top: 8, left: 16, right: 8),
                                       child: PaginatedDataTable2(
                                         wrapInCard: false,
                                         rowsPerPage: 20,
@@ -165,7 +165,7 @@ class _StockPageState extends State<StockPage> {
                                           ),
                                           DataColumn(
                                             label: Center(
-                                                child: Text('Total Cost')),
+                                                child: Text('Total Harga')),
                                           ),
                                           DataColumn2(
                                             size: ColumnSize.S,

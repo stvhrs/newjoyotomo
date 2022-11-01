@@ -12,14 +12,16 @@ import '../../helper/currency.dart';
 import '../../models/stock.dart';
 import '../../provider/trigger.dart';
 
-class SupplierAdd extends StatefulWidget {
-  const SupplierAdd({super.key});
+class SupplierEdit extends StatefulWidget {
+  final Supplier supplier;
+  
+SupplierEdit(this.supplier);
 
   @override
-  State<SupplierAdd> createState() => _SupplierAddState();
+  State<SupplierEdit> createState() => _SupplierEditState();
 }
 
-class _SupplierAddState extends State<SupplierAdd> {
+class _SupplierEditState extends State<SupplierEdit> {
   String _desc = '';
   String _supplier = '';
 
@@ -32,6 +34,7 @@ class _SupplierAddState extends State<SupplierAdd> {
   ];
 
   Widget _buildPartName(int i, BuildContext context) {
+    
     List<Stock> stocks =
         Provider.of<Trigger>(context, listen: false).listSelectedStock;
 
@@ -108,11 +111,14 @@ class _SupplierAddState extends State<SupplierAdd> {
 
   @override
   Widget build(BuildContext context) {
+    
+  
     List<Supplier> suppliers =
         Provider.of<Trigger>(context, listen: false).listSelectedSupplier;
     List<Stock> stocks =
         Provider.of<Trigger>(context, listen: false).listSelectedStock;
     List<String> itemsSupplier = [];
+    
     if (suppliers.isNotEmpty) {
       for (Supplier e in suppliers) {
         if (!itemsSupplier.contains(e.supplier)) {
@@ -322,11 +328,11 @@ class _SupplierAddState extends State<SupplierAdd> {
                   });
                 },
           icon: const Icon(
-            Icons.add,
+            Icons.edit,
             color: Colors.white,
           ),
           label: const Text(
-            'Tambah Pembelian',
+            'Edit',
             style: TextStyle(color: Colors.white),
           )),
     );

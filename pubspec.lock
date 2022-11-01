@@ -538,7 +538,7 @@ packages:
   pdf:
     dependency: "direct overridden"
     description:
-      path: "library/pdf"
+      path: "lib/library/pdf"
       relative: true
     source: path
     version: "3.8.4"
