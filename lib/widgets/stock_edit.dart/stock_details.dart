@@ -3,8 +3,7 @@ import 'dart:developer';
 import 'package:newJoyo/main.dart';
 import 'package:newJoyo/models/detail_stock.dart';
 import 'package:newJoyo/provider/trigger.dart';
-import 'package:newJoyo/widgets/stock/stock_edit.dart';
-import 'package:newJoyo/widgets/stock/stock_remove.dart';
+
 // ignore: deprecated_member_use
 import 'package:data_table_2/paginated_data_table_2.dart';
 
@@ -13,6 +12,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/stock.dart';
+import '../stock/stock_remove.dart';
 
 class StockDetails extends StatefulWidget {
   // final List<dynamic> stocksHistory;
@@ -48,7 +48,16 @@ class _StockDetailsState extends State<StockDetails> {
                       fontSize: 40, fontWeight: FontWeight.bold),
                 ),
                 Spacer(),
-               StockEdit(value.selectedStock),
+                IconButton(
+                    onPressed: () {
+                      Stock stock = Provider.of<Trigger>(context, listen: false)
+                          .selectedStock;
+                      objectBox.deleteStock(stock.id);
+                    },
+                    icon: Icon(
+                      Icons.edit,
+                      color: Colors.green,
+                    )),
                 IconButton(
                     onPressed: () {
                       Stock stock = Provider.of<Trigger>(context, listen: false)
@@ -89,7 +98,9 @@ class _StockDetailsState extends State<StockDetails> {
                   ),
                 ),
                 (value.selectedStock.count > 0)
-                    ? IntrinsicWidth(child: const StockRemove())
+                    ? Positioned(
+                        top: -35,
+                        child: IntrinsicWidth(child: StockRemove()))
                     : const SizedBox(),
               ],
             ),
@@ -175,7 +186,7 @@ class _StockDetailsState extends State<StockDetails> {
                                       //     : Colors.green.shade400,
                                       borderRadius: BorderRadius.circular(10)),
                                   child: Text(
-                                    (e.count.toString()),
+                                    (e.pihakId.toString()),
                                     style: TextStyle(fontSize: 11),
                                     // style: const TextStyle(color: Colors.white),
                                     textAlign: TextAlign.center,

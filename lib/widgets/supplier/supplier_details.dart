@@ -1,4 +1,4 @@
-import 'package:newJoyo/models/supplier_history.dart';
+import 'package:newJoyo/models/detail_pembelian.dart';
 import 'package:newJoyo/provider/trigger.dart';
 
 // ignore: deprecated_member_use
@@ -23,7 +23,7 @@ class _SupplierDetailsState extends State<SupplierDetails> {
   @override
   Widget build(BuildContext context) {
     return Consumer<Trigger>(builder: (context, value, cshild) {
-      final List<SupplierHistory> history =
+      final List<DetailPembelian> history =
           value.selectedSupplier.items.reversed.toList();
 
       return IntrinsicWidth(

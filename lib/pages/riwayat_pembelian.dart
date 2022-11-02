@@ -11,7 +11,7 @@ import 'package:provider/provider.dart';
 
 import '../main.dart';
 
-import '../models/supplier.dart';
+import '../models/pembelian.dart';
 import '../widgets/supplier/supplier_details.dart';
 
 class SupplierPage extends StatefulWidget {
@@ -201,12 +201,12 @@ class _SupplierPageState extends State<SupplierPage> {
 Widget get _divier_ => Row(
       children: const [
         VerticalDivider(
-          color: Color.fromARGB(255, 79, 117, 134),
+          color:Color.fromARGB(255, 79, 117, 134),
           thickness: 2.5,
           width: 4,
         ),
         VerticalDivider(
-          color: Color.fromARGB(255, 79, 117, 134),
+          color:Color.fromARGB(255, 79, 117, 134),
           thickness: 2.5,
           width: 4,
         ),

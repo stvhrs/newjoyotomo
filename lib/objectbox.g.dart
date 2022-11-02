@@ -15,566 +15,316 @@ import 'package:objectbox/objectbox.dart';
 import 'package:objectbox_sync_flutter_libs/objectbox_sync_flutter_libs.dart';
 
 import 'models/customer.dart';
+import 'models/detail_pembelian.dart';
+import 'models/detail_stock.dart';
 import 'models/invoice.dart';
 import 'models/invoice/payment.dart';
 import 'models/mpi.dart';
 import 'models/mpi/mpiItem.dart';
+import 'models/pembelian.dart';
 import 'models/realization.dart';
 import 'models/spk.dart';
 import 'models/stock.dart';
 import 'models/stockService/stock_realization.dart';
-import 'models/stock_history.dart';
-import 'models/supplier.dart';
-import 'models/supplier_history.dart';
 
 export 'package:objectbox/objectbox.dart'; // so that callers only have to import this file
 
 final _entities = <ModelEntity>[
   ModelEntity(
-      id: const IdUid(1, 5172474104323874019),
-      name: 'Stock',
-      lastPropertyId: const IdUid(7, 5791046997250019872),
-      flags: 0,
-      properties: <ModelProperty>[
-        ModelProperty(
-            id: const IdUid(1, 898843647539086841),
-            name: 'id',
-            type: 6,
-            flags: 129),
-        ModelProperty(
-            id: const IdUid(2, 241095903948734328),
-            name: 'name',
-            type: 9,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(3, 7393100222852980084),
-            name: 'partname',
-            type: 9,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(4, 1307345088179857506),
-            name: 'desc',
-            type: 9,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(5, 3127748686168046482),
-            name: 'count',
-            type: 6,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(6, 5683772445217035368),
-            name: 'lastPrice',
-            type: 8,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(7, 5791046997250019872),
-            name: 'totalPrice',
-            type: 8,
-            flags: 0)
-      ],
-      relations: <ModelRelation>[
-        ModelRelation(
-            id: const IdUid(1, 6459399398230391853),
-            name: 'items',
-            targetId: const IdUid(2, 4985186484628358543))
-      ],
-      backlinks: <ModelBacklink>[]),
-  ModelEntity(
-      id: const IdUid(2, 4985186484628358543),
-      name: 'StockHistory',
-      lastPropertyId: const IdUid(6, 7046557823376505369),
-      flags: 0,
-      properties: <ModelProperty>[
-        ModelProperty(
-            id: const IdUid(1, 4234573687941491413),
-            name: 'id',
-            type: 6,
-            flags: 129),
-        ModelProperty(
-            id: const IdUid(2, 7097650528938352860),
-            name: 'date',
-            type: 9,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(3, 8870695530852544804),
-            name: 'supplier',
-            type: 9,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(4, 8813497951331478009),
-            name: 'count',
-            type: 6,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(5, 7050327185930906142),
-            name: 'price',
-            type: 8,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(6, 7046557823376505369),
-            name: 'totalPrice',
-            type: 8,
-            flags: 0)
-      ],
-      relations: <ModelRelation>[],
-      backlinks: <ModelBacklink>[]),
-  ModelEntity(
-      id: const IdUid(3, 6969889068049069330),
-      name: 'Supplier',
-      lastPropertyId: const IdUid(6, 6876693806783154073),
-      flags: 0,
-      properties: <ModelProperty>[
-        ModelProperty(
-            id: const IdUid(1, 3178573867488025493),
-            name: 'id',
-            type: 6,
-            flags: 129),
-        ModelProperty(
-            id: const IdUid(2, 9140426680274193237),
-            name: 'supplier',
-            type: 9,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(3, 5680268228196982252),
-            name: 'desc',
-            type: 9,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(4, 3388215526658503540),
-            name: 'count',
-            type: 6,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(5, 2859909099310288108),
-            name: 'date',
-            type: 9,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(6, 6876693806783154073),
-            name: 'totalPrice',
-            type: 8,
-            flags: 0)
-      ],
-      relations: <ModelRelation>[
-        ModelRelation(
-            id: const IdUid(2, 5532195133722584715),
-            name: 'items',
-            targetId: const IdUid(4, 8577844043565327978))
-      ],
-      backlinks: <ModelBacklink>[]),
-  ModelEntity(
-      id: const IdUid(4, 8577844043565327978),
-      name: 'SupplierHistory',
-      lastPropertyId: const IdUid(6, 5972625551270898158),
-      flags: 0,
-      properties: <ModelProperty>[
-        ModelProperty(
-            id: const IdUid(1, 3897262296091274605),
-            name: 'id',
-            type: 6,
-            flags: 129),
-        ModelProperty(
-            id: const IdUid(2, 5532853036151464018),
-            name: 'partName',
-            type: 9,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(3, 4438219845454252168),
-            name: 'name',
-            type: 9,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(4, 2161082357857933507),
-            name: 'count',
-            type: 6,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(5, 6504877467750985538),
-            name: 'price',
-            type: 8,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(6, 5972625551270898158),
-            name: 'totalPrice',
-            type: 8,
-            flags: 0)
-      ],
-      relations: <ModelRelation>[],
-      backlinks: <ModelBacklink>[]),
-  ModelEntity(
-      id: const IdUid(5, 7196996581795471509),
+      id: const IdUid(1, 5940839075046386972),
       name: 'Customer',
-      lastPropertyId: const IdUid(11, 6908432172295524661),
+      lastPropertyId: const IdUid(10, 4848643886833820842),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
-            id: const IdUid(1, 8332935324220498583),
+            id: const IdUid(1, 3334380624085582952),
             name: 'id',
             type: 6,
             flags: 129),
         ModelProperty(
-            id: const IdUid(2, 2559268662591453941),
-            name: 'customerName',
-            type: 9,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(3, 2132177515035368676),
-            name: 'policeNumber',
-            type: 9,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(4, 3628621183980066091),
-            name: 'spkId',
-            type: 11,
-            flags: 520,
-            indexId: const IdUid(1, 5472966605712396796),
-            relationTarget: 'Spk'),
-        ModelProperty(
-            id: const IdUid(5, 8562769076870476715),
-            name: 'invId',
-            type: 11,
-            flags: 520,
-            indexId: const IdUid(2, 1523166526337342567),
-            relationTarget: 'Invoice'),
-        ModelProperty(
-            id: const IdUid(7, 972185411099250929),
-            name: 'mpiId',
-            type: 11,
-            flags: 520,
-            indexId: const IdUid(4, 3267829025998556704),
-            relationTarget: 'Mpi'),
-        ModelProperty(
-            id: const IdUid(8, 5052056680816560105),
+            id: const IdUid(2, 3743172502888674310),
             name: 'csId',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(9, 2306630033784400630),
+            id: const IdUid(3, 5373834998850228584),
+            name: 'customerName',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(4, 8495019545328665390),
+            name: 'policeNumber',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(5, 6095320527108320932),
             name: 'namaKendaraan',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(10, 1318706510492843006),
+            id: const IdUid(6, 1373077184219123473),
             name: 'alamat',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(11, 6908432172295524661),
+            id: const IdUid(7, 4325431187121325821),
+            name: 'spkId',
+            type: 11,
+            flags: 520,
+            indexId: const IdUid(1, 1648646311240715829),
+            relationTarget: 'Spk'),
+        ModelProperty(
+            id: const IdUid(8, 7653073695759413262),
+            name: 'invId',
+            type: 11,
+            flags: 520,
+            indexId: const IdUid(2, 6431121982116132590),
+            relationTarget: 'Invoice'),
+        ModelProperty(
+            id: const IdUid(9, 4990540328765844866),
             name: 'realizationId',
             type: 11,
             flags: 520,
-            indexId: const IdUid(5, 922348101440557824),
-            relationTarget: 'Realization')
+            indexId: const IdUid(3, 2076717469400698343),
+            relationTarget: 'Realization'),
+        ModelProperty(
+            id: const IdUid(10, 4848643886833820842),
+            name: 'mpiId',
+            type: 11,
+            flags: 520,
+            indexId: const IdUid(4, 8966120919406401774),
+            relationTarget: 'Mpi')
       ],
       relations: <ModelRelation>[],
       backlinks: <ModelBacklink>[]),
   ModelEntity(
-      id: const IdUid(6, 2527218249377962499),
-      name: 'Invoice',
-      lastPropertyId: const IdUid(15, 2651825715264364763),
+      id: const IdUid(2, 1893693692319298878),
+      name: 'DetailPembelian',
+      lastPropertyId: const IdUid(7, 6276944951780806616),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
-            id: const IdUid(1, 1167787500271225001),
+            id: const IdUid(1, 4262925710731915996),
             name: 'id',
             type: 6,
             flags: 129),
         ModelProperty(
-            id: const IdUid(8, 4357767907771056076),
+            id: const IdUid(2, 1089381999356735172),
+            name: 'partName',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(3, 319604359527799461),
+            name: 'name',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(4, 2821232249463450975),
+            name: 'pihakId',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(5, 7384685775913392135),
+            name: 'count',
+            type: 6,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(6, 5360100519347563885),
+            name: 'price',
+            type: 8,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(7, 6276944951780806616),
+            name: 'totalPrice',
+            type: 8,
+            flags: 0)
+      ],
+      relations: <ModelRelation>[],
+      backlinks: <ModelBacklink>[]),
+  ModelEntity(
+      id: const IdUid(3, 7568864239375287770),
+      name: 'DetailStock',
+      lastPropertyId: const IdUid(7, 6865755267777916843),
+      flags: 0,
+      properties: <ModelProperty>[
+        ModelProperty(
+            id: const IdUid(1, 7762719989353228149),
+            name: 'id',
+            type: 6,
+            flags: 129),
+        ModelProperty(
+            id: const IdUid(2, 3193388551949494416),
+            name: 'date',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(3, 8733427116212265497),
+            name: 'supplier',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(4, 8254486183134166101),
+            name: 'pihakId',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(5, 2737904049205142566),
+            name: 'count',
+            type: 6,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(6, 4962580340308686776),
+            name: 'price',
+            type: 8,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(7, 6865755267777916843),
+            name: 'totalPrice',
+            type: 8,
+            flags: 0)
+      ],
+      relations: <ModelRelation>[],
+      backlinks: <ModelBacklink>[]),
+  ModelEntity(
+      id: const IdUid(4, 4927101502051655259),
+      name: 'Invoice',
+      lastPropertyId: const IdUid(8, 2821423918368117358),
+      flags: 0,
+      properties: <ModelProperty>[
+        ModelProperty(
+            id: const IdUid(1, 855169289425559999),
+            name: 'id',
+            type: 6,
+            flags: 129),
+        ModelProperty(
+            id: const IdUid(2, 890843998666838763),
             name: 'invId',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(9, 2252328541851902788),
+            id: const IdUid(3, 8025810044530219408),
             name: 'saldo',
             type: 8,
             flags: 0),
         ModelProperty(
-            id: const IdUid(11, 7741817409356762526),
+            id: const IdUid(4, 1040159966596129526),
             name: 'partTotal',
             type: 8,
             flags: 0),
         ModelProperty(
-            id: const IdUid(12, 65803539419839041),
+            id: const IdUid(5, 5453323502756082876),
             name: 'serviceTotal',
             type: 8,
             flags: 0),
         ModelProperty(
-            id: const IdUid(13, 713766882664108615),
+            id: const IdUid(6, 7865319909650665670),
             name: 'invoiceTotal',
             type: 8,
             flags: 0),
         ModelProperty(
-            id: const IdUid(14, 7728377139542406537),
+            id: const IdUid(7, 3722333878763915296),
             name: 'invoiceDate',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(15, 2651825715264364763),
+            id: const IdUid(8, 2821423918368117358),
             name: 'soDate',
             type: 9,
             flags: 0)
       ],
       relations: <ModelRelation>[
         ModelRelation(
-            id: const IdUid(7, 8614891470761808861),
+            id: const IdUid(1, 6951016594400355086),
             name: 'payments',
-            targetId: const IdUid(16, 2643118097585550812))
+            targetId: const IdUid(7, 1344934785983686601))
       ],
       backlinks: <ModelBacklink>[]),
   ModelEntity(
-      id: const IdUid(7, 4733213235597589054),
+      id: const IdUid(5, 399171198333312925),
       name: 'Mpi',
-      lastPropertyId: const IdUid(8, 95577241025641958),
+      lastPropertyId: const IdUid(2, 4789531471469490346),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
-            id: const IdUid(1, 8050624455589438629),
+            id: const IdUid(1, 715319988484112048),
             name: 'id',
             type: 6,
             flags: 129),
         ModelProperty(
-            id: const IdUid(8, 95577241025641958),
+            id: const IdUid(2, 4789531471469490346),
             name: 'mpiId',
             type: 9,
             flags: 0)
       ],
       relations: <ModelRelation>[
         ModelRelation(
-            id: const IdUid(4, 3172245366260951844),
+            id: const IdUid(2, 1716581623904238498),
             name: 'items',
-            targetId: const IdUid(12, 8585112985326361284))
+            targetId: const IdUid(6, 2493947034834887019))
       ],
       backlinks: <ModelBacklink>[]),
   ModelEntity(
-      id: const IdUid(9, 4284014222613450838),
-      name: 'Spk',
-      lastPropertyId: const IdUid(28, 1099200807123548546),
-      flags: 0,
-      properties: <ModelProperty>[
-        ModelProperty(
-            id: const IdUid(1, 864426932791923349),
-            name: 'id',
-            type: 6,
-            flags: 129),
-        ModelProperty(
-            id: const IdUid(8, 2630471523287554117),
-            name: 'jtId',
-            type: 9,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(9, 3518436892266769484),
-            name: 'customerName',
-            type: 9,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(10, 1284418935697921833),
-            name: 'policeNumber',
-            type: 9,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(11, 1021501404794379293),
-            name: 'namaKendaraan',
-            type: 9,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(12, 5395004848406437334),
-            name: 'date',
-            type: 9,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(13, 8079922801959603261),
-            name: 'alamat',
-            type: 9,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(14, 1943712788037260402),
-            name: 'analisa',
-            type: 9,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(15, 2400660099696226434),
-            name: 'keluhanKonsumen',
-            type: 9,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(16, 2862419861662898489),
-            name: 'catatan',
-            type: 9,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(17, 3561380636658593071),
-            name: 'namaMekanik',
-            type: 9,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(18, 7423580754553772250),
-            name: 'estimasiBiyaya',
-            type: 8,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(19, 54109950818358267),
-            name: 'estimasiSelesai',
-            type: 9,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(20, 3326433828425445917),
-            name: 'namaInspeektor',
-            type: 9,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(21, 6684694647969855585),
-            name: 'namaAdvisor',
-            type: 9,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(22, 169868071269454151),
-            name: 'tipeKendaraan',
-            type: 9,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(23, 2984428843813561492),
-            name: 'levelPekerjaan',
-            type: 6,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(24, 7131020106459314220),
-            name: 'km',
-            type: 6,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(25, 2376674532353750652),
-            name: 'noPkb',
-            type: 9,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(26, 5702405919189622202),
-            name: 'noRangka',
-            type: 9,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(27, 5131673562776984214),
-            name: 'jenisPekrjaan',
-            type: 9,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(28, 1099200807123548546),
-            name: 'sukuCadang',
-            type: 9,
-            flags: 0)
-      ],
-      relations: <ModelRelation>[],
-      backlinks: <ModelBacklink>[]),
-  ModelEntity(
-      id: const IdUid(12, 8585112985326361284),
+      id: const IdUid(6, 2493947034834887019),
       name: 'MpiItem',
-      lastPropertyId: const IdUid(8, 8143104125597714736),
+      lastPropertyId: const IdUid(7, 332851692985041709),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
-            id: const IdUid(1, 6597588352135505972),
+            id: const IdUid(1, 7168141506659242819),
             name: 'id',
             type: 6,
             flags: 129),
         ModelProperty(
-            id: const IdUid(3, 4570238124572359496),
+            id: const IdUid(2, 4882894564623755670),
             name: 'category',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(4, 4104106966513991021),
+            id: const IdUid(3, 1360637473830052342),
             name: 'name',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(5, 8010298742422149826),
+            id: const IdUid(4, 1969388006320258352),
             name: 'price',
             type: 8,
             flags: 0),
         ModelProperty(
-            id: const IdUid(6, 3160081860393219552),
+            id: const IdUid(5, 451536950423916523),
             name: 'remark',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(7, 5134360301856359894),
-            name: 'attention',
-            type: 6,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(8, 8143104125597714736),
+            id: const IdUid(6, 9160575339128164488),
             name: 'done',
             type: 1,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(7, 332851692985041709),
+            name: 'attention',
+            type: 6,
             flags: 0)
       ],
       relations: <ModelRelation>[],
       backlinks: <ModelBacklink>[]),
   ModelEntity(
-      id: const IdUid(13, 4308878737610420297),
-      name: 'Realization',
-      lastPropertyId: const IdUid(6, 6868544810784595524),
-      flags: 0,
-      properties: <ModelProperty>[
-        ModelProperty(
-            id: const IdUid(1, 5795929004612451330),
-            name: 'id',
-            type: 6,
-            flags: 129),
-        ModelProperty(
-            id: const IdUid(2, 3030993279829578844),
-            name: 'rlId',
-            type: 9,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(3, 6616982093145903697),
-            name: 'selesai',
-            type: 6,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(4, 1885602135915309352),
-            name: 'biyaya',
-            type: 8,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(5, 1528367761199941622),
-            name: 'done',
-            type: 1,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(6, 6868544810784595524),
-            name: 'dateOut',
-            type: 9,
-            flags: 0)
-      ],
-      relations: <ModelRelation>[
-        ModelRelation(
-            id: const IdUid(5, 3512680085860132154),
-            name: 'mpiItems',
-            targetId: const IdUid(12, 8585112985326361284)),
-        ModelRelation(
-            id: const IdUid(6, 4956430653713072539),
-            name: 'stockItems',
-            targetId: const IdUid(17, 8195345395726640836))
-      ],
-      backlinks: <ModelBacklink>[]),
-  ModelEntity(
-      id: const IdUid(16, 2643118097585550812),
+      id: const IdUid(7, 1344934785983686601),
       name: 'Payment',
-      lastPropertyId: const IdUid(5, 5278189875168647559),
+      lastPropertyId: const IdUid(3, 3857460886081792775),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
-            id: const IdUid(1, 6689323277432257927),
+            id: const IdUid(1, 6891279256835827940),
             name: 'id',
             type: 6,
             flags: 129),
         ModelProperty(
-            id: const IdUid(3, 8306757576990777807),
+            id: const IdUid(2, 916865843506081472),
             name: 'pay',
             type: 8,
             flags: 0),
         ModelProperty(
-            id: const IdUid(5, 5278189875168647559),
+            id: const IdUid(3, 3857460886081792775),
             name: 'date',
             type: 9,
             flags: 0)
@@ -582,65 +332,333 @@ final _entities = <ModelEntity>[
       relations: <ModelRelation>[],
       backlinks: <ModelBacklink>[]),
   ModelEntity(
-      id: const IdUid(17, 8195345395726640836),
-      name: 'StockRalization',
-      lastPropertyId: const IdUid(12, 2337859925167299067),
+      id: const IdUid(8, 6854124424436056280),
+      name: 'Realization',
+      lastPropertyId: const IdUid(6, 4958957464737520312),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
-            id: const IdUid(1, 1744870554907766160),
+            id: const IdUid(1, 5528354807620841596),
             name: 'id',
             type: 6,
             flags: 129),
         ModelProperty(
-            id: const IdUid(2, 2106511143362269778),
+            id: const IdUid(2, 3532765961746225045),
+            name: 'rlId',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(3, 9101839221259561437),
+            name: 'selesai',
+            type: 6,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(4, 6776232417315224565),
+            name: 'biyaya',
+            type: 8,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(5, 5253746439405765399),
+            name: 'dateOut',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(6, 4958957464737520312),
+            name: 'done',
+            type: 1,
+            flags: 0)
+      ],
+      relations: <ModelRelation>[
+        ModelRelation(
+            id: const IdUid(3, 6489415139149001640),
+            name: 'mpiItems',
+            targetId: const IdUid(6, 2493947034834887019)),
+        ModelRelation(
+            id: const IdUid(4, 2637648560284212799),
+            name: 'stockItems',
+            targetId: const IdUid(11, 4801958333113213934))
+      ],
+      backlinks: <ModelBacklink>[]),
+  ModelEntity(
+      id: const IdUid(9, 6748891474984641867),
+      name: 'Spk',
+      lastPropertyId: const IdUid(22, 370057610262735551),
+      flags: 0,
+      properties: <ModelProperty>[
+        ModelProperty(
+            id: const IdUid(1, 7108351202249696107),
+            name: 'id',
+            type: 6,
+            flags: 129),
+        ModelProperty(
+            id: const IdUid(2, 9217894067082277530),
+            name: 'jtId',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(3, 2188020648179166380),
+            name: 'customerName',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(4, 6867780484614742373),
+            name: 'policeNumber',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(5, 1013134450438696213),
+            name: 'namaKendaraan',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(6, 1787639405432806715),
+            name: 'tipeKendaraan',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(7, 5433450373227060906),
+            name: 'levelPekerjaan',
+            type: 6,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(8, 1974317160668906319),
+            name: 'date',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(9, 5963425988886987699),
+            name: 'km',
+            type: 6,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(10, 2729421701514977066),
+            name: 'noPkb',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(11, 1536717618226749250),
+            name: 'noRangka',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(12, 7749812998448869026),
+            name: 'alamat',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(13, 2433584425919259896),
+            name: 'analisa',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(14, 3437057610954394025),
+            name: 'keluhanKonsumen',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(15, 8258070655031960907),
+            name: 'jenisPekrjaan',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(16, 7416176072328655469),
+            name: 'sukuCadang',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(17, 4615101048966732368),
+            name: 'catatan',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(18, 600724080155397),
+            name: 'namaMekanik',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(19, 4557343874647823511),
+            name: 'estimasiBiyaya',
+            type: 8,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(20, 8431174184394488032),
+            name: 'estimasiSelesai',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(21, 1380733927177350314),
+            name: 'namaInspeektor',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(22, 370057610262735551),
+            name: 'namaAdvisor',
+            type: 9,
+            flags: 0)
+      ],
+      relations: <ModelRelation>[],
+      backlinks: <ModelBacklink>[]),
+  ModelEntity(
+      id: const IdUid(10, 210656727990551802),
+      name: 'Stock',
+      lastPropertyId: const IdUid(7, 4884606026041660974),
+      flags: 0,
+      properties: <ModelProperty>[
+        ModelProperty(
+            id: const IdUid(1, 8895299501874469698),
+            name: 'id',
+            type: 6,
+            flags: 129),
+        ModelProperty(
+            id: const IdUid(2, 3399934783977994253),
             name: 'name',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(3, 7075543084188139484),
+            id: const IdUid(3, 6962015021503114926),
             name: 'partname',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(4, 2887029109266866758),
+            id: const IdUid(4, 5209503318764937690),
             name: 'desc',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(5, 5838489540086523103),
+            id: const IdUid(5, 4833436629377263178),
             name: 'count',
             type: 6,
             flags: 0),
         ModelProperty(
-            id: const IdUid(8, 4790610728772895853),
+            id: const IdUid(6, 9211850904653798034),
+            name: 'totalPrice',
+            type: 8,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(7, 4884606026041660974),
+            name: 'date',
+            type: 6,
+            flags: 0)
+      ],
+      relations: <ModelRelation>[
+        ModelRelation(
+            id: const IdUid(5, 9048267729678541388),
+            name: 'items',
+            targetId: const IdUid(3, 7568864239375287770))
+      ],
+      backlinks: <ModelBacklink>[]),
+  ModelEntity(
+      id: const IdUid(11, 4801958333113213934),
+      name: 'StockRalization',
+      lastPropertyId: const IdUid(10, 2419410620897939642),
+      flags: 0,
+      properties: <ModelProperty>[
+        ModelProperty(
+            id: const IdUid(1, 5576859134601049826),
+            name: 'id',
+            type: 6,
+            flags: 129),
+        ModelProperty(
+            id: const IdUid(2, 8522699021260005304),
+            name: 'name',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(3, 4369997095202561980),
+            name: 'partname',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(4, 6776229607949920883),
+            name: 'desc',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(5, 6963000975941016086),
             name: 'realizationId',
             type: 11,
             flags: 520,
-            indexId: const IdUid(7, 8158560541332333015),
+            indexId: const IdUid(5, 5470750569549634248),
             relationTarget: 'Stock'),
         ModelProperty(
-            id: const IdUid(9, 4942085319565489395),
+            id: const IdUid(6, 125346125475571302),
+            name: 'count',
+            type: 6,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(7, 804977069691342748),
             name: 'price',
             type: 8,
             flags: 0),
         ModelProperty(
-            id: const IdUid(10, 5217193877392610780),
+            id: const IdUid(8, 4426198007510870296),
             name: 'servicePrice',
             type: 8,
             flags: 0),
         ModelProperty(
-            id: const IdUid(11, 7986507982088994077),
+            id: const IdUid(9, 6466295298478217972),
             name: 'toalPrice',
             type: 8,
             flags: 0),
         ModelProperty(
-            id: const IdUid(12, 2337859925167299067),
+            id: const IdUid(10, 2419410620897939642),
             name: 'done',
             type: 1,
             flags: 0)
       ],
       relations: <ModelRelation>[],
+      backlinks: <ModelBacklink>[]),
+  ModelEntity(
+      id: const IdUid(12, 2653702169053907931),
+      name: 'Supplier',
+      lastPropertyId: const IdUid(6, 6568972473067054484),
+      flags: 0,
+      properties: <ModelProperty>[
+        ModelProperty(
+            id: const IdUid(1, 2820536221447611568),
+            name: 'id',
+            type: 6,
+            flags: 129),
+        ModelProperty(
+            id: const IdUid(2, 7827690096099587482),
+            name: 'supplier',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(3, 1371527393792098463),
+            name: 'desc',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(4, 7278879144258722735),
+            name: 'count',
+            type: 6,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(5, 287724647740195389),
+            name: 'date',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(6, 6568972473067054484),
+            name: 'totalPrice',
+            type: 8,
+            flags: 0)
+      ],
+      relations: <ModelRelation>[
+        ModelRelation(
+            id: const IdUid(6, 7438706400471164610),
+            name: 'items',
+            targetId: const IdUid(2, 1893693692319298878)),
+        ModelRelation(
+            id: const IdUid(7, 6942223378879037308),
+            name: 'stockItems',
+            targetId: const IdUid(10, 210656727990551802)),
+        ModelRelation(
+            id: const IdUid(8, 6741306440934558990),
+            name: 'detailStockItems',
+            targetId: const IdUid(3, 7568864239375287770))
+      ],
       backlinks: <ModelBacklink>[])
 ];
 
@@ -664,85 +682,465 @@ Future<Store> openStore(
 ModelDefinition getObjectBoxModel() {
   final model = ModelInfo(
       entities: _entities,
-      lastEntityId: const IdUid(17, 8195345395726640836),
-      lastIndexId: const IdUid(7, 8158560541332333015),
-      lastRelationId: const IdUid(7, 8614891470761808861),
+      lastEntityId: const IdUid(12, 2653702169053907931),
+      lastIndexId: const IdUid(5, 5470750569549634248),
+      lastRelationId: const IdUid(8, 6741306440934558990),
       lastSequenceId: const IdUid(0, 0),
-      retiredEntityUids: const [
-        3698746756628045206,
-        251501306234027279,
-        3167614841744278489,
-        5744728585971609639,
-        914977901206672287
-      ],
-      retiredIndexUids: const [3677240409554458320, 4697681690646665617],
-      retiredPropertyUids: const [
-        9091942968690159300,
-        3646578591882942623,
-        9221075118330723022,
-        7333339028367438938,
-        4239866769546037716,
-        5586014103929858312,
-        9081521299219461370,
-        4988076888834377370,
-        4518535284842920721,
-        7462271224947894638,
-        4195062180308810683,
-        4432725465046912835,
-        825996802385755163,
-        1549740615702465545,
-        2178771682208092899,
-        1662991340758727584,
-        510551672781079387,
-        6056636925026389126,
-        447746605431922475,
-        4635104423153399574,
-        2584968897459711830,
-        1275935350778553645,
-        2563543169147972608,
-        2106009725506785505,
-        3582426376575497151,
-        8214028256394288082,
-        4724761934466705642,
-        7946268125806903429,
-        5578833352382422657,
-        4010592903759450676,
-        8427355665627261933,
-        8866451947519481909,
-        2955916903689809006,
-        3869803332941204410,
-        4183414909244996170,
-        1890043688928285633,
-        7729785567696925211,
-        7464049236735089962,
-        723237902960031751,
-        3407044292295180199,
-        892463143422930600,
-        3176087632287361080,
-        3552509257839681207,
-        5613773419170558092,
-        4111059791890925604,
-        6830985656715567,
-        966243336564191732,
-        7737946404995954756,
-        6221755903044557682,
-        5752991276839350254,
-        7160171960415368155,
-        2866513939706624850,
-        7448081966837723398,
-        1217242438299615318
-      ],
-      retiredRelationUids: const [3757225277181594334],
+      retiredEntityUids: const [],
+      retiredIndexUids: const [],
+      retiredPropertyUids: const [],
+      retiredRelationUids: const [],
       modelVersion: 5,
       modelVersionParserMinimum: 5,
       version: 1);
 
   final bindings = <Type, EntityDefinition>{
-    Stock: EntityDefinition<Stock>(
+    Customer: EntityDefinition<Customer>(
         model: _entities[0],
+        toOneRelations: (Customer object) =>
+            [object.spk, object.inv, object.realization, object.mpi],
+        toManyRelations: (Customer object) => {},
+        getId: (Customer object) => object.id,
+        setId: (Customer object, int id) {
+          object.id = id;
+        },
+        objectToFB: (Customer object, fb.Builder fbb) {
+          final csIdOffset = fbb.writeString(object.csId);
+          final customerNameOffset = fbb.writeString(object.customerName);
+          final policeNumberOffset = fbb.writeString(object.policeNumber);
+          final namaKendaraanOffset = fbb.writeString(object.namaKendaraan);
+          final alamatOffset = fbb.writeString(object.alamat);
+          fbb.startTable(11);
+          fbb.addInt64(0, object.id);
+          fbb.addOffset(1, csIdOffset);
+          fbb.addOffset(2, customerNameOffset);
+          fbb.addOffset(3, policeNumberOffset);
+          fbb.addOffset(4, namaKendaraanOffset);
+          fbb.addOffset(5, alamatOffset);
+          fbb.addInt64(6, object.spk.targetId);
+          fbb.addInt64(7, object.inv.targetId);
+          fbb.addInt64(8, object.realization.targetId);
+          fbb.addInt64(9, object.mpi.targetId);
+          fbb.finish(fbb.endTable());
+          return object.id;
+        },
+        objectFromFB: (Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+
+          final object = Customer(
+              id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
+              csId: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 6, ''),
+              customerName: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 8, ''),
+              policeNumber: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 10, ''),
+              namaKendaraan: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 12, ''),
+              alamat: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 14, ''));
+          object.spk.targetId =
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 16, 0);
+          object.spk.attach(store);
+          object.inv.targetId =
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 18, 0);
+          object.inv.attach(store);
+          object.realization.targetId =
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 20, 0);
+          object.realization.attach(store);
+          object.mpi.targetId =
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 22, 0);
+          object.mpi.attach(store);
+          return object;
+        }),
+    DetailPembelian: EntityDefinition<DetailPembelian>(
+        model: _entities[1],
+        toOneRelations: (DetailPembelian object) => [],
+        toManyRelations: (DetailPembelian object) => {},
+        getId: (DetailPembelian object) => object.id,
+        setId: (DetailPembelian object, int id) {
+          object.id = id;
+        },
+        objectToFB: (DetailPembelian object, fb.Builder fbb) {
+          final partNameOffset = fbb.writeString(object.partName);
+          final nameOffset = fbb.writeString(object.name);
+          final pihakIdOffset = fbb.writeString(object.pihakId);
+          fbb.startTable(8);
+          fbb.addInt64(0, object.id);
+          fbb.addOffset(1, partNameOffset);
+          fbb.addOffset(2, nameOffset);
+          fbb.addOffset(3, pihakIdOffset);
+          fbb.addInt64(4, object.count);
+          fbb.addFloat64(5, object.price);
+          fbb.addFloat64(6, object.totalPrice);
+          fbb.finish(fbb.endTable());
+          return object.id;
+        },
+        objectFromFB: (Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+
+          final object = DetailPembelian(
+              id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
+              name: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 8, ''),
+              pihakId: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 10, ''),
+              partName: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 6, ''),
+              count:
+                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 12, 0),
+              price:
+                  const fb.Float64Reader().vTableGet(buffer, rootOffset, 14, 0),
+              totalPrice: const fb.Float64Reader()
+                  .vTableGet(buffer, rootOffset, 16, 0));
+
+          return object;
+        }),
+    DetailStock: EntityDefinition<DetailStock>(
+        model: _entities[2],
+        toOneRelations: (DetailStock object) => [],
+        toManyRelations: (DetailStock object) => {},
+        getId: (DetailStock object) => object.id,
+        setId: (DetailStock object, int id) {
+          object.id = id;
+        },
+        objectToFB: (DetailStock object, fb.Builder fbb) {
+          final dateOffset = fbb.writeString(object.date);
+          final supplierOffset = fbb.writeString(object.supplier);
+          final pihakIdOffset = fbb.writeString(object.pihakId);
+          fbb.startTable(8);
+          fbb.addInt64(0, object.id);
+          fbb.addOffset(1, dateOffset);
+          fbb.addOffset(2, supplierOffset);
+          fbb.addOffset(3, pihakIdOffset);
+          fbb.addInt64(4, object.count);
+          fbb.addFloat64(5, object.price);
+          fbb.addFloat64(6, object.totalPrice);
+          fbb.finish(fbb.endTable());
+          return object.id;
+        },
+        objectFromFB: (Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+
+          final object = DetailStock(
+              id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
+              pihakId: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 10, ''),
+              supplier: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 8, ''),
+              date: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 6, ''),
+              price:
+                  const fb.Float64Reader().vTableGet(buffer, rootOffset, 14, 0),
+              count:
+                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 12, 0),
+              totalPrice: const fb.Float64Reader()
+                  .vTableGet(buffer, rootOffset, 16, 0));
+
+          return object;
+        }),
+    Invoice: EntityDefinition<Invoice>(
+        model: _entities[3],
+        toOneRelations: (Invoice object) => [],
+        toManyRelations: (Invoice object) =>
+            {RelInfo<Invoice>.toMany(1, object.id): object.payments},
+        getId: (Invoice object) => object.id,
+        setId: (Invoice object, int id) {
+          object.id = id;
+        },
+        objectToFB: (Invoice object, fb.Builder fbb) {
+          final invIdOffset = fbb.writeString(object.invId);
+          final invoiceDateOffset = fbb.writeString(object.invoiceDate);
+          final soDateOffset = fbb.writeString(object.soDate);
+          fbb.startTable(9);
+          fbb.addInt64(0, object.id);
+          fbb.addOffset(1, invIdOffset);
+          fbb.addFloat64(2, object.saldo);
+          fbb.addFloat64(3, object.partTotal);
+          fbb.addFloat64(4, object.serviceTotal);
+          fbb.addFloat64(5, object.invoiceTotal);
+          fbb.addOffset(6, invoiceDateOffset);
+          fbb.addOffset(7, soDateOffset);
+          fbb.finish(fbb.endTable());
+          return object.id;
+        },
+        objectFromFB: (Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+
+          final object = Invoice(
+              id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
+              invId: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 6, ''),
+              saldo:
+                  const fb.Float64Reader().vTableGet(buffer, rootOffset, 8, 0),
+              partTotal:
+                  const fb.Float64Reader().vTableGet(buffer, rootOffset, 10, 0),
+              invoiceDate: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 16, ''),
+              serviceTotal:
+                  const fb.Float64Reader().vTableGet(buffer, rootOffset, 12, 0),
+              invoiceTotal:
+                  const fb.Float64Reader().vTableGet(buffer, rootOffset, 14, 0),
+              soDate: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 18, ''));
+          InternalToManyAccess.setRelInfo(object.payments, store,
+              RelInfo<Invoice>.toMany(1, object.id), store.box<Invoice>());
+          return object;
+        }),
+    Mpi: EntityDefinition<Mpi>(
+        model: _entities[4],
+        toOneRelations: (Mpi object) => [],
+        toManyRelations: (Mpi object) =>
+            {RelInfo<Mpi>.toMany(2, object.id): object.items},
+        getId: (Mpi object) => object.id,
+        setId: (Mpi object, int id) {
+          object.id = id;
+        },
+        objectToFB: (Mpi object, fb.Builder fbb) {
+          final mpiIdOffset = fbb.writeString(object.mpiId);
+          fbb.startTable(3);
+          fbb.addInt64(0, object.id);
+          fbb.addOffset(1, mpiIdOffset);
+          fbb.finish(fbb.endTable());
+          return object.id;
+        },
+        objectFromFB: (Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+
+          final object = Mpi(
+              id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
+              mpiId: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 6, ''));
+          InternalToManyAccess.setRelInfo(object.items, store,
+              RelInfo<Mpi>.toMany(2, object.id), store.box<Mpi>());
+          return object;
+        }),
+    MpiItem: EntityDefinition<MpiItem>(
+        model: _entities[5],
+        toOneRelations: (MpiItem object) => [],
+        toManyRelations: (MpiItem object) => {},
+        getId: (MpiItem object) => object.id,
+        setId: (MpiItem object, int id) {
+          object.id = id;
+        },
+        objectToFB: (MpiItem object, fb.Builder fbb) {
+          final categoryOffset = fbb.writeString(object.category);
+          final nameOffset = fbb.writeString(object.name);
+          final remarkOffset = fbb.writeString(object.remark);
+          fbb.startTable(8);
+          fbb.addInt64(0, object.id);
+          fbb.addOffset(1, categoryOffset);
+          fbb.addOffset(2, nameOffset);
+          fbb.addFloat64(3, object.price);
+          fbb.addOffset(4, remarkOffset);
+          fbb.addBool(5, object.done);
+          fbb.addInt64(6, object.attention);
+          fbb.finish(fbb.endTable());
+          return object.id;
+        },
+        objectFromFB: (Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+
+          final object = MpiItem(
+              id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
+              category: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 6, ''),
+              name: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 8, ''),
+              attention:
+                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 16, 0),
+              price:
+                  const fb.Float64Reader().vTableGet(buffer, rootOffset, 10, 0),
+              remark: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 12, ''),
+              done: const fb.BoolReader()
+                  .vTableGet(buffer, rootOffset, 14, false));
+
+          return object;
+        }),
+    Payment: EntityDefinition<Payment>(
+        model: _entities[6],
+        toOneRelations: (Payment object) => [],
+        toManyRelations: (Payment object) => {},
+        getId: (Payment object) => object.id,
+        setId: (Payment object, int id) {
+          object.id = id;
+        },
+        objectToFB: (Payment object, fb.Builder fbb) {
+          final dateOffset = fbb.writeString(object.date);
+          fbb.startTable(4);
+          fbb.addInt64(0, object.id);
+          fbb.addFloat64(1, object.pay);
+          fbb.addOffset(2, dateOffset);
+          fbb.finish(fbb.endTable());
+          return object.id;
+        },
+        objectFromFB: (Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+
+          final object = Payment(
+              id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
+              pay: const fb.Float64Reader().vTableGet(buffer, rootOffset, 6, 0),
+              date: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 8, ''));
+
+          return object;
+        }),
+    Realization: EntityDefinition<Realization>(
+        model: _entities[7],
+        toOneRelations: (Realization object) => [],
+        toManyRelations: (Realization object) => {
+              RelInfo<Realization>.toMany(3, object.id): object.mpiItems,
+              RelInfo<Realization>.toMany(4, object.id): object.stockItems
+            },
+        getId: (Realization object) => object.id,
+        setId: (Realization object, int id) {
+          object.id = id;
+        },
+        objectToFB: (Realization object, fb.Builder fbb) {
+          final rlIdOffset = fbb.writeString(object.rlId);
+          final dateOutOffset = fbb.writeString(object.dateOut);
+          fbb.startTable(7);
+          fbb.addInt64(0, object.id);
+          fbb.addOffset(1, rlIdOffset);
+          fbb.addInt64(2, object.selesai);
+          fbb.addFloat64(3, object.biyaya);
+          fbb.addOffset(4, dateOutOffset);
+          fbb.addBool(5, object.done);
+          fbb.finish(fbb.endTable());
+          return object.id;
+        },
+        objectFromFB: (Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+
+          final object = Realization(
+              id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
+              rlId: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 6, ''),
+              dateOut: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 12, ''),
+              selesai:
+                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 8, 0),
+              biyaya:
+                  const fb.Float64Reader().vTableGet(buffer, rootOffset, 10, 0),
+              done: const fb.BoolReader()
+                  .vTableGet(buffer, rootOffset, 14, false));
+          InternalToManyAccess.setRelInfo(
+              object.mpiItems,
+              store,
+              RelInfo<Realization>.toMany(3, object.id),
+              store.box<Realization>());
+          InternalToManyAccess.setRelInfo(
+              object.stockItems,
+              store,
+              RelInfo<Realization>.toMany(4, object.id),
+              store.box<Realization>());
+          return object;
+        }),
+    Spk: EntityDefinition<Spk>(
+        model: _entities[8],
+        toOneRelations: (Spk object) => [],
+        toManyRelations: (Spk object) => {},
+        getId: (Spk object) => object.id,
+        setId: (Spk object, int id) {
+          object.id = id;
+        },
+        objectToFB: (Spk object, fb.Builder fbb) {
+          final jtIdOffset = fbb.writeString(object.jtId);
+          final customerNameOffset = fbb.writeString(object.customerName);
+          final policeNumberOffset = fbb.writeString(object.policeNumber);
+          final namaKendaraanOffset = fbb.writeString(object.namaKendaraan);
+          final tipeKendaraanOffset = fbb.writeString(object.tipeKendaraan);
+          final dateOffset = fbb.writeString(object.date);
+          final noPkbOffset = fbb.writeString(object.noPkb);
+          final noRangkaOffset = fbb.writeString(object.noRangka);
+          final alamatOffset = fbb.writeString(object.alamat);
+          final analisaOffset = fbb.writeString(object.analisa);
+          final keluhanKonsumenOffset = fbb.writeString(object.keluhanKonsumen);
+          final jenisPekrjaanOffset = fbb.writeString(object.jenisPekrjaan);
+          final sukuCadangOffset = fbb.writeString(object.sukuCadang);
+          final catatanOffset = fbb.writeString(object.catatan);
+          final namaMekanikOffset = fbb.writeString(object.namaMekanik);
+          final estimasiSelesaiOffset = fbb.writeString(object.estimasiSelesai);
+          final namaInspeektorOffset = fbb.writeString(object.namaInspeektor);
+          final namaAdvisorOffset = fbb.writeString(object.namaAdvisor);
+          fbb.startTable(23);
+          fbb.addInt64(0, object.id);
+          fbb.addOffset(1, jtIdOffset);
+          fbb.addOffset(2, customerNameOffset);
+          fbb.addOffset(3, policeNumberOffset);
+          fbb.addOffset(4, namaKendaraanOffset);
+          fbb.addOffset(5, tipeKendaraanOffset);
+          fbb.addInt64(6, object.levelPekerjaan);
+          fbb.addOffset(7, dateOffset);
+          fbb.addInt64(8, object.km);
+          fbb.addOffset(9, noPkbOffset);
+          fbb.addOffset(10, noRangkaOffset);
+          fbb.addOffset(11, alamatOffset);
+          fbb.addOffset(12, analisaOffset);
+          fbb.addOffset(13, keluhanKonsumenOffset);
+          fbb.addOffset(14, jenisPekrjaanOffset);
+          fbb.addOffset(15, sukuCadangOffset);
+          fbb.addOffset(16, catatanOffset);
+          fbb.addOffset(17, namaMekanikOffset);
+          fbb.addFloat64(18, object.estimasiBiyaya);
+          fbb.addOffset(19, estimasiSelesaiOffset);
+          fbb.addOffset(20, namaInspeektorOffset);
+          fbb.addOffset(21, namaAdvisorOffset);
+          fbb.finish(fbb.endTable());
+          return object.id;
+        },
+        objectFromFB: (Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+
+          final object = Spk(
+              id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
+              jtId: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 6, ''),
+              customerName: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 8, ''),
+              levelPekerjaan:
+                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 16, 0),
+              jenisPekrjaan: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 32, ''),
+              noPkb: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 22, ''),
+              noRangka: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 24, ''),
+              tipeKendaraan: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 14, ''),
+              sukuCadang: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 34, ''),
+              km: const fb.Int64Reader().vTableGet(buffer, rootOffset, 20, 0),
+              policeNumber: const fb.StringReader(asciiOptimization: true).vTableGet(buffer, rootOffset, 10, ''),
+              namaKendaraan: const fb.StringReader(asciiOptimization: true).vTableGet(buffer, rootOffset, 12, ''),
+              date: const fb.StringReader(asciiOptimization: true).vTableGet(buffer, rootOffset, 18, ''),
+              alamat: const fb.StringReader(asciiOptimization: true).vTableGet(buffer, rootOffset, 26, ''),
+              analisa: const fb.StringReader(asciiOptimization: true).vTableGet(buffer, rootOffset, 28, ''),
+              keluhanKonsumen: const fb.StringReader(asciiOptimization: true).vTableGet(buffer, rootOffset, 30, ''),
+              catatan: const fb.StringReader(asciiOptimization: true).vTableGet(buffer, rootOffset, 36, ''),
+              namaMekanik: const fb.StringReader(asciiOptimization: true).vTableGet(buffer, rootOffset, 38, ''),
+              estimasiBiyaya: const fb.Float64Reader().vTableGet(buffer, rootOffset, 40, 0),
+              estimasiSelesai: const fb.StringReader(asciiOptimization: true).vTableGet(buffer, rootOffset, 42, ''),
+              namaAdvisor: const fb.StringReader(asciiOptimization: true).vTableGet(buffer, rootOffset, 46, ''),
+              namaInspeektor: const fb.StringReader(asciiOptimization: true).vTableGet(buffer, rootOffset, 44, ''));
+
+          return object;
+        }),
+    Stock: EntityDefinition<Stock>(
+        model: _entities[9],
         toOneRelations: (Stock object) => [],
         toManyRelations: (Stock object) =>
-            {RelInfo<Stock>.toMany(1, object.id): object.items},
+            {RelInfo<Stock>.toMany(5, object.id): object.items},
         getId: (Stock object) => object.id,
         setId: (Stock object, int id) {
           object.id = id;
@@ -757,8 +1155,8 @@ ModelDefinition getObjectBoxModel() {
           fbb.addOffset(2, partnameOffset);
           fbb.addOffset(3, descOffset);
           fbb.addInt64(4, object.count);
-          fbb.addFloat64(5, object.lastPrice);
-          fbb.addFloat64(6, object.totalPrice);
+          fbb.addFloat64(5, object.totalPrice);
+          fbb.addInt64(6, object.date);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -772,36 +1170,40 @@ ModelDefinition getObjectBoxModel() {
                   .vTableGet(buffer, rootOffset, 8, ''),
               name: const fb.StringReader(asciiOptimization: true)
                   .vTableGet(buffer, rootOffset, 6, ''),
+              date: const fb.Int64Reader().vTableGet(buffer, rootOffset, 16, 0),
               desc: const fb.StringReader(asciiOptimization: true)
                   .vTableGet(buffer, rootOffset, 10, ''),
-              lastPrice:
-                  const fb.Float64Reader().vTableGet(buffer, rootOffset, 14, 0),
               count:
                   const fb.Int64Reader().vTableGet(buffer, rootOffset, 12, 0),
               totalPrice: const fb.Float64Reader()
-                  .vTableGet(buffer, rootOffset, 16, 0));
+                  .vTableGet(buffer, rootOffset, 14, 0));
           InternalToManyAccess.setRelInfo(object.items, store,
-              RelInfo<Stock>.toMany(1, object.id), store.box<Stock>());
+              RelInfo<Stock>.toMany(5, object.id), store.box<Stock>());
           return object;
         }),
-    StockHistory: EntityDefinition<StockHistory>(
-        model: _entities[1],
-        toOneRelations: (StockHistory object) => [],
-        toManyRelations: (StockHistory object) => {},
-        getId: (StockHistory object) => object.id,
-        setId: (StockHistory object, int id) {
+    StockRalization: EntityDefinition<StockRalization>(
+        model: _entities[10],
+        toOneRelations: (StockRalization object) => [object.realization],
+        toManyRelations: (StockRalization object) => {},
+        getId: (StockRalization object) => object.id,
+        setId: (StockRalization object, int id) {
           object.id = id;
         },
-        objectToFB: (StockHistory object, fb.Builder fbb) {
-          final dateOffset = fbb.writeString(object.date);
-          final supplierOffset = fbb.writeString(object.supplier);
-          fbb.startTable(7);
+        objectToFB: (StockRalization object, fb.Builder fbb) {
+          final nameOffset = fbb.writeString(object.name);
+          final partnameOffset = fbb.writeString(object.partname);
+          final descOffset = fbb.writeString(object.desc);
+          fbb.startTable(11);
           fbb.addInt64(0, object.id);
-          fbb.addOffset(1, dateOffset);
-          fbb.addOffset(2, supplierOffset);
-          fbb.addInt64(3, object.count);
-          fbb.addFloat64(4, object.price);
-          fbb.addFloat64(5, object.totalPrice);
+          fbb.addOffset(1, nameOffset);
+          fbb.addOffset(2, partnameOffset);
+          fbb.addOffset(3, descOffset);
+          fbb.addInt64(4, object.realization.targetId);
+          fbb.addInt64(5, object.count);
+          fbb.addFloat64(6, object.price);
+          fbb.addFloat64(7, object.servicePrice);
+          fbb.addFloat64(8, object.toalPrice);
+          fbb.addBool(9, object.done);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -809,26 +1211,37 @@ ModelDefinition getObjectBoxModel() {
           final buffer = fb.BufferContext(fbData);
           final rootOffset = buffer.derefObject(0);
 
-          final object = StockHistory(
+          final object = StockRalization(
               id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
-              supplier: const fb.StringReader(asciiOptimization: true)
+              partname: const fb.StringReader(asciiOptimization: true)
                   .vTableGet(buffer, rootOffset, 8, ''),
-              date: const fb.StringReader(asciiOptimization: true)
+              name: const fb.StringReader(asciiOptimization: true)
                   .vTableGet(buffer, rootOffset, 6, ''),
+              desc: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 10, ''),
               price:
-                  const fb.Float64Reader().vTableGet(buffer, rootOffset, 12, 0),
+                  const fb.Float64Reader().vTableGet(buffer, rootOffset, 16, 0),
               count:
-                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 10, 0),
-              totalPrice: const fb.Float64Reader()
-                  .vTableGet(buffer, rootOffset, 14, 0));
-
+                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 14, 0),
+              servicePrice:
+                  const fb.Float64Reader().vTableGet(buffer, rootOffset, 18, 0),
+              toalPrice:
+                  const fb.Float64Reader().vTableGet(buffer, rootOffset, 20, 0),
+              done: const fb.BoolReader()
+                  .vTableGet(buffer, rootOffset, 22, false));
+          object.realization.targetId =
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 12, 0);
+          object.realization.attach(store);
           return object;
         }),
     Supplier: EntityDefinition<Supplier>(
-        model: _entities[2],
+        model: _entities[11],
         toOneRelations: (Supplier object) => [],
-        toManyRelations: (Supplier object) =>
-            {RelInfo<Supplier>.toMany(2, object.id): object.items},
+        toManyRelations: (Supplier object) => {
+              RelInfo<Supplier>.toMany(6, object.id): object.items,
+              RelInfo<Supplier>.toMany(7, object.id): object.stockItems,
+              RelInfo<Supplier>.toMany(8, object.id): object.detailStockItems
+            },
         getId: (Supplier object) => object.id,
         setId: (Supplier object, int id) {
           object.id = id;
@@ -864,453 +1277,11 @@ ModelDefinition getObjectBoxModel() {
               totalPrice: const fb.Float64Reader()
                   .vTableGet(buffer, rootOffset, 14, 0));
           InternalToManyAccess.setRelInfo(object.items, store,
-              RelInfo<Supplier>.toMany(2, object.id), store.box<Supplier>());
-          return object;
-        }),
-    SupplierHistory: EntityDefinition<SupplierHistory>(
-        model: _entities[3],
-        toOneRelations: (SupplierHistory object) => [],
-        toManyRelations: (SupplierHistory object) => {},
-        getId: (SupplierHistory object) => object.id,
-        setId: (SupplierHistory object, int id) {
-          object.id = id;
-        },
-        objectToFB: (SupplierHistory object, fb.Builder fbb) {
-          final partNameOffset = fbb.writeString(object.partName);
-          final nameOffset = fbb.writeString(object.name);
-          fbb.startTable(7);
-          fbb.addInt64(0, object.id);
-          fbb.addOffset(1, partNameOffset);
-          fbb.addOffset(2, nameOffset);
-          fbb.addInt64(3, object.count);
-          fbb.addFloat64(4, object.price);
-          fbb.addFloat64(5, object.totalPrice);
-          fbb.finish(fbb.endTable());
-          return object.id;
-        },
-        objectFromFB: (Store store, ByteData fbData) {
-          final buffer = fb.BufferContext(fbData);
-          final rootOffset = buffer.derefObject(0);
-
-          final object = SupplierHistory(
-              id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
-              name: const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 8, ''),
-              partName: const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 6, ''),
-              count:
-                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 10, 0),
-              price:
-                  const fb.Float64Reader().vTableGet(buffer, rootOffset, 12, 0),
-              totalPrice: const fb.Float64Reader()
-                  .vTableGet(buffer, rootOffset, 14, 0));
-
-          return object;
-        }),
-    Customer: EntityDefinition<Customer>(
-        model: _entities[4],
-        toOneRelations: (Customer object) =>
-            [object.spk, object.inv, object.mpi, object.realization],
-        toManyRelations: (Customer object) => {},
-        getId: (Customer object) => object.id,
-        setId: (Customer object, int id) {
-          object.id = id;
-        },
-        objectToFB: (Customer object, fb.Builder fbb) {
-          final customerNameOffset = fbb.writeString(object.customerName);
-          final policeNumberOffset = fbb.writeString(object.policeNumber);
-          final csIdOffset = fbb.writeString(object.csId);
-          final namaKendaraanOffset = fbb.writeString(object.namaKendaraan);
-          final alamatOffset = fbb.writeString(object.alamat);
-          fbb.startTable(12);
-          fbb.addInt64(0, object.id);
-          fbb.addOffset(1, customerNameOffset);
-          fbb.addOffset(2, policeNumberOffset);
-          fbb.addInt64(3, object.spk.targetId);
-          fbb.addInt64(4, object.inv.targetId);
-          fbb.addInt64(6, object.mpi.targetId);
-          fbb.addOffset(7, csIdOffset);
-          fbb.addOffset(8, namaKendaraanOffset);
-          fbb.addOffset(9, alamatOffset);
-          fbb.addInt64(10, object.realization.targetId);
-          fbb.finish(fbb.endTable());
-          return object.id;
-        },
-        objectFromFB: (Store store, ByteData fbData) {
-          final buffer = fb.BufferContext(fbData);
-          final rootOffset = buffer.derefObject(0);
-
-          final object = Customer(
-              id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
-              csId: const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 18, ''),
-              customerName: const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 6, ''),
-              policeNumber: const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 8, ''),
-              namaKendaraan: const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 20, ''),
-              alamat: const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 22, ''));
-          object.spk.targetId =
-              const fb.Int64Reader().vTableGet(buffer, rootOffset, 10, 0);
-          object.spk.attach(store);
-          object.inv.targetId =
-              const fb.Int64Reader().vTableGet(buffer, rootOffset, 12, 0);
-          object.inv.attach(store);
-          object.mpi.targetId =
-              const fb.Int64Reader().vTableGet(buffer, rootOffset, 16, 0);
-          object.mpi.attach(store);
-          object.realization.targetId =
-              const fb.Int64Reader().vTableGet(buffer, rootOffset, 24, 0);
-          object.realization.attach(store);
-          return object;
-        }),
-    Invoice: EntityDefinition<Invoice>(
-        model: _entities[5],
-        toOneRelations: (Invoice object) => [],
-        toManyRelations: (Invoice object) =>
-            {RelInfo<Invoice>.toMany(7, object.id): object.payments},
-        getId: (Invoice object) => object.id,
-        setId: (Invoice object, int id) {
-          object.id = id;
-        },
-        objectToFB: (Invoice object, fb.Builder fbb) {
-          final invIdOffset = fbb.writeString(object.invId);
-          final invoiceDateOffset = fbb.writeString(object.invoiceDate);
-          final soDateOffset = fbb.writeString(object.soDate);
-          fbb.startTable(16);
-          fbb.addInt64(0, object.id);
-          fbb.addOffset(7, invIdOffset);
-          fbb.addFloat64(8, object.saldo);
-          fbb.addFloat64(10, object.partTotal);
-          fbb.addFloat64(11, object.serviceTotal);
-          fbb.addFloat64(12, object.invoiceTotal);
-          fbb.addOffset(13, invoiceDateOffset);
-          fbb.addOffset(14, soDateOffset);
-          fbb.finish(fbb.endTable());
-          return object.id;
-        },
-        objectFromFB: (Store store, ByteData fbData) {
-          final buffer = fb.BufferContext(fbData);
-          final rootOffset = buffer.derefObject(0);
-
-          final object = Invoice(
-              id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
-              invId: const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 18, ''),
-              saldo:
-                  const fb.Float64Reader().vTableGet(buffer, rootOffset, 20, 0),
-              partTotal:
-                  const fb.Float64Reader().vTableGet(buffer, rootOffset, 24, 0),
-              invoiceDate: const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 30, ''),
-              serviceTotal:
-                  const fb.Float64Reader().vTableGet(buffer, rootOffset, 26, 0),
-              invoiceTotal:
-                  const fb.Float64Reader().vTableGet(buffer, rootOffset, 28, 0),
-              soDate: const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 32, ''));
-          InternalToManyAccess.setRelInfo(object.payments, store,
-              RelInfo<Invoice>.toMany(7, object.id), store.box<Invoice>());
-          return object;
-        }),
-    Mpi: EntityDefinition<Mpi>(
-        model: _entities[6],
-        toOneRelations: (Mpi object) => [],
-        toManyRelations: (Mpi object) =>
-            {RelInfo<Mpi>.toMany(4, object.id): object.items},
-        getId: (Mpi object) => object.id,
-        setId: (Mpi object, int id) {
-          object.id = id;
-        },
-        objectToFB: (Mpi object, fb.Builder fbb) {
-          final mpiIdOffset = fbb.writeString(object.mpiId);
-          fbb.startTable(9);
-          fbb.addInt64(0, object.id);
-          fbb.addOffset(7, mpiIdOffset);
-          fbb.finish(fbb.endTable());
-          return object.id;
-        },
-        objectFromFB: (Store store, ByteData fbData) {
-          final buffer = fb.BufferContext(fbData);
-          final rootOffset = buffer.derefObject(0);
-
-          final object = Mpi(
-              id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
-              mpiId: const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 18, ''));
-          InternalToManyAccess.setRelInfo(object.items, store,
-              RelInfo<Mpi>.toMany(4, object.id), store.box<Mpi>());
-          return object;
-        }),
-    Spk: EntityDefinition<Spk>(
-        model: _entities[7],
-        toOneRelations: (Spk object) => [],
-        toManyRelations: (Spk object) => {},
-        getId: (Spk object) => object.id,
-        setId: (Spk object, int id) {
-          object.id = id;
-        },
-        objectToFB: (Spk object, fb.Builder fbb) {
-          final jtIdOffset = fbb.writeString(object.jtId);
-          final customerNameOffset = fbb.writeString(object.customerName);
-          final policeNumberOffset = fbb.writeString(object.policeNumber);
-          final namaKendaraanOffset = fbb.writeString(object.namaKendaraan);
-          final dateOffset = fbb.writeString(object.date);
-          final alamatOffset = fbb.writeString(object.alamat);
-          final analisaOffset = fbb.writeString(object.analisa);
-          final keluhanKonsumenOffset = fbb.writeString(object.keluhanKonsumen);
-          final catatanOffset = fbb.writeString(object.catatan);
-          final namaMekanikOffset = fbb.writeString(object.namaMekanik);
-          final estimasiSelesaiOffset = fbb.writeString(object.estimasiSelesai);
-          final namaInspeektorOffset = fbb.writeString(object.namaInspeektor);
-          final namaAdvisorOffset = fbb.writeString(object.namaAdvisor);
-          final tipeKendaraanOffset = fbb.writeString(object.tipeKendaraan);
-          final noPkbOffset = fbb.writeString(object.noPkb);
-          final noRangkaOffset = fbb.writeString(object.noRangka);
-          final jenisPekrjaanOffset = fbb.writeString(object.jenisPekrjaan);
-          final sukuCadangOffset = fbb.writeString(object.sukuCadang);
-          fbb.startTable(29);
-          fbb.addInt64(0, object.id);
-          fbb.addOffset(7, jtIdOffset);
-          fbb.addOffset(8, customerNameOffset);
-          fbb.addOffset(9, policeNumberOffset);
-          fbb.addOffset(10, namaKendaraanOffset);
-          fbb.addOffset(11, dateOffset);
-          fbb.addOffset(12, alamatOffset);
-          fbb.addOffset(13, analisaOffset);
-          fbb.addOffset(14, keluhanKonsumenOffset);
-          fbb.addOffset(15, catatanOffset);
-          fbb.addOffset(16, namaMekanikOffset);
-          fbb.addFloat64(17, object.estimasiBiyaya);
-          fbb.addOffset(18, estimasiSelesaiOffset);
-          fbb.addOffset(19, namaInspeektorOffset);
-          fbb.addOffset(20, namaAdvisorOffset);
-          fbb.addOffset(21, tipeKendaraanOffset);
-          fbb.addInt64(22, object.levelPekerjaan);
-          fbb.addInt64(23, object.km);
-          fbb.addOffset(24, noPkbOffset);
-          fbb.addOffset(25, noRangkaOffset);
-          fbb.addOffset(26, jenisPekrjaanOffset);
-          fbb.addOffset(27, sukuCadangOffset);
-          fbb.finish(fbb.endTable());
-          return object.id;
-        },
-        objectFromFB: (Store store, ByteData fbData) {
-          final buffer = fb.BufferContext(fbData);
-          final rootOffset = buffer.derefObject(0);
-
-          final object = Spk(
-              id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
-              jtId: const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 18, ''),
-              customerName: const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 20, ''),
-              levelPekerjaan:
-                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 48, 0),
-              jenisPekrjaan: const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 56, ''),
-              noPkb: const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 52, ''),
-              noRangka: const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 54, ''),
-              tipeKendaraan: const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 46, ''),
-              sukuCadang: const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 58, ''),
-              km: const fb.Int64Reader().vTableGet(buffer, rootOffset, 50, 0),
-              policeNumber: const fb.StringReader(asciiOptimization: true).vTableGet(buffer, rootOffset, 22, ''),
-              namaKendaraan: const fb.StringReader(asciiOptimization: true).vTableGet(buffer, rootOffset, 24, ''),
-              date: const fb.StringReader(asciiOptimization: true).vTableGet(buffer, rootOffset, 26, ''),
-              alamat: const fb.StringReader(asciiOptimization: true).vTableGet(buffer, rootOffset, 28, ''),
-              analisa: const fb.StringReader(asciiOptimization: true).vTableGet(buffer, rootOffset, 30, ''),
-              keluhanKonsumen: const fb.StringReader(asciiOptimization: true).vTableGet(buffer, rootOffset, 32, ''),
-              catatan: const fb.StringReader(asciiOptimization: true).vTableGet(buffer, rootOffset, 34, ''),
-              namaMekanik: const fb.StringReader(asciiOptimization: true).vTableGet(buffer, rootOffset, 36, ''),
-              estimasiBiyaya: const fb.Float64Reader().vTableGet(buffer, rootOffset, 38, 0),
-              estimasiSelesai: const fb.StringReader(asciiOptimization: true).vTableGet(buffer, rootOffset, 40, ''),
-              namaAdvisor: const fb.StringReader(asciiOptimization: true).vTableGet(buffer, rootOffset, 44, ''),
-              namaInspeektor: const fb.StringReader(asciiOptimization: true).vTableGet(buffer, rootOffset, 42, ''));
-
-          return object;
-        }),
-    MpiItem: EntityDefinition<MpiItem>(
-        model: _entities[8],
-        toOneRelations: (MpiItem object) => [],
-        toManyRelations: (MpiItem object) => {},
-        getId: (MpiItem object) => object.id,
-        setId: (MpiItem object, int id) {
-          object.id = id;
-        },
-        objectToFB: (MpiItem object, fb.Builder fbb) {
-          final categoryOffset = fbb.writeString(object.category);
-          final nameOffset = fbb.writeString(object.name);
-          final remarkOffset = fbb.writeString(object.remark);
-          fbb.startTable(9);
-          fbb.addInt64(0, object.id);
-          fbb.addOffset(2, categoryOffset);
-          fbb.addOffset(3, nameOffset);
-          fbb.addFloat64(4, object.price);
-          fbb.addOffset(5, remarkOffset);
-          fbb.addInt64(6, object.attention);
-          fbb.addBool(7, object.done);
-          fbb.finish(fbb.endTable());
-          return object.id;
-        },
-        objectFromFB: (Store store, ByteData fbData) {
-          final buffer = fb.BufferContext(fbData);
-          final rootOffset = buffer.derefObject(0);
-
-          final object = MpiItem(
-              id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
-              category: const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 8, ''),
-              name: const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 10, ''),
-              attention:
-                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 16, 0),
-              price:
-                  const fb.Float64Reader().vTableGet(buffer, rootOffset, 12, 0),
-              remark: const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 14, ''),
-              done: const fb.BoolReader()
-                  .vTableGet(buffer, rootOffset, 18, false));
-
-          return object;
-        }),
-    Realization: EntityDefinition<Realization>(
-        model: _entities[9],
-        toOneRelations: (Realization object) => [],
-        toManyRelations: (Realization object) => {
-              RelInfo<Realization>.toMany(5, object.id): object.mpiItems,
-              RelInfo<Realization>.toMany(6, object.id): object.stockItems
-            },
-        getId: (Realization object) => object.id,
-        setId: (Realization object, int id) {
-          object.id = id;
-        },
-        objectToFB: (Realization object, fb.Builder fbb) {
-          final rlIdOffset = fbb.writeString(object.rlId);
-          final dateOutOffset = fbb.writeString(object.dateOut);
-          fbb.startTable(7);
-          fbb.addInt64(0, object.id);
-          fbb.addOffset(1, rlIdOffset);
-          fbb.addInt64(2, object.selesai);
-          fbb.addFloat64(3, object.biyaya);
-          fbb.addBool(4, object.done);
-          fbb.addOffset(5, dateOutOffset);
-          fbb.finish(fbb.endTable());
-          return object.id;
-        },
-        objectFromFB: (Store store, ByteData fbData) {
-          final buffer = fb.BufferContext(fbData);
-          final rootOffset = buffer.derefObject(0);
-
-          final object = Realization(
-              id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
-              rlId: const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 6, ''),
-              dateOut: const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 14, ''),
-              selesai:
-                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 8, 0),
-              biyaya:
-                  const fb.Float64Reader().vTableGet(buffer, rootOffset, 10, 0),
-              done: const fb.BoolReader()
-                  .vTableGet(buffer, rootOffset, 12, false));
-          InternalToManyAccess.setRelInfo(
-              object.mpiItems,
-              store,
-              RelInfo<Realization>.toMany(5, object.id),
-              store.box<Realization>());
-          InternalToManyAccess.setRelInfo(
-              object.stockItems,
-              store,
-              RelInfo<Realization>.toMany(6, object.id),
-              store.box<Realization>());
-          return object;
-        }),
-    Payment: EntityDefinition<Payment>(
-        model: _entities[10],
-        toOneRelations: (Payment object) => [],
-        toManyRelations: (Payment object) => {},
-        getId: (Payment object) => object.id,
-        setId: (Payment object, int id) {
-          object.id = id;
-        },
-        objectToFB: (Payment object, fb.Builder fbb) {
-          final dateOffset = fbb.writeString(object.date);
-          fbb.startTable(6);
-          fbb.addInt64(0, object.id);
-          fbb.addFloat64(2, object.pay);
-          fbb.addOffset(4, dateOffset);
-          fbb.finish(fbb.endTable());
-          return object.id;
-        },
-        objectFromFB: (Store store, ByteData fbData) {
-          final buffer = fb.BufferContext(fbData);
-          final rootOffset = buffer.derefObject(0);
-
-          final object = Payment(
-              id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
-              pay: const fb.Float64Reader().vTableGet(buffer, rootOffset, 8, 0),
-              date: const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 12, ''));
-
-          return object;
-        }),
-    StockRalization: EntityDefinition<StockRalization>(
-        model: _entities[11],
-        toOneRelations: (StockRalization object) => [object.realization],
-        toManyRelations: (StockRalization object) => {},
-        getId: (StockRalization object) => object.id,
-        setId: (StockRalization object, int id) {
-          object.id = id;
-        },
-        objectToFB: (StockRalization object, fb.Builder fbb) {
-          final nameOffset = fbb.writeString(object.name);
-          final partnameOffset = fbb.writeString(object.partname);
-          final descOffset = fbb.writeString(object.desc);
-          fbb.startTable(13);
-          fbb.addInt64(0, object.id);
-          fbb.addOffset(1, nameOffset);
-          fbb.addOffset(2, partnameOffset);
-          fbb.addOffset(3, descOffset);
-          fbb.addInt64(4, object.count);
-          fbb.addInt64(7, object.realization.targetId);
-          fbb.addFloat64(8, object.price);
-          fbb.addFloat64(9, object.servicePrice);
-          fbb.addFloat64(10, object.toalPrice);
-          fbb.addBool(11, object.done);
-          fbb.finish(fbb.endTable());
-          return object.id;
-        },
-        objectFromFB: (Store store, ByteData fbData) {
-          final buffer = fb.BufferContext(fbData);
-          final rootOffset = buffer.derefObject(0);
-
-          final object = StockRalization(
-              id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
-              partname: const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 8, ''),
-              name: const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 6, ''),
-              desc: const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 10, ''),
-              price:
-                  const fb.Float64Reader().vTableGet(buffer, rootOffset, 20, 0),
-              count:
-                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 12, 0),
-              servicePrice:
-                  const fb.Float64Reader().vTableGet(buffer, rootOffset, 22, 0),
-              toalPrice:
-                  const fb.Float64Reader().vTableGet(buffer, rootOffset, 24, 0),
-              done: const fb.BoolReader()
-                  .vTableGet(buffer, rootOffset, 26, false));
-          object.realization.targetId =
-              const fb.Int64Reader().vTableGet(buffer, rootOffset, 18, 0);
-          object.realization.attach(store);
+              RelInfo<Supplier>.toMany(6, object.id), store.box<Supplier>());
+          InternalToManyAccess.setRelInfo(object.stockItems, store,
+              RelInfo<Supplier>.toMany(7, object.id), store.box<Supplier>());
+          InternalToManyAccess.setRelInfo(object.detailStockItems, store,
+              RelInfo<Supplier>.toMany(8, object.id), store.box<Supplier>());
           return object;
         })
   };
@@ -1318,404 +1289,421 @@ ModelDefinition getObjectBoxModel() {
   return ModelDefinition(model, bindings);
 }
 
-/// [Stock] entity fields to define ObjectBox queries.
-class Stock_ {
-  /// see [Stock.id]
-  static final id = QueryIntegerProperty<Stock>(_entities[0].properties[0]);
-
-  /// see [Stock.name]
-  static final name = QueryStringProperty<Stock>(_entities[0].properties[1]);
-
-  /// see [Stock.partname]
-  static final partname =
-      QueryStringProperty<Stock>(_entities[0].properties[2]);
-
-  /// see [Stock.desc]
-  static final desc = QueryStringProperty<Stock>(_entities[0].properties[3]);
-
-  /// see [Stock.count]
-  static final count = QueryIntegerProperty<Stock>(_entities[0].properties[4]);
-
-  /// see [Stock.lastPrice]
-  static final lastPrice =
-      QueryDoubleProperty<Stock>(_entities[0].properties[5]);
-
-  /// see [Stock.totalPrice]
-  static final totalPrice =
-      QueryDoubleProperty<Stock>(_entities[0].properties[6]);
-
-  /// see [Stock.items]
-  static final items =
-      QueryRelationToMany<Stock, StockHistory>(_entities[0].relations[0]);
-}
-
-/// [StockHistory] entity fields to define ObjectBox queries.
-class StockHistory_ {
-  /// see [StockHistory.id]
-  static final id =
-      QueryIntegerProperty<StockHistory>(_entities[1].properties[0]);
-
-  /// see [StockHistory.date]
-  static final date =
-      QueryStringProperty<StockHistory>(_entities[1].properties[1]);
-
-  /// see [StockHistory.supplier]
-  static final supplier =
-      QueryStringProperty<StockHistory>(_entities[1].properties[2]);
-
-  /// see [StockHistory.count]
-  static final count =
-      QueryIntegerProperty<StockHistory>(_entities[1].properties[3]);
-
-  /// see [StockHistory.price]
-  static final price =
-      QueryDoubleProperty<StockHistory>(_entities[1].properties[4]);
-
-  /// see [StockHistory.totalPrice]
-  static final totalPrice =
-      QueryDoubleProperty<StockHistory>(_entities[1].properties[5]);
-}
-
-/// [Supplier] entity fields to define ObjectBox queries.
-class Supplier_ {
-  /// see [Supplier.id]
-  static final id = QueryIntegerProperty<Supplier>(_entities[2].properties[0]);
-
-  /// see [Supplier.supplier]
-  static final supplier =
-      QueryStringProperty<Supplier>(_entities[2].properties[1]);
-
-  /// see [Supplier.desc]
-  static final desc = QueryStringProperty<Supplier>(_entities[2].properties[2]);
-
-  /// see [Supplier.count]
-  static final count =
-      QueryIntegerProperty<Supplier>(_entities[2].properties[3]);
-
-  /// see [Supplier.date]
-  static final date = QueryStringProperty<Supplier>(_entities[2].properties[4]);
-
-  /// see [Supplier.totalPrice]
-  static final totalPrice =
-      QueryDoubleProperty<Supplier>(_entities[2].properties[5]);
-
-  /// see [Supplier.items]
-  static final items =
-      QueryRelationToMany<Supplier, SupplierHistory>(_entities[2].relations[0]);
-}
-
-/// [SupplierHistory] entity fields to define ObjectBox queries.
-class SupplierHistory_ {
-  /// see [SupplierHistory.id]
-  static final id =
-      QueryIntegerProperty<SupplierHistory>(_entities[3].properties[0]);
-
-  /// see [SupplierHistory.partName]
-  static final partName =
-      QueryStringProperty<SupplierHistory>(_entities[3].properties[1]);
-
-  /// see [SupplierHistory.name]
-  static final name =
-      QueryStringProperty<SupplierHistory>(_entities[3].properties[2]);
-
-  /// see [SupplierHistory.count]
-  static final count =
-      QueryIntegerProperty<SupplierHistory>(_entities[3].properties[3]);
-
-  /// see [SupplierHistory.price]
-  static final price =
-      QueryDoubleProperty<SupplierHistory>(_entities[3].properties[4]);
-
-  /// see [SupplierHistory.totalPrice]
-  static final totalPrice =
-      QueryDoubleProperty<SupplierHistory>(_entities[3].properties[5]);
-}
-
 /// [Customer] entity fields to define ObjectBox queries.
 class Customer_ {
   /// see [Customer.id]
-  static final id = QueryIntegerProperty<Customer>(_entities[4].properties[0]);
+  static final id = QueryIntegerProperty<Customer>(_entities[0].properties[0]);
+
+  /// see [Customer.csId]
+  static final csId = QueryStringProperty<Customer>(_entities[0].properties[1]);
 
   /// see [Customer.customerName]
   static final customerName =
-      QueryStringProperty<Customer>(_entities[4].properties[1]);
+      QueryStringProperty<Customer>(_entities[0].properties[2]);
 
   /// see [Customer.policeNumber]
   static final policeNumber =
-      QueryStringProperty<Customer>(_entities[4].properties[2]);
-
-  /// see [Customer.spk]
-  static final spk =
-      QueryRelationToOne<Customer, Spk>(_entities[4].properties[3]);
-
-  /// see [Customer.inv]
-  static final inv =
-      QueryRelationToOne<Customer, Invoice>(_entities[4].properties[4]);
-
-  /// see [Customer.mpi]
-  static final mpi =
-      QueryRelationToOne<Customer, Mpi>(_entities[4].properties[5]);
-
-  /// see [Customer.csId]
-  static final csId = QueryStringProperty<Customer>(_entities[4].properties[6]);
+      QueryStringProperty<Customer>(_entities[0].properties[3]);
 
   /// see [Customer.namaKendaraan]
   static final namaKendaraan =
-      QueryStringProperty<Customer>(_entities[4].properties[7]);
+      QueryStringProperty<Customer>(_entities[0].properties[4]);
 
   /// see [Customer.alamat]
   static final alamat =
-      QueryStringProperty<Customer>(_entities[4].properties[8]);
+      QueryStringProperty<Customer>(_entities[0].properties[5]);
+
+  /// see [Customer.spk]
+  static final spk =
+      QueryRelationToOne<Customer, Spk>(_entities[0].properties[6]);
+
+  /// see [Customer.inv]
+  static final inv =
+      QueryRelationToOne<Customer, Invoice>(_entities[0].properties[7]);
 
   /// see [Customer.realization]
   static final realization =
-      QueryRelationToOne<Customer, Realization>(_entities[4].properties[9]);
+      QueryRelationToOne<Customer, Realization>(_entities[0].properties[8]);
+
+  /// see [Customer.mpi]
+  static final mpi =
+      QueryRelationToOne<Customer, Mpi>(_entities[0].properties[9]);
+}
+
+/// [DetailPembelian] entity fields to define ObjectBox queries.
+class DetailPembelian_ {
+  /// see [DetailPembelian.id]
+  static final id =
+      QueryIntegerProperty<DetailPembelian>(_entities[1].properties[0]);
+
+  /// see [DetailPembelian.partName]
+  static final partName =
+      QueryStringProperty<DetailPembelian>(_entities[1].properties[1]);
+
+  /// see [DetailPembelian.name]
+  static final name =
+      QueryStringProperty<DetailPembelian>(_entities[1].properties[2]);
+
+  /// see [DetailPembelian.pihakId]
+  static final pihakId =
+      QueryStringProperty<DetailPembelian>(_entities[1].properties[3]);
+
+  /// see [DetailPembelian.count]
+  static final count =
+      QueryIntegerProperty<DetailPembelian>(_entities[1].properties[4]);
+
+  /// see [DetailPembelian.price]
+  static final price =
+      QueryDoubleProperty<DetailPembelian>(_entities[1].properties[5]);
+
+  /// see [DetailPembelian.totalPrice]
+  static final totalPrice =
+      QueryDoubleProperty<DetailPembelian>(_entities[1].properties[6]);
+}
+
+/// [DetailStock] entity fields to define ObjectBox queries.
+class DetailStock_ {
+  /// see [DetailStock.id]
+  static final id =
+      QueryIntegerProperty<DetailStock>(_entities[2].properties[0]);
+
+  /// see [DetailStock.date]
+  static final date =
+      QueryStringProperty<DetailStock>(_entities[2].properties[1]);
+
+  /// see [DetailStock.supplier]
+  static final supplier =
+      QueryStringProperty<DetailStock>(_entities[2].properties[2]);
+
+  /// see [DetailStock.pihakId]
+  static final pihakId =
+      QueryStringProperty<DetailStock>(_entities[2].properties[3]);
+
+  /// see [DetailStock.count]
+  static final count =
+      QueryIntegerProperty<DetailStock>(_entities[2].properties[4]);
+
+  /// see [DetailStock.price]
+  static final price =
+      QueryDoubleProperty<DetailStock>(_entities[2].properties[5]);
+
+  /// see [DetailStock.totalPrice]
+  static final totalPrice =
+      QueryDoubleProperty<DetailStock>(_entities[2].properties[6]);
 }
 
 /// [Invoice] entity fields to define ObjectBox queries.
 class Invoice_ {
   /// see [Invoice.id]
-  static final id = QueryIntegerProperty<Invoice>(_entities[5].properties[0]);
+  static final id = QueryIntegerProperty<Invoice>(_entities[3].properties[0]);
 
   /// see [Invoice.invId]
-  static final invId = QueryStringProperty<Invoice>(_entities[5].properties[1]);
+  static final invId = QueryStringProperty<Invoice>(_entities[3].properties[1]);
 
   /// see [Invoice.saldo]
-  static final saldo = QueryDoubleProperty<Invoice>(_entities[5].properties[2]);
+  static final saldo = QueryDoubleProperty<Invoice>(_entities[3].properties[2]);
 
   /// see [Invoice.partTotal]
   static final partTotal =
-      QueryDoubleProperty<Invoice>(_entities[5].properties[3]);
+      QueryDoubleProperty<Invoice>(_entities[3].properties[3]);
 
   /// see [Invoice.serviceTotal]
   static final serviceTotal =
-      QueryDoubleProperty<Invoice>(_entities[5].properties[4]);
+      QueryDoubleProperty<Invoice>(_entities[3].properties[4]);
 
   /// see [Invoice.invoiceTotal]
   static final invoiceTotal =
-      QueryDoubleProperty<Invoice>(_entities[5].properties[5]);
+      QueryDoubleProperty<Invoice>(_entities[3].properties[5]);
 
   /// see [Invoice.invoiceDate]
   static final invoiceDate =
-      QueryStringProperty<Invoice>(_entities[5].properties[6]);
+      QueryStringProperty<Invoice>(_entities[3].properties[6]);
 
   /// see [Invoice.soDate]
   static final soDate =
-      QueryStringProperty<Invoice>(_entities[5].properties[7]);
+      QueryStringProperty<Invoice>(_entities[3].properties[7]);
 
   /// see [Invoice.payments]
   static final payments =
-      QueryRelationToMany<Invoice, Payment>(_entities[5].relations[0]);
+      QueryRelationToMany<Invoice, Payment>(_entities[3].relations[0]);
 }
 
 /// [Mpi] entity fields to define ObjectBox queries.
 class Mpi_ {
   /// see [Mpi.id]
-  static final id = QueryIntegerProperty<Mpi>(_entities[6].properties[0]);
+  static final id = QueryIntegerProperty<Mpi>(_entities[4].properties[0]);
 
   /// see [Mpi.mpiId]
-  static final mpiId = QueryStringProperty<Mpi>(_entities[6].properties[1]);
+  static final mpiId = QueryStringProperty<Mpi>(_entities[4].properties[1]);
 
   /// see [Mpi.items]
   static final items =
-      QueryRelationToMany<Mpi, MpiItem>(_entities[6].relations[0]);
-}
-
-/// [Spk] entity fields to define ObjectBox queries.
-class Spk_ {
-  /// see [Spk.id]
-  static final id = QueryIntegerProperty<Spk>(_entities[7].properties[0]);
-
-  /// see [Spk.jtId]
-  static final jtId = QueryStringProperty<Spk>(_entities[7].properties[1]);
-
-  /// see [Spk.customerName]
-  static final customerName =
-      QueryStringProperty<Spk>(_entities[7].properties[2]);
-
-  /// see [Spk.policeNumber]
-  static final policeNumber =
-      QueryStringProperty<Spk>(_entities[7].properties[3]);
-
-  /// see [Spk.namaKendaraan]
-  static final namaKendaraan =
-      QueryStringProperty<Spk>(_entities[7].properties[4]);
-
-  /// see [Spk.date]
-  static final date = QueryStringProperty<Spk>(_entities[7].properties[5]);
-
-  /// see [Spk.alamat]
-  static final alamat = QueryStringProperty<Spk>(_entities[7].properties[6]);
-
-  /// see [Spk.analisa]
-  static final analisa = QueryStringProperty<Spk>(_entities[7].properties[7]);
-
-  /// see [Spk.keluhanKonsumen]
-  static final keluhanKonsumen =
-      QueryStringProperty<Spk>(_entities[7].properties[8]);
-
-  /// see [Spk.catatan]
-  static final catatan = QueryStringProperty<Spk>(_entities[7].properties[9]);
-
-  /// see [Spk.namaMekanik]
-  static final namaMekanik =
-      QueryStringProperty<Spk>(_entities[7].properties[10]);
-
-  /// see [Spk.estimasiBiyaya]
-  static final estimasiBiyaya =
-      QueryDoubleProperty<Spk>(_entities[7].properties[11]);
-
-  /// see [Spk.estimasiSelesai]
-  static final estimasiSelesai =
-      QueryStringProperty<Spk>(_entities[7].properties[12]);
-
-  /// see [Spk.namaInspeektor]
-  static final namaInspeektor =
-      QueryStringProperty<Spk>(_entities[7].properties[13]);
-
-  /// see [Spk.namaAdvisor]
-  static final namaAdvisor =
-      QueryStringProperty<Spk>(_entities[7].properties[14]);
-
-  /// see [Spk.tipeKendaraan]
-  static final tipeKendaraan =
-      QueryStringProperty<Spk>(_entities[7].properties[15]);
-
-  /// see [Spk.levelPekerjaan]
-  static final levelPekerjaan =
-      QueryIntegerProperty<Spk>(_entities[7].properties[16]);
-
-  /// see [Spk.km]
-  static final km = QueryIntegerProperty<Spk>(_entities[7].properties[17]);
-
-  /// see [Spk.noPkb]
-  static final noPkb = QueryStringProperty<Spk>(_entities[7].properties[18]);
-
-  /// see [Spk.noRangka]
-  static final noRangka = QueryStringProperty<Spk>(_entities[7].properties[19]);
-
-  /// see [Spk.jenisPekrjaan]
-  static final jenisPekrjaan =
-      QueryStringProperty<Spk>(_entities[7].properties[20]);
-
-  /// see [Spk.sukuCadang]
-  static final sukuCadang =
-      QueryStringProperty<Spk>(_entities[7].properties[21]);
+      QueryRelationToMany<Mpi, MpiItem>(_entities[4].relations[0]);
 }
 
 /// [MpiItem] entity fields to define ObjectBox queries.
 class MpiItem_ {
   /// see [MpiItem.id]
-  static final id = QueryIntegerProperty<MpiItem>(_entities[8].properties[0]);
+  static final id = QueryIntegerProperty<MpiItem>(_entities[5].properties[0]);
 
   /// see [MpiItem.category]
   static final category =
-      QueryStringProperty<MpiItem>(_entities[8].properties[1]);
+      QueryStringProperty<MpiItem>(_entities[5].properties[1]);
 
   /// see [MpiItem.name]
-  static final name = QueryStringProperty<MpiItem>(_entities[8].properties[2]);
+  static final name = QueryStringProperty<MpiItem>(_entities[5].properties[2]);
 
   /// see [MpiItem.price]
-  static final price = QueryDoubleProperty<MpiItem>(_entities[8].properties[3]);
+  static final price = QueryDoubleProperty<MpiItem>(_entities[5].properties[3]);
 
   /// see [MpiItem.remark]
   static final remark =
-      QueryStringProperty<MpiItem>(_entities[8].properties[4]);
+      QueryStringProperty<MpiItem>(_entities[5].properties[4]);
+
+  /// see [MpiItem.done]
+  static final done = QueryBooleanProperty<MpiItem>(_entities[5].properties[5]);
 
   /// see [MpiItem.attention]
   static final attention =
-      QueryIntegerProperty<MpiItem>(_entities[8].properties[5]);
+      QueryIntegerProperty<MpiItem>(_entities[5].properties[6]);
+}
 
-  /// see [MpiItem.done]
-  static final done = QueryBooleanProperty<MpiItem>(_entities[8].properties[6]);
+/// [Payment] entity fields to define ObjectBox queries.
+class Payment_ {
+  /// see [Payment.id]
+  static final id = QueryIntegerProperty<Payment>(_entities[6].properties[0]);
+
+  /// see [Payment.pay]
+  static final pay = QueryDoubleProperty<Payment>(_entities[6].properties[1]);
+
+  /// see [Payment.date]
+  static final date = QueryStringProperty<Payment>(_entities[6].properties[2]);
 }
 
 /// [Realization] entity fields to define ObjectBox queries.
 class Realization_ {
   /// see [Realization.id]
   static final id =
-      QueryIntegerProperty<Realization>(_entities[9].properties[0]);
+      QueryIntegerProperty<Realization>(_entities[7].properties[0]);
 
   /// see [Realization.rlId]
   static final rlId =
-      QueryStringProperty<Realization>(_entities[9].properties[1]);
+      QueryStringProperty<Realization>(_entities[7].properties[1]);
 
   /// see [Realization.selesai]
   static final selesai =
-      QueryIntegerProperty<Realization>(_entities[9].properties[2]);
+      QueryIntegerProperty<Realization>(_entities[7].properties[2]);
 
   /// see [Realization.biyaya]
   static final biyaya =
-      QueryDoubleProperty<Realization>(_entities[9].properties[3]);
-
-  /// see [Realization.done]
-  static final done =
-      QueryBooleanProperty<Realization>(_entities[9].properties[4]);
+      QueryDoubleProperty<Realization>(_entities[7].properties[3]);
 
   /// see [Realization.dateOut]
   static final dateOut =
-      QueryStringProperty<Realization>(_entities[9].properties[5]);
+      QueryStringProperty<Realization>(_entities[7].properties[4]);
+
+  /// see [Realization.done]
+  static final done =
+      QueryBooleanProperty<Realization>(_entities[7].properties[5]);
 
   /// see [Realization.mpiItems]
   static final mpiItems =
-      QueryRelationToMany<Realization, MpiItem>(_entities[9].relations[0]);
+      QueryRelationToMany<Realization, MpiItem>(_entities[7].relations[0]);
 
   /// see [Realization.stockItems]
   static final stockItems = QueryRelationToMany<Realization, StockRalization>(
-      _entities[9].relations[1]);
+      _entities[7].relations[1]);
 }
 
-/// [Payment] entity fields to define ObjectBox queries.
-class Payment_ {
-  /// see [Payment.id]
-  static final id = QueryIntegerProperty<Payment>(_entities[10].properties[0]);
+/// [Spk] entity fields to define ObjectBox queries.
+class Spk_ {
+  /// see [Spk.id]
+  static final id = QueryIntegerProperty<Spk>(_entities[8].properties[0]);
 
-  /// see [Payment.pay]
-  static final pay = QueryDoubleProperty<Payment>(_entities[10].properties[1]);
+  /// see [Spk.jtId]
+  static final jtId = QueryStringProperty<Spk>(_entities[8].properties[1]);
 
-  /// see [Payment.date]
-  static final date = QueryStringProperty<Payment>(_entities[10].properties[2]);
+  /// see [Spk.customerName]
+  static final customerName =
+      QueryStringProperty<Spk>(_entities[8].properties[2]);
+
+  /// see [Spk.policeNumber]
+  static final policeNumber =
+      QueryStringProperty<Spk>(_entities[8].properties[3]);
+
+  /// see [Spk.namaKendaraan]
+  static final namaKendaraan =
+      QueryStringProperty<Spk>(_entities[8].properties[4]);
+
+  /// see [Spk.tipeKendaraan]
+  static final tipeKendaraan =
+      QueryStringProperty<Spk>(_entities[8].properties[5]);
+
+  /// see [Spk.levelPekerjaan]
+  static final levelPekerjaan =
+      QueryIntegerProperty<Spk>(_entities[8].properties[6]);
+
+  /// see [Spk.date]
+  static final date = QueryStringProperty<Spk>(_entities[8].properties[7]);
+
+  /// see [Spk.km]
+  static final km = QueryIntegerProperty<Spk>(_entities[8].properties[8]);
+
+  /// see [Spk.noPkb]
+  static final noPkb = QueryStringProperty<Spk>(_entities[8].properties[9]);
+
+  /// see [Spk.noRangka]
+  static final noRangka = QueryStringProperty<Spk>(_entities[8].properties[10]);
+
+  /// see [Spk.alamat]
+  static final alamat = QueryStringProperty<Spk>(_entities[8].properties[11]);
+
+  /// see [Spk.analisa]
+  static final analisa = QueryStringProperty<Spk>(_entities[8].properties[12]);
+
+  /// see [Spk.keluhanKonsumen]
+  static final keluhanKonsumen =
+      QueryStringProperty<Spk>(_entities[8].properties[13]);
+
+  /// see [Spk.jenisPekrjaan]
+  static final jenisPekrjaan =
+      QueryStringProperty<Spk>(_entities[8].properties[14]);
+
+  /// see [Spk.sukuCadang]
+  static final sukuCadang =
+      QueryStringProperty<Spk>(_entities[8].properties[15]);
+
+  /// see [Spk.catatan]
+  static final catatan = QueryStringProperty<Spk>(_entities[8].properties[16]);
+
+  /// see [Spk.namaMekanik]
+  static final namaMekanik =
+      QueryStringProperty<Spk>(_entities[8].properties[17]);
+
+  /// see [Spk.estimasiBiyaya]
+  static final estimasiBiyaya =
+      QueryDoubleProperty<Spk>(_entities[8].properties[18]);
+
+  /// see [Spk.estimasiSelesai]
+  static final estimasiSelesai =
+      QueryStringProperty<Spk>(_entities[8].properties[19]);
+
+  /// see [Spk.namaInspeektor]
+  static final namaInspeektor =
+      QueryStringProperty<Spk>(_entities[8].properties[20]);
+
+  /// see [Spk.namaAdvisor]
+  static final namaAdvisor =
+      QueryStringProperty<Spk>(_entities[8].properties[21]);
+}
+
+/// [Stock] entity fields to define ObjectBox queries.
+class Stock_ {
+  /// see [Stock.id]
+  static final id = QueryIntegerProperty<Stock>(_entities[9].properties[0]);
+
+  /// see [Stock.name]
+  static final name = QueryStringProperty<Stock>(_entities[9].properties[1]);
+
+  /// see [Stock.partname]
+  static final partname =
+      QueryStringProperty<Stock>(_entities[9].properties[2]);
+
+  /// see [Stock.desc]
+  static final desc = QueryStringProperty<Stock>(_entities[9].properties[3]);
+
+  /// see [Stock.count]
+  static final count = QueryIntegerProperty<Stock>(_entities[9].properties[4]);
+
+  /// see [Stock.totalPrice]
+  static final totalPrice =
+      QueryDoubleProperty<Stock>(_entities[9].properties[5]);
+
+  /// see [Stock.date]
+  static final date = QueryIntegerProperty<Stock>(_entities[9].properties[6]);
+
+  /// see [Stock.items]
+  static final items =
+      QueryRelationToMany<Stock, DetailStock>(_entities[9].relations[0]);
 }
 
 /// [StockRalization] entity fields to define ObjectBox queries.
 class StockRalization_ {
   /// see [StockRalization.id]
   static final id =
-      QueryIntegerProperty<StockRalization>(_entities[11].properties[0]);
+      QueryIntegerProperty<StockRalization>(_entities[10].properties[0]);
 
   /// see [StockRalization.name]
   static final name =
-      QueryStringProperty<StockRalization>(_entities[11].properties[1]);
+      QueryStringProperty<StockRalization>(_entities[10].properties[1]);
 
   /// see [StockRalization.partname]
   static final partname =
-      QueryStringProperty<StockRalization>(_entities[11].properties[2]);
+      QueryStringProperty<StockRalization>(_entities[10].properties[2]);
 
   /// see [StockRalization.desc]
   static final desc =
-      QueryStringProperty<StockRalization>(_entities[11].properties[3]);
-
-  /// see [StockRalization.count]
-  static final count =
-      QueryIntegerProperty<StockRalization>(_entities[11].properties[4]);
+      QueryStringProperty<StockRalization>(_entities[10].properties[3]);
 
   /// see [StockRalization.realization]
   static final realization =
-      QueryRelationToOne<StockRalization, Stock>(_entities[11].properties[5]);
+      QueryRelationToOne<StockRalization, Stock>(_entities[10].properties[4]);
+
+  /// see [StockRalization.count]
+  static final count =
+      QueryIntegerProperty<StockRalization>(_entities[10].properties[5]);
 
   /// see [StockRalization.price]
   static final price =
-      QueryDoubleProperty<StockRalization>(_entities[11].properties[6]);
+      QueryDoubleProperty<StockRalization>(_entities[10].properties[6]);
 
   /// see [StockRalization.servicePrice]
   static final servicePrice =
-      QueryDoubleProperty<StockRalization>(_entities[11].properties[7]);
+      QueryDoubleProperty<StockRalization>(_entities[10].properties[7]);
 
   /// see [StockRalization.toalPrice]
   static final toalPrice =
-      QueryDoubleProperty<StockRalization>(_entities[11].properties[8]);
+      QueryDoubleProperty<StockRalization>(_entities[10].properties[8]);
 
   /// see [StockRalization.done]
   static final done =
-      QueryBooleanProperty<StockRalization>(_entities[11].properties[9]);
+      QueryBooleanProperty<StockRalization>(_entities[10].properties[9]);
+}
+
+/// [Supplier] entity fields to define ObjectBox queries.
+class Supplier_ {
+  /// see [Supplier.id]
+  static final id = QueryIntegerProperty<Supplier>(_entities[11].properties[0]);
+
+  /// see [Supplier.supplier]
+  static final supplier =
+      QueryStringProperty<Supplier>(_entities[11].properties[1]);
+
+  /// see [Supplier.desc]
+  static final desc =
+      QueryStringProperty<Supplier>(_entities[11].properties[2]);
+
+  /// see [Supplier.count]
+  static final count =
+      QueryIntegerProperty<Supplier>(_entities[11].properties[3]);
+
+  /// see [Supplier.date]
+  static final date =
+      QueryStringProperty<Supplier>(_entities[11].properties[4]);
+
+  /// see [Supplier.totalPrice]
+  static final totalPrice =
+      QueryDoubleProperty<Supplier>(_entities[11].properties[5]);
+
+  /// see [Supplier.items]
+  static final items = QueryRelationToMany<Supplier, DetailPembelian>(
+      _entities[11].relations[0]);
+
+  /// see [Supplier.stockItems]
+  static final stockItems =
+      QueryRelationToMany<Supplier, Stock>(_entities[11].relations[1]);
+
+  /// see [Supplier.detailStockItems]
+  static final detailStockItems =
+      QueryRelationToMany<Supplier, DetailStock>(_entities[11].relations[2]);
 }

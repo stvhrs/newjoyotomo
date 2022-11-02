@@ -1,19 +1,20 @@
 import 'package:objectbox/objectbox.dart';
 
 @Entity()
-class SupplierHistory {
+class DetailPembelian {
   @Id(assignable: true)
   int id;
   String partName;
   String name;
-
+  String pihakId;
   int count;
   double price;
   double totalPrice;
 
-  SupplierHistory({
+  DetailPembelian({
     this.id = 0,
     required this.name,
+    this.pihakId = '',
     required this.partName,
     required this.count,
     required this.price,

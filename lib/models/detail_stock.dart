@@ -1,23 +1,24 @@
 import 'package:objectbox/objectbox.dart';
 
 @Entity()
-class StockHistory {
+class DetailStock {
   @Id(assignable: true)
   int id;
   String date;
   String supplier;
-
+String pihakId;
   int count;
   double price;
   double totalPrice;
 
-  StockHistory({
+  DetailStock({
     this.id = 0,
+    this.pihakId='',
     required this.supplier,
     required this.date,
     required this.price,
     required this.count,
     required this.totalPrice,
-    // required this.StockHistoryHistory,
+    // required this.DetailStockHistory,
   });
 }

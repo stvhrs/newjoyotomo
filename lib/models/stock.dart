@@ -1,4 +1,4 @@
-import 'package:newJoyo/models/stock_history.dart';
+import 'package:newJoyo/models/detail_stock.dart';
 import 'package:objectbox/objectbox.dart';
 
 @Entity()
@@ -8,22 +8,21 @@ class Stock {
   String name;
   String partname;
   String desc;
-   final items = ToMany<StockHistory>();
+  final items = ToMany<DetailStock>();
   int count;
-double lastPrice;
+
   double totalPrice;
-  
+  int date;
 
   Stock({
     this.id = 0,
-   
     required this.partname,
     required this.name,
+    this.date = 0,
     required this.desc,
-    required this.lastPrice,
     required this.count,
     required this.totalPrice,
-    // required this.stockHistory,
+    // required this.DetailStock,
   });
   // factory Stock.fromMap(Map<String, dynamic> map) {
   //   return Stock(
@@ -32,7 +31,7 @@ double lastPrice;
   //     stock: map['stock'],
   //     price: map['price'],
   //     totalPrice: map['totalPrice'],
-  //     stockHistory: map['stockHistory'],
+  //     DetailStock: map['DetailStock'],
   //   );
   // }
   // static Map<String, dynamic> toMap(Stock stock) {
@@ -42,7 +41,7 @@ double lastPrice;
   //     'stock': stock.stock,
   //     'price': stock.price,
   //     'totalPrice': stock.totalPrice,
-  //     'stockHistory': stock.stockHistory,
+  //     'DetailStock': stock.DetailStock,
   //   };
   // }
 }

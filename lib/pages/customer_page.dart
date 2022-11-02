@@ -166,12 +166,12 @@ class _CustomerPageState extends State<CustomerPage> {
 Widget get _divier_ => Row(
       children: const [
         VerticalDivider(
-          color: Color.fromARGB(255, 79, 117, 134),
+          color:Color.fromARGB(255, 79, 117, 134),
           thickness: 2.5,
           width: 4,
         ),
         VerticalDivider(
-          color: Color.fromARGB(255, 79, 117, 134),
+          color:Color.fromARGB(255, 79, 117, 134),
           thickness: 2.5,
           width: 4,
         ),

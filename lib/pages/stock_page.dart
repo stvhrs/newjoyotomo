@@ -63,7 +63,9 @@ class _StockPageState extends State<StockPage> {
                   }
                 }
               } else {
-                stocks = snapshot.data!.reversed.toList();
+                stocks = snapshot.data!;
+                stocks.sort((a, b) => b.date.compareTo(a.date));
+
                 _selectedStock = stocks[_currentIndex];
                 Provider.of<Trigger>(context, listen: false)
                     .selectStock(_selectedStock, false);
@@ -82,7 +84,7 @@ class _StockPageState extends State<StockPage> {
                         Column(
                           children: [
                             Container(
-                              width: MediaQuery.of(context).size.width / 2.2,
+                              width: MediaQuery.of(context).size.width / 2.5,
                               padding:
                                   const EdgeInsets.only(left: 16, right: 16),
                               child: Row(
@@ -133,7 +135,7 @@ class _StockPageState extends State<StockPage> {
                             ),
                             Expanded(
                               child: SizedBox(
-                                  width: MediaQuery.of(context).size.width / 2.2,
+                                  width: MediaQuery.of(context).size.width / 2.5,
                                   child: Padding(
                                       padding: const EdgeInsets.only(
                                           top: 8, left: 16, right: 8),
@@ -180,7 +182,8 @@ class _StockPageState extends State<StockPage> {
                           ],
                         ),
                         _divier_,
-                        const StockDetails(),
+                   
+                    StockDetails(),
                       ]),
                 );
               });
@@ -193,12 +196,12 @@ class _StockPageState extends State<StockPage> {
 Widget get _divier_ => Row(
       children: const [
         VerticalDivider(
-          color: Color.fromARGB(255, 79, 117, 134),
+          color:Color.fromARGB(255, 79, 117, 134),
           thickness: 2.5,
           width: 4,
         ),
         VerticalDivider(
-          color: Color.fromARGB(255, 79, 117, 134),
+          color:Color.fromARGB(255, 79, 117, 134),
           thickness: 2.5,
           width: 4,
         ),

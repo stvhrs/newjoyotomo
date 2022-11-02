@@ -250,7 +250,7 @@ class _SpkDocState extends State<SpkDoc> {
                                                                         builder: (context, child) => Theme(
                                                                               data: Theme.of(context).copyWith(
                                                                                 colorScheme: const ColorScheme.light(
-                                                                                  primary: Color.fromARGB(255, 79, 117, 134), // header background color
+                                                                                  primary:Color.fromARGB(255, 79, 117, 134), // header background color
                                                                                 ),
                                                                                 textButtonTheme: TextButtonThemeData(
                                                                                   style: TextButton.styleFrom(

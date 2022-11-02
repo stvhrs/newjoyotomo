@@ -1,4 +1,4 @@
-import 'package:newJoyo/models/supplier.dart';
+import 'package:newJoyo/models/pembelian.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../models/customer.dart';
