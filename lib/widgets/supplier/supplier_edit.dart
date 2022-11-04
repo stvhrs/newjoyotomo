@@ -65,10 +65,10 @@ class _SupplierEditState extends State<SupplierEdit> {
               required: true,
               onValueChanged: (val) {
                 if (stocks.map((e) => e.partname).toList().contains(val)) {
-                 if (_updatedStock.isNotEmpty) {
-                  _updatedStock[i].partname =
-                      val;
-                }
+                  if (_updatedStock.isNotEmpty) {
+                    _updatedStock[i] =
+                        stocks.firstWhere((element) => element.partname == val);
+                  }
 
                   setState(() {});
                 }
@@ -293,17 +293,27 @@ class _SupplierEditState extends State<SupplierEdit> {
                                           totalPrice:
                                               _updatedDetailStock[i].price *
                                                   _updatedDetailStock[i].count);
-                                      //UPDATE STOCK
-                                      _updatedStock[i].items.add(history);
+                                      // UPDATE STOCK
+                                      DetailStock removeStock = _updatedStock[i]
+                                          .items
+                                          .firstWhere((element) =>
+                                              element.pihakId ==
+                                              widget.supplier.pihakId);
+                                     
 
                                       _updatedStock[i].totalPrice =
-                                          _updatedStock[i].totalPrice +
-                                              (_updatedDetailStock[i].price *
-                                                  _updatedDetailStock[i].count);
+                                          _updatedStock[i].totalPrice -
+                                              (removeStock.price *
+                                                  removeStock.count) +(_updatedDetailStock[i].price*_updatedDetailStock[i].count);
 
                                       _updatedStock[i].count =
-                                          _updatedStock[i].count +
-                                              _updatedDetailStock[i].count;
+                                          _updatedStock[i].count -
+                                              removeStock.count +_updatedDetailStock[i].count;
+                                              //REMOVE AND ADD
+                                      _updatedStock[i]
+                                          .items
+                                          .remove(removeStock);
+                                      _updatedStock[i].items.add(history);
 
                                       ///ADD SUPPLIER
                                       widget.supplier.count =

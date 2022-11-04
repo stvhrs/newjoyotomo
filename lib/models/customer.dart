@@ -1,6 +1,7 @@
 import 'package:newJoyo/models/invoice.dart';
 import 'package:newJoyo/models/mpi.dart';
 import 'package:newJoyo/models/realization.dart';
+import 'package:newJoyo/models/rincian_pembayaran.dart';
 import 'package:newJoyo/models/spk.dart';
 import 'package:objectbox/objectbox.dart';
 
@@ -13,7 +14,8 @@ class Customer {
   String policeNumber;
   String namaKendaraan;
   String alamat;
-
+  String proses;
+ToMany<RincianPembayarran> rincian = ToMany<RincianPembayarran>();
   ToOne<Spk> spk = ToOne<Spk>();
   ToOne<Invoice> inv = ToOne<Invoice>();
   ToOne<Realization> realization = ToOne<Realization>();
@@ -22,6 +24,7 @@ class Customer {
   Customer(
       {this.id = 0,
       required this.csId,
+      this.proses='Proses SPK',
       required this.customerName,
       required this.policeNumber,
       required this.namaKendaraan,

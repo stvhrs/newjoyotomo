@@ -6,7 +6,7 @@ class DetailPembelian {
   int id;
   String partName;
   String name;
-  String pihakId;
+
   int count;
   double price;
   double totalPrice;
@@ -14,7 +14,7 @@ class DetailPembelian {
   DetailPembelian({
     this.id = 0,
     required this.name,
-    this.pihakId = '',
+
     required this.partName,
     required this.count,
     required this.price,

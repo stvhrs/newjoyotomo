@@ -13,6 +13,7 @@ class Supplier {
   String desc;
   int count;
   String date;
+  String pihakId;
   double totalPrice;  
 final   stockItems  =ToMany<Stock>();
  final detailStockItems= ToMany<DetailStock>() ;
@@ -20,6 +21,7 @@ final   stockItems  =ToMany<Stock>();
   Supplier({
     this.id = 0,
     required this.date,
+    required this.pihakId,
     required this.supplier,
     required this.desc,
     required this.count,

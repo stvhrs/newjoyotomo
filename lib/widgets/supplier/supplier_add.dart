@@ -230,7 +230,16 @@ class _SupplierAddState extends State<SupplierAdd> {
                                   _supplier = _controller.text;
                                   int itemsCount = 0;
                                   double itemsTotalPrice = 0;
-                                  Supplier tempSupplier = Supplier(
+                                  Supplier tempSupplier = Supplier(  pihakId: 'SUP/JT/000000'.replaceRange(
+                                              13 -
+                                                  int.parse(
+                                                      ((suppliers.length + 1)
+                                                              .toString())
+                                                          .length
+                                                          .toString()),
+                                              13,
+                                              (suppliers.length + 1)
+                                                  .toString()),
                                       date: DateTime.now().toIso8601String(),
                                       supplier: _supplier,
                                       desc: _desc,
@@ -246,16 +255,7 @@ class _SupplierAddState extends State<SupplierAdd> {
                                         i < _updatedStock.length;
                                         i++) {
                                       tempSupplier.items.add(DetailPembelian(
-                                          pihakId: 'SUP/JT/000000'.replaceRange(
-                                              13 -
-                                                  int.parse(
-                                                      ((suppliers.length + 1)
-                                                              .toString())
-                                                          .length
-                                                          .toString()),
-                                              13,
-                                              (suppliers.length + 1)
-                                                  .toString()),
+                                        
                                           name: _updatedStock[i].name,
                                           partName: _updatedStock[i].partname,
                                           count: _updatedDetailStock[i].count,
