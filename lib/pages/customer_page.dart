@@ -1,5 +1,6 @@
 // ignore_for_file: deprecated_member_use
 
+import 'package:newJoyo/helper/styling.dart';
 import 'package:newJoyo/models/customer.dart';
 import 'package:newJoyo/provider/trigger.dart';
 import 'package:newJoyo/widgets/customer/customer_add.dart';
@@ -25,6 +26,8 @@ class _CustomerPageState extends State<CustomerPage> {
   @override
   void initState() {
     _streamcustomers = objectBox.getCustomers();
+      Provider.of<Trigger>(context, listen: false)
+        .selectListPelanggan(objectBox.fetchPelanggan(), false);
     super.initState();
   }
 
@@ -93,7 +96,7 @@ class _CustomerPageState extends State<CustomerPage> {
                                       ),
                                       child: Padding(
                                           padding: const EdgeInsets.only(
-                                              left: 15, right: 15, bottom: 3),
+                                              left: 15, right: 15, bottom:0),
                                           child: TextFormField(
                                               onChanged: (val) {
                                                 setState(
@@ -110,10 +113,7 @@ class _CustomerPageState extends State<CustomerPage> {
                                                   },
                                                 );
                                               },
-                                              decoration: const InputDecoration(
-                                                hintText: 'Pemilik / Kendaraan',
-                                                border: InputBorder.none,
-                                              )))),
+                                              decoration: input))),
                                 ),
                               ],
                             ),

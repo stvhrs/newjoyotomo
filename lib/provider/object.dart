@@ -1,6 +1,8 @@
+import 'package:newJoyo/models/pelanggan.dart';
 import 'package:newJoyo/models/stock.dart';
 import 'package:newJoyo/models/pembelian.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:newJoyo/models/supplier.dart';
 
 import '../models/customer.dart';
 import '../objectbox.g.dart';
@@ -11,11 +13,15 @@ class ObjectBox extends ChangeNotifier {
   late final Box<Stock> _stockBox;
   late final Box<Supplier> _supplierBox;
   late final Box<Customer> _customerBox;
+  late final Box<Pelanggan> _pelangganBox;
+  late final Box<Penyuplai> _penyuplaiBox;
 
   ObjectBox._init(this._store) {
     _stockBox = Box<Stock>(_store);
     _supplierBox = Box<Supplier>(_store);
-    _customerBox=Box<Customer>(_store);
+    _customerBox = Box<Customer>(_store);
+    _pelangganBox = Box<Pelanggan>(_store);
+    _penyuplaiBox = Box<Penyuplai>(_store);
   }
 
   static Future<ObjectBox> init() async {
@@ -23,6 +29,37 @@ class ObjectBox extends ChangeNotifier {
 
     return ObjectBox._init(store);
   }
+
+//Pelanggan
+  Stream<List<Pelanggan>> getPelanggan() {
+    return _pelangganBox
+        .query()
+        .watch(triggerImmediately: true)
+        .map((query) => query.find());
+  }
+
+  List<Pelanggan> fetchPelanggan() {
+    return _pelangganBox.query().build().find();
+  }
+
+  int insertPelanggan(Pelanggan pelanggan) => _pelangganBox.put(pelanggan);
+
+  bool deletePelanggan(int id) => _pelangganBox.remove(id);
+
+  //Penyuplai
+  Stream<List<Penyuplai>> getPenyuplai() {
+    return _penyuplaiBox
+        .query()
+        .watch(triggerImmediately: true)
+        .map((query) => query.find());
+  }
+  List<Penyuplai> fetchPenyuplai() {
+    return _penyuplaiBox.query().build().find();
+  }
+
+  int insertPenyuplai(Penyuplai penyuplai) => _penyuplaiBox.put(penyuplai);
+
+  bool deletePenyuplai(int id) => _penyuplaiBox.remove(id);
 
   ///Supplier
   Stream<List<Supplier>> getSuppliers() {

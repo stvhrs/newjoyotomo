@@ -1,4 +1,4 @@
-import 'package:newJoyo/widgets/supplier/supplier_add.dart';
+import 'package:newJoyo/widgets/pembelian/pembelian_add.dart';
 import 'package:flutter/material.dart';
 
 import 'package:newJoyo/provider/trigger.dart';
@@ -12,7 +12,7 @@ import 'package:provider/provider.dart';
 import '../main.dart';
 
 import '../models/pembelian.dart';
-import '../widgets/supplier/supplier_details.dart';
+import '../widgets/pembelian/pembelian_details.dart';
 
 class SupplierPage extends StatefulWidget {
   const SupplierPage({Key? key}) : super(key: key);
@@ -30,22 +30,26 @@ class _SupplierPageState extends State<SupplierPage> {
   @override
   void initState() {
     _streamSuppliers = objectBox.getSuppliers();
+    Provider.of<Trigger>(context, listen: false)
+        .selectListPenyuplai(objectBox.fetchPenyuplai(), false);
+
     super.initState();
   }
-@override
+
+  @override
   void dispose() {
-  
     super.dispose();
   }
+
   @override
   void didChangeDependencies() {
     Provider.of<Trigger>(context, listen: false).selectListSupplier([], false);
+
     super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context2) {
-  
     return Scaffold(
       body: StreamBuilder<List<Supplier>>(
           stream: _streamSuppliers,
@@ -94,7 +98,8 @@ class _SupplierPageState extends State<SupplierPage> {
                               width: MediaQuery.of(context).size.width / 2.2,
                               padding:
                                   const EdgeInsets.only(left: 16, right: 16),
-                              child: Row(crossAxisAlignment: CrossAxisAlignment.center,
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
@@ -112,7 +117,7 @@ class _SupplierPageState extends State<SupplierPage> {
                                         ),
                                         child: Padding(
                                             padding: const EdgeInsets.only(
-                                                left: 15, right: 15, bottom: 3),
+                                                left: 15, right: 15, bottom: 0),
                                             child: TextFormField(
                                                 onChanged: (val) {
                                                   setState(
@@ -129,6 +134,13 @@ class _SupplierPageState extends State<SupplierPage> {
                                                 },
                                                 decoration:
                                                     const InputDecoration(
+                                                  focusedBorder:
+                                                      InputBorder.none,
+                                                  enabledBorder:
+                                                      InputBorder.none,
+                                                  errorBorder: InputBorder.none,
+                                                  disabledBorder:
+                                                      InputBorder.none,
                                                   hintText: 'Search Supplier',
                                                   border: InputBorder.none,
                                                 )))),
@@ -139,7 +151,8 @@ class _SupplierPageState extends State<SupplierPage> {
                             ),
                             Expanded(
                               child: SizedBox(
-                                  width: MediaQuery.of(context).size.width / 2.2,
+                                  width:
+                                      MediaQuery.of(context).size.width / 2.2,
                                   child: Padding(
                                       padding: const EdgeInsets.only(
                                           top: 8, left: 16, right: 16),
@@ -163,13 +176,12 @@ class _SupplierPageState extends State<SupplierPage> {
                                         columnSpacing: 0,
                                         horizontalMargin: 0,
                                         columns: const [
-                                        
-                                           DataColumn(
-                                            label: Center(child: Text('Tanggal')),
-                                          ),
                                           DataColumn(
                                             label:
-                                                Center(child: Text('Pihak')),
+                                                Center(child: Text('Tanggal')),
+                                          ),
+                                          DataColumn(
+                                            label: Center(child: Text('Pihak')),
                                           ),
                                           DataColumn(
                                             label: Center(
@@ -201,12 +213,12 @@ class _SupplierPageState extends State<SupplierPage> {
 Widget get _divier_ => Row(
       children: const [
         VerticalDivider(
-          color:Color.fromARGB(255, 79, 117, 134),
+          color: Color.fromARGB(255, 79, 117, 134),
           thickness: 2.5,
           width: 4,
         ),
         VerticalDivider(
-          color:Color.fromARGB(255, 79, 117, 134),
+          color: Color.fromARGB(255, 79, 117, 134),
           thickness: 2.5,
           width: 4,
         ),
@@ -218,9 +230,8 @@ class UserDataTableSource extends DataTableSource {
       : _userData = userData;
   final BuildContext context;
   final List<Supplier> _userData;
-  final formatCurrency = NumberFormat.currency(
-    locale: "id_ID",decimalDigits: 0,symbol: 'Rp '
-  );
+  final formatCurrency =
+      NumberFormat.currency(locale: "id_ID", decimalDigits: 0, symbol: 'Rp ');
   @override
   DataRow getRow(int index) {
     assert(index >= 0);
@@ -242,8 +253,7 @@ class UserDataTableSource extends DataTableSource {
         },
         index: index,
         cells: [
-          
-               DataCell(Container(
+          DataCell(Container(
               width: double.infinity,
               height: double.infinity,
               color: _selectedSupplier == _user
@@ -283,7 +293,7 @@ class UserDataTableSource extends DataTableSource {
             child: Container(
                 alignment: Alignment.center,
                 // margin: const EdgeInsets.only(
-                //     left: 30, right: 30, top: 10, bottom: 10),lha 
+                //     left: 30, right: 30, top: 10, bottom: 10),lha
                 // decoration: BoxDecoration(
                 //     color: Colors.green.shade400,
                 //     borderRadius: BorderRadius.circular(10)),

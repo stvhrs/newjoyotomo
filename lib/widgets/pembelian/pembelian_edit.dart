@@ -1,3 +1,4 @@
+import 'package:newJoyo/library/date_picker/src/web_date_picker.dart';
 import 'package:newJoyo/main.dart';
 import 'package:newJoyo/models/detail_stock.dart';
 import 'package:newJoyo/models/pembelian.dart';
@@ -10,11 +11,12 @@ import 'package:provider/provider.dart';
 
 import '../../helper/currency.dart';
 import '../../models/stock.dart';
+import '../../models/supplier.dart';
 import '../../provider/trigger.dart';
 
 class SupplierEdit extends StatefulWidget {
-  final Supplier supplier;
-  const SupplierEdit(this.supplier);
+  Supplier supplier;
+  SupplierEdit(this.supplier);
 
   @override
   State<SupplierEdit> createState() => _SupplierEditState();
@@ -23,28 +25,33 @@ class SupplierEdit extends StatefulWidget {
 class _SupplierEditState extends State<SupplierEdit> {
   String _desc = '';
   String _supplier = '';
-
+  late DateTime _date;
   final TextEditingController _controller = TextEditingController();
-  int jumlahOpsi = 1;
+  int jumlahOpsi = 0;
 
   List<Stock> _updatedStock = [
-    Stock(
-        partname: 'partname',
-        name: ' name',
-        desc: ' desc',
-        count: 0,
-        totalPrice: 0)
+    // Stock(
+    //     partname: 'partname',
+    //     name: ' name',
+    //     desc: ' desc',
+    //     count: 0,
+    //     totalPrice: 0)
   ];
   List<DetailStock> _updatedDetailStock = [
-    DetailStock(supplier: '', date: '', price: 0, count: 1, totalPrice: 0)
+    // DetailStock(supplier: '', date: '', price: 0, count: 1, totalPrice: 0,)
   ];
   @override
   void didChangeDependencies() {
-    jumlahOpsi = jumlahOpsi + widget.supplier.detailStockItems.length;
+    jumlahOpsi = 0;
+    _updatedDetailStock.clear();
+    _updatedStock.clear();
+    widget.supplier = Provider.of<Trigger>(context).selectedSupplier;
+    jumlahOpsi = jumlahOpsi + widget.supplier.stockItems.length;
     _controller.text = widget.supplier.supplier;
 
     _updatedDetailStock.addAll(widget.supplier.detailStockItems);
     _updatedStock.addAll(widget.supplier.stockItems);
+
     super.didChangeDependencies();
   }
 
@@ -53,98 +60,98 @@ class _SupplierEditState extends State<SupplierEdit> {
         Provider.of<Trigger>(context, listen: false).listSelectedStock;
     TextEditingController dpdController = TextEditingController();
     dpdController.text = _updatedStock[i].partname;
-    return StatefulBuilder(builder: (context, StateSetter setState) {
-      return Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: 200,
-            child: DropDownField(
-              controller: dpdController,
-              inputFormatters: const [],
-              required: true,
-              onValueChanged: (val) {
-                if (stocks.map((e) => e.partname).toList().contains(val)) {
-                  if (_updatedStock.isNotEmpty) {
-                    _updatedStock[i] =
-                        stocks.firstWhere((element) => element.partname == val);
-                  }
+    return Container(
+        margin: EdgeInsets.only(bottom: 10),
+        child: StatefulBuilder(builder: (context, StateSetter setState) {
+          return Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: 200,
+                child: DropDownField(
+                  controller: dpdController,
+                  inputFormatters: const [],
+                  required: true,
+                  onValueChanged: (val) {
+                    if (stocks.map((e) => e.partname).toList().contains(val)) {
+                      if (_updatedStock.isNotEmpty) {
+                        _updatedStock[i] = stocks
+                            .firstWhere((element) => element.partname == val);
+                      }
 
-                  setState(() {});
-                }
-              },
-              strict: true,
-              labelText: 'PartName',
-              items: stocks.map((e) => e.partname).toList(),
-            ),
-          ),
-          const Spacer(),
-          SizedBox(
-            width: 200,
-            child: TextFormField(
-              initialValue: _updatedDetailStock[i].price.toString(),
-              onChanged: (value) {
-                if (_updatedStock.isNotEmpty) {
-                  _updatedDetailStock[i].price =
-                      NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ')
-                          .parse(value)
-                          .toDouble();
-                }
-              },
-              inputFormatters: [
-                FilteringTextInputFormatter.digitsOnly,
-                CurrencyInputFormatter()
-              ],
-            ),
-          ),
-          IconButton(
-              onPressed: () {
-                setState(() {});
-                if (_updatedDetailStock[i].count > 1) {
-                  setState(() {
-                    _updatedDetailStock[i].count--;
-                    // _updatedStock[i].count--;
-                  });
-                }
-              },
-              icon: const Icon(Icons.remove_circle)),
-          Text(_updatedDetailStock[i].count.toString()),
-          IconButton(
-              onPressed: () {
-                setState(() {
-                  _updatedDetailStock[i].count++;
-                  // _updatedStock[i].count++;
-                });
-              },
-              icon: const Icon(Icons.add_circle)),
-        ],
-      );
-    });
+                      setState(() {});
+                    }
+                  },
+                  strict: true,
+                  labelText: 'PartName',
+                  items: stocks.map((e) => e.partname).toList(),
+                ),
+              ),
+              const Spacer(),
+              SizedBox(
+                width: 200,
+                child: TextFormField(decoration: InputDecoration(hintText: 'Harga'),
+                  initialValue: _updatedDetailStock[i].price.toString(),
+                  onChanged: (value) {
+                    if (_updatedStock.isNotEmpty) {
+                      _updatedDetailStock[i].price =
+                          NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ')
+                              .parse(value)
+                              .toDouble();
+                    }
+                  },
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                    CurrencyInputFormatter()
+                  ],
+                ),
+              ),
+              IconButton(
+                  onPressed: () {
+                    setState(() {});
+                    if (_updatedDetailStock[i].count > 1) {
+                      setState(() {
+                        _updatedDetailStock[i].count--;
+                        // _updatedStock[i].count--;
+                      });
+                    }
+                  },
+                  icon: const Icon(Icons.remove_circle)),
+              Text(_updatedDetailStock[i].count.toString()),
+              IconButton(
+                  onPressed: () {
+                    setState(() {
+                      _updatedDetailStock[i].count++;
+                      // _updatedStock[i].count++;
+                    });
+                  },
+                  icon: const Icon(Icons.add_circle)),
+            ],
+          );
+        }));
   }
 
   @override
   Widget build(BuildContext context) {
-    List<Supplier> suppliers =
-        Provider.of<Trigger>(context, listen: false).listSelectedSupplier;
     List<Stock> stocks =
         Provider.of<Trigger>(context, listen: false).listSelectedStock;
+    List<Penyuplai> penyuplais =
+        Provider.of<Trigger>(context, listen: false).listSelectedPenyuplai;
+
     List<String> itemsSupplier = [];
-    if (suppliers.isNotEmpty) {
-      for (Supplier e in suppliers) {
-        if (!itemsSupplier.contains(e.supplier)) {
-          itemsSupplier.add(e.supplier);
+    if (penyuplais.isNotEmpty) {
+      for (Penyuplai e in penyuplais) {
+        if (!itemsSupplier.contains(e.namaPenyuplai)) {
+          itemsSupplier.add(e.namaPenyuplai);
         }
       }
-    } else {
-      itemsSupplier.add(_supplier);
     }
 
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
       child: ElevatedButton.icon(
           style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(
-                  const Color.fromARGB(255, 79, 117, 134))),
+              backgroundColor: MaterialStateProperty.all(Colors.green)),
           onPressed: stocks.isEmpty
               ? () {}
               : () {
@@ -154,7 +161,7 @@ class _SupplierEditState extends State<SupplierEdit> {
                         return AlertDialog(
                             actionsPadding:
                                 const EdgeInsets.only(right: 15, bottom: 15),
-                            title: const Text("Inventory"),
+                            title: const Text("Edit Pembelian"),
                             content: StatefulBuilder(
                               builder: (BuildContext context,
                                       StateSetter setState) =>
@@ -165,21 +172,44 @@ class _SupplierEditState extends State<SupplierEdit> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      DropDownField(
-                                        required: true,
-                                        inputFormatters: const [],
-                                        strict: true,
-                                        controller: _controller,
-                                        labelText: 'Supplier',
-                                        onValueChanged: (v) {
-                                          _supplier = v;
-                                        },
-                                        items: itemsSupplier,
+                                      Container(
+                                        margin: EdgeInsets.only(bottom: 20),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            SizedBox(
+                                              width: 200,
+                                              child: DropDownField(
+                                                required: true,
+                                                inputFormatters: const [],
+                                                strict: true,
+                                                controller: _controller,
+                                                labelText: 'Supplier',
+                                                onValueChanged: (v) {
+                                                  _supplier = v;
+                                                },
+                                                items: itemsSupplier,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 150,
+                                              child:
+                                                  WebDatePicker(onChange: (v) {
+                                                if (v != null) {
+                                                  _date = v;
+                                                }
+                                              }),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                       Container(
                                         margin:
                                             const EdgeInsets.only(bottom: 20),
-                                        child: TextFormField(
+                                        child: TextFormField(decoration: InputDecoration(hintText: 'Deskripsi'),
                                           onChanged: (val) {
                                             _desc = val;
                                           },
@@ -225,6 +255,9 @@ class _SupplierEditState extends State<SupplierEdit> {
                                                         totalPrice: 0));
                                                     _updatedDetailStock.add(
                                                         DetailStock(
+                                                            pihakId: widget
+                                                                .supplier
+                                                                .pihakId,
                                                             supplier: '',
                                                             date: '',
                                                             price: 0,
@@ -255,6 +288,8 @@ class _SupplierEditState extends State<SupplierEdit> {
                                       DateTime.now().toIso8601String();
                                   widget.supplier.desc = _desc;
                                   widget.supplier.supplier = _supplier;
+
+                                  ///PURGE SUPPLIER STOCKS
                                   widget.supplier.items.clear();
                                   widget.supplier.count = 0;
                                   widget.supplier.totalPrice = 0;
@@ -264,9 +299,9 @@ class _SupplierEditState extends State<SupplierEdit> {
                                       .addAll(_updatedStock);
                                   widget.supplier.detailStockItems
                                       .addAll(_updatedDetailStock);
+                                  //SUPPLEIER HISTORY
                                   if (_supplier != '' &&
                                       _updatedStock.isNotEmpty) {
-                                    //SUPPLEIER HISTORY
                                     for (var i = 0;
                                         i < _updatedStock.length;
                                         i++) {
@@ -286,6 +321,7 @@ class _SupplierEditState extends State<SupplierEdit> {
                                         i++) {
                                       DetailStock history = DetailStock(
                                           supplier: _supplier,
+                                          pihakId: widget.supplier.pihakId,
                                           date:
                                               DateTime.now().toIso8601String(),
                                           price: _updatedDetailStock[i].price,
@@ -299,23 +335,26 @@ class _SupplierEditState extends State<SupplierEdit> {
                                           .firstWhere((element) =>
                                               element.pihakId ==
                                               widget.supplier.pihakId);
-                                     
 
                                       _updatedStock[i].totalPrice =
                                           _updatedStock[i].totalPrice -
                                               (removeStock.price *
-                                                  removeStock.count) +(_updatedDetailStock[i].price*_updatedDetailStock[i].count);
+                                                  removeStock.count) +
+                                              (_updatedDetailStock[i].price *
+                                                  _updatedDetailStock[i].count);
 
                                       _updatedStock[i].count =
                                           _updatedStock[i].count -
-                                              removeStock.count +_updatedDetailStock[i].count;
-                                              //REMOVE AND ADD
+                                              removeStock.count +
+                                              _updatedDetailStock[i].count;
+                                      //REMOVE AND ADD
                                       _updatedStock[i]
                                           .items
                                           .remove(removeStock);
                                       _updatedStock[i].items.add(history);
 
                                       ///ADD SUPPLIER
+
                                       widget.supplier.count =
                                           widget.supplier.count +
                                               _updatedDetailStock[i].count;
@@ -327,6 +366,12 @@ class _SupplierEditState extends State<SupplierEdit> {
 
                                       objectBox.insertStock(_updatedStock[i]);
                                     }
+                                    widget.supplier.stockItems.clear();
+                                    widget.supplier.detailStockItems.clear();
+                                    widget.supplier.stockItems
+                                        .addAll(_updatedStock);
+                                    widget.supplier.detailStockItems
+                                        .addAll(_updatedDetailStock);
                                     objectBox.insertSupplier(widget.supplier);
                                     Navigator.of(context).pop();
                                   }
@@ -336,25 +381,19 @@ class _SupplierEditState extends State<SupplierEdit> {
                             ]);
                       }).then((value) {
                     // _desc = '';
-                    // jumlahOpsi = 1;
+                    // jumlahOpsi = 0;
                     // _updatedStock = [];
                     // _supplier = '';
-                    // _updatedDetailStock = [
-                    //   DetailStock(
-                    //       supplier: '',
-                    //       date: '',
-                    //       price: 0,
-                    //       count: 1,
-                    //       totalPrice: 0)
-                    // ];
+                    // _updatedDetailStock = [];
                   });
                 },
           icon: const Icon(
-            Icons.add,
+            Icons.edit,
             color: Colors.white,
+            size: 17,
           ),
           label: const Text(
-            'Tambah Pembelian',
+            'Edit Pembelian',
             style: TextStyle(color: Colors.white),
           )),
     );

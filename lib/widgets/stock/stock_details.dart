@@ -142,9 +142,9 @@ class _StockDetailsState extends State<StockDetails> {
                                       : Colors.white),
                               cells: [
                                 DataCell(Text(
-                                  'Pemakaian',
+                                  e.pihakId.contains('SUP')?'Pembelian': 'Pemakaian',
                                   style: TextStyle(
-                                      color: Colors.red,
+                                      color:    e.pihakId.contains('SUP')?Colors.green: Colors.red,
                                       fontWeight: FontWeight.bold),
                                 )),
                                 DataCell(

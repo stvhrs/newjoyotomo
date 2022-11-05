@@ -8,15 +8,15 @@ import 'package:objectbox/objectbox.dart';
 class Penyuplai {
   @Id(assignable: true)
   int id;
-  String penyuplaiId;
+  String namaPenyuplai;
   String nomorHp;
-
+  int date;
   String alamat;
-
 
   Penyuplai(
       {this.id = 0,
-      required this.penyuplaiId,
-     required this.nomorHp,
+      required this.namaPenyuplai,
+      required this.date,
+      required this.nomorHp,
       required this.alamat});
 }

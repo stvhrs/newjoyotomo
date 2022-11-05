@@ -1,4 +1,3 @@
-
 // ignore_for_file: deprecated_member_use
 
 import 'dart:developer';
@@ -33,11 +32,13 @@ class _StockPageState extends State<StockPage> {
     _streamstocks = objectBox.getStocks();
     super.initState();
   }
-@override
+
+  @override
   void dispose() {
     log('dis');
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context2) {
     return Scaffold(
@@ -105,7 +106,7 @@ class _StockPageState extends State<StockPage> {
                                         ),
                                         child: Padding(
                                             padding: const EdgeInsets.only(
-                                                left: 15, right: 15, bottom: 3),
+                                                left: 15, right: 15, bottom:0),
                                             child: TextFormField(
                                                 onChanged: (val) {
                                                   setState(
@@ -124,8 +125,14 @@ class _StockPageState extends State<StockPage> {
                                                 },
                                                 decoration:
                                                     const InputDecoration(
-                                                  hintText:
-                                                      'Search Part Number/Name',
+                                                  hintText: 'Cari Partname',
+                                                  focusedBorder:
+                                                      InputBorder.none,
+                                                  enabledBorder:
+                                                      InputBorder.none,
+                                                  errorBorder: InputBorder.none,
+                                                  disabledBorder:
+                                                      InputBorder.none,
                                                   border: InputBorder.none,
                                                 )))),
                                   ),
@@ -135,7 +142,8 @@ class _StockPageState extends State<StockPage> {
                             ),
                             Expanded(
                               child: SizedBox(
-                                  width: MediaQuery.of(context).size.width / 2.5,
+                                  width:
+                                      MediaQuery.of(context).size.width / 2.5,
                                   child: Padding(
                                       padding: const EdgeInsets.only(
                                           top: 8, left: 16, right: 8),
@@ -182,8 +190,7 @@ class _StockPageState extends State<StockPage> {
                           ],
                         ),
                         _divier_,
-                   
-                    StockDetails(),
+                        StockDetails(),
                       ]),
                 );
               });
@@ -196,12 +203,12 @@ class _StockPageState extends State<StockPage> {
 Widget get _divier_ => Row(
       children: const [
         VerticalDivider(
-          color:Color.fromARGB(255, 79, 117, 134),
+          color: Color.fromARGB(255, 79, 117, 134),
           thickness: 2.5,
           width: 4,
         ),
         VerticalDivider(
-          color:Color.fromARGB(255, 79, 117, 134),
+          color: Color.fromARGB(255, 79, 117, 134),
           thickness: 2.5,
           width: 4,
         ),
@@ -213,9 +220,8 @@ class UserDataTableSource extends DataTableSource {
       : _userData = userData;
   final BuildContext context;
   final List<Stock> _userData;
-  final formatCurrency = NumberFormat.currency(
-    locale: "id_ID",decimalDigits: 0,symbol: 'Rp '
-  );
+  final formatCurrency =
+      NumberFormat.currency(locale: "id_ID", decimalDigits: 0, symbol: 'Rp ');
   @override
   DataRow getRow(int index) {
     assert(index >= 0);

@@ -5,7 +5,7 @@ import 'package:newJoyo/provider/trigger.dart';
 import 'package:data_table_2/paginated_data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:newJoyo/widgets/supplier/supplier_edit.dart';
+import 'package:newJoyo/widgets/pembelian/pembelian_edit.dart';
 import 'package:provider/provider.dart';
 
 class SupplierDetails extends StatefulWidget {

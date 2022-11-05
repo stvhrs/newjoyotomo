@@ -1,7 +1,7 @@
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:newJoyo/pages/customer_page.dart';
-import 'package:newJoyo/pages/daftar_pelanggan.dart';
 import 'package:newJoyo/pages/daftar_supplier.dart';
+import 'package:newJoyo/pages/daftar_pelangan.dart';
 import 'package:newJoyo/pages/riwayat_pemakaian.dart';
 
 import 'package:newJoyo/pages/riwayat_pembelian.dart';
@@ -223,9 +223,9 @@ class _SideState extends State<Side> {
                         StockPage(),
                         SupplierPage(),
                         RiwayatPemakaian(),
-                        CustomerPage(),
+                        CustomerPage(),  DaftarSupplier(),
                         DaftarPelanggan(),
-                        DaftarSupplier()
+                      
                       ],
                     ),
                   ),

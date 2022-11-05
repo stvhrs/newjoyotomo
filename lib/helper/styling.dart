@@ -7,4 +7,4 @@ var input=const InputDecoration(
         errorBorder: InputBorder.none,
         disabledBorder: InputBorder.none,
        
-        hintText: "Hint here");
+        hintText: "Cari Nama");

@@ -1,3 +1,4 @@
+import 'package:newJoyo/library/date_picker/src/web_date_picker.dart';
 import 'package:newJoyo/main.dart';
 import 'package:newJoyo/models/detail_stock.dart';
 import 'package:newJoyo/models/pembelian.dart';
@@ -6,6 +7,7 @@ import 'package:newJoyo/helper/dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:newJoyo/models/supplier.dart';
 import 'package:provider/provider.dart';
 
 import '../../helper/currency.dart';
@@ -22,7 +24,7 @@ class SupplierAdd extends StatefulWidget {
 class _SupplierAddState extends State<SupplierAdd> {
   String _desc = '';
   String _supplier = '';
-
+  late DateTime _date;
   final TextEditingController _controller = TextEditingController();
   int jumlahOpsi = 1;
 
@@ -30,80 +32,83 @@ class _SupplierAddState extends State<SupplierAdd> {
   List<DetailStock> _updatedDetailStock = [
     DetailStock(supplier: '', date: '', price: 0, count: 1, totalPrice: 0)
   ];
-
+  List<String> itemsSupplier = [];
   Widget _buildPartName(int i, BuildContext context) {
     List<Stock> stocks =
         Provider.of<Trigger>(context, listen: false).listSelectedStock;
+    return Container(
+        margin: EdgeInsets.only(bottom: 10),
+        child: StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) => Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: 200,
+                      child: DropDownField(
+                        inputFormatters: const [],
+                        required: true,
+                        onValueChanged: (val) {
+                          if (stocks
+                              .map((e) => e.partname)
+                              .toList()
+                              .contains(val)) {
+                            if (_updatedStock.length < i + 1) {
+                              _updatedStock.insert(
+                                  i,
+                                  stocks.firstWhere(
+                                      (element) => element.partname == val));
+                            }
 
-    return StatefulBuilder(
-        builder: (BuildContext context, StateSetter setState) => Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  width: 200,
-                  child: DropDownField(
-                    inputFormatters: const [],
-                    required: true,
-                    onValueChanged: (val) {
-                      if (stocks
-                          .map((e) => e.partname)
-                          .toList()
-                          .contains(val)) {
-                        if (_updatedStock.length < i + 1) {
-                          _updatedStock.insert(
-                              i,
-                              stocks.firstWhere(
-                                  (element) => element.partname == val));
-                        }
-
-                        setState(() {});
-                      }
-                    },
-                    strict: true,
-                    labelText: 'PartName',
-                    items: stocks.map((e) => e.partname).toList(),
-                  ),
-                ),
-                const Spacer(),
-                SizedBox(
-                  width: 200,
-                  child: TextField(
-                    onChanged: (value) {
-                      if (_updatedStock.isNotEmpty) {
-                        _updatedDetailStock[i].price = NumberFormat.currency(
-                                locale: 'id_ID', symbol: 'Rp ')
-                            .parse(value)
-                            .toDouble();
-                      }
-                    },
-                    inputFormatters: [
-                      FilteringTextInputFormatter.digitsOnly,
-                      CurrencyInputFormatter()
-                    ],
-                  ),
-                ),
-                IconButton(
-                    onPressed: () {
-                      setState(() {});
-                      if (_updatedDetailStock[i].count > 1) {
-                        setState(() {
-                          _updatedDetailStock[i].count--;
-                          // _updatedStock[i].count--;
-                        });
-                      }
-                    },
-                    icon: const Icon(Icons.remove_circle)),
-                Text(_updatedDetailStock[i].count.toString()),
-                IconButton(
-                    onPressed: () {
-                      setState(() {
-                        _updatedDetailStock[i].count++;
-                        // _updatedStock[i].count++;
-                      });
-                    },
-                    icon: const Icon(Icons.add_circle)),
-              ],
-            ));
+                            setState(() {});
+                          }
+                        },
+                        strict: true,
+                        labelText: 'PartName',
+                        items: stocks.map((e) => e.partname).toList(),
+                      ),
+                    ),
+                    const Spacer(),
+                    SizedBox(
+                      width: 200,
+                      child: TextFormField(
+                        decoration: InputDecoration(hintText: 'Harga'),
+                        onChanged: (value) {
+                          if (_updatedStock.isNotEmpty) {
+                            _updatedDetailStock[i].price =
+                                NumberFormat.currency(
+                                        locale: 'id_ID', symbol: 'Rp ')
+                                    .parse(value)
+                                    .toDouble();
+                          }
+                        },
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                          CurrencyInputFormatter()
+                        ],
+                      ),
+                    ),
+                    IconButton(
+                        onPressed: () {
+                          setState(() {});
+                          if (_updatedDetailStock[i].count > 1) {
+                            setState(() {
+                              _updatedDetailStock[i].count--;
+                              // _updatedStock[i].count--;
+                            });
+                          }
+                        },
+                        icon: const Icon(Icons.remove_circle)),
+                    Text(_updatedDetailStock[i].count.toString()),
+                    IconButton(
+                        onPressed: () {
+                          setState(() {
+                            _updatedDetailStock[i].count++;
+                            // _updatedStock[i].count++;
+                          });
+                        },
+                        icon: const Icon(Icons.add_circle)),
+                  ],
+                )));
   }
 
   @override
@@ -112,15 +117,15 @@ class _SupplierAddState extends State<SupplierAdd> {
         Provider.of<Trigger>(context, listen: false).listSelectedSupplier;
     List<Stock> stocks =
         Provider.of<Trigger>(context, listen: false).listSelectedStock;
-    List<String> itemsSupplier = [];
-    if (suppliers.isNotEmpty) {
-      for (Supplier e in suppliers) {
-        if (!itemsSupplier.contains(e.supplier)) {
-          itemsSupplier.add(e.supplier);
+    List<Penyuplai> penyuplais =
+        Provider.of<Trigger>(context, listen: false).listSelectedPenyuplai;
+
+    if (penyuplais.isNotEmpty) {
+      for (Penyuplai e in penyuplais) {
+        if (!itemsSupplier.contains(e.namaPenyuplai)) {
+          itemsSupplier.add(e.namaPenyuplai);
         }
       }
-    } else {
-      itemsSupplier.add(_supplier);
     }
 
     return Container(
@@ -138,7 +143,7 @@ class _SupplierAddState extends State<SupplierAdd> {
                         return AlertDialog(
                             actionsPadding:
                                 const EdgeInsets.only(right: 15, bottom: 15),
-                            title: const Text("Inventory"),
+                            title: const Text("Tambah Pembelian"),
                             content: StatefulBuilder(
                               builder: (BuildContext context,
                                       StateSetter setState) =>
@@ -149,21 +154,46 @@ class _SupplierAddState extends State<SupplierAdd> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      DropDownField(
-                                        required: true,
-                                        inputFormatters: const [],
-                                        strict: true,
-                                        controller: _controller,
-                                        labelText: 'Supplier',
-                                        onValueChanged: (v) {
-                                          _supplier = v;
-                                        },
-                                        items: itemsSupplier,
+                                      Container(
+                                        margin: EdgeInsets.only(bottom: 20),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            SizedBox(
+                                              width: 200,
+                                              child: DropDownField(
+                                                required: true,
+                                                inputFormatters: const [],
+                                                strict: true,
+                                                controller: _controller,
+                                                labelText: 'Supplier',
+                                                onValueChanged: (v) {
+                                                  _supplier = v;
+                                                },
+                                                items: itemsSupplier,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 150,
+                                              child:
+                                                  WebDatePicker(onChange: (v) {
+                                                if (v != null) {
+                                                  _date = v;
+                                                }
+                                              }),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                       Container(
                                         margin:
                                             const EdgeInsets.only(bottom: 20),
                                         child: TextFormField(
+                                          decoration: InputDecoration(
+                                              hintText: 'Deskripsi'),
                                           onChanged: (val) {
                                             _desc = val;
                                           },
@@ -230,23 +260,23 @@ class _SupplierAddState extends State<SupplierAdd> {
                                   _supplier = _controller.text;
                                   int itemsCount = 0;
                                   double itemsTotalPrice = 0;
-                                  Supplier tempSupplier = Supplier(  pihakId: 'SUP/JT/000000'.replaceRange(
-                                              13 -
-                                                  int.parse(
-                                                      ((suppliers.length + 1)
-                                                              .toString())
-                                                          .length
-                                                          .toString()),
-                                              13,
-                                              (suppliers.length + 1)
+                                  Supplier tempSupplier = Supplier(
+                                      pihakId: 'SUP/JT/000000'.replaceRange(
+                                          13 -
+                                              int.parse(((suppliers.length + 1)
+                                                      .toString())
+                                                  .length
                                                   .toString()),
-                                      date: DateTime.now().toIso8601String(),
+                                          13,
+                                          (suppliers.length + 1).toString()),
+                                      date: _date.toIso8601String(),
                                       supplier: _supplier,
                                       desc: _desc,
                                       count: itemsCount,
                                       totalPrice: itemsTotalPrice);
-                                      tempSupplier.stockItems.addAll(_updatedStock);
-                                      tempSupplier.detailStockItems.addAll(_updatedDetailStock);
+                                  tempSupplier.stockItems.addAll(_updatedStock);
+                                  tempSupplier.detailStockItems
+                                      .addAll(_updatedDetailStock);
 
                                   if (_supplier != '' &&
                                       _updatedStock.isNotEmpty) {
@@ -255,7 +285,6 @@ class _SupplierAddState extends State<SupplierAdd> {
                                         i < _updatedStock.length;
                                         i++) {
                                       tempSupplier.items.add(DetailPembelian(
-                                        
                                           name: _updatedStock[i].name,
                                           partName: _updatedStock[i].partname,
                                           count: _updatedDetailStock[i].count,
@@ -281,8 +310,7 @@ class _SupplierAddState extends State<SupplierAdd> {
                                               (suppliers.length + 1)
                                                   .toString()),
                                           supplier: _supplier,
-                                          date:
-                                              DateTime.now().toIso8601String(),
+                                          date: _date.toIso8601String(),
                                           price: _updatedDetailStock[i].price,
                                           count: _updatedDetailStock[i].count,
                                           totalPrice:
@@ -313,6 +341,7 @@ class _SupplierAddState extends State<SupplierAdd> {
 
                                       objectBox.insertStock(_updatedStock[i]);
                                     }
+
                                     objectBox.insertSupplier(tempSupplier);
                                     Navigator.of(context).pop();
                                   }

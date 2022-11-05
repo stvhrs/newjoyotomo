@@ -2,42 +2,44 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:newJoyo/models/pelanggan.dart';
 import 'package:newJoyo/models/supplier.dart';
-import 'package:newJoyo/widgets/penyuplai/edit_penyuplai.dart';
-import 'package:newJoyo/widgets/penyuplai/tambah_penyuplai.dart';
+import 'package:newJoyo/widgets/Pelanggan/tambah_Pelanggan.dart';
+import 'package:newJoyo/widgets/pelanggan/edit_pelanggan.dart';
 
 import '../main.dart';
 
-class DaftarSupplier extends StatefulWidget {
-  const DaftarSupplier({super.key});
+class DaftarPelanggan extends StatefulWidget {
+  const DaftarPelanggan({super.key});
 
   @override
-  State<DaftarSupplier> createState() => _DaftarSupplierState();
+  State<DaftarPelanggan> createState() => _DaftarPelangganState();
 }
 
-class _DaftarSupplierState extends State<DaftarSupplier> {
-  late Stream<List<Penyuplai>> _streamPenyuplai;
+class _DaftarPelangganState extends State<DaftarPelanggan> {
+  late Stream<List<Pelanggan>> _streamPelanggan;
   final int _currentIndex = 0;
 
   String _search = '';
 
   @override
   void initState() {
-    _streamPenyuplai = objectBox.getPenyuplai();
+    _streamPelanggan = objectBox.getPelanggan();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-      Container(decoration: BoxDecoration(  color: Colors.white,borderRadius: BorderRadius.circular(10)),
+      Container(
           padding: EdgeInsets.only(left: 25, right: 25, top: 15),
-        
+          decoration: BoxDecoration(
+              color: Colors.white, borderRadius: BorderRadius.circular(10)),
           width: MediaQuery.of(context).size.width * 0.7,
           child: Column(
             children: [
               Text(
-                'Daftar Supplier',
+                'Daftar Pelanggan',
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               Row(
@@ -76,7 +78,7 @@ class _DaftarSupplierState extends State<DaftarSupplier> {
                                     disabledBorder: InputBorder.none,
                                     hintText: 'Cari Nama',
                                   ))))),
-                  TambahPenyuplai()
+                  TambahPelanggan()
                 ],
               ),
               Container(
@@ -96,16 +98,16 @@ class _DaftarSupplierState extends State<DaftarSupplier> {
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.7,
                 child: StreamBuilder(
-                  stream: _streamPenyuplai,
-                  builder: (context, AsyncSnapshot<List<Penyuplai>> snapshot) {
+                  stream: _streamPelanggan,
+                  builder: (context, AsyncSnapshot<List<Pelanggan>> snapshot) {
                     if (!snapshot.hasData) {
                       return const SizedBox();
                     }
-                    List<Penyuplai> daftar = [];
+                    List<Pelanggan> daftar = [];
 
                     if (_search != '') {
-                      for (Penyuplai element in snapshot.data!) {
-                        if (element.namaPenyuplai
+                      for (Pelanggan element in snapshot.data!) {
+                        if (element.namaPelanggan
                             .toLowerCase()
                             .startsWith(_search.toLowerCase())) {
                           daftar.add(element);
@@ -127,7 +129,7 @@ class _DaftarSupplierState extends State<DaftarSupplier> {
                             children: [
                               Expanded(
                                   flex: 3,
-                                  child: Text(daftar[index].namaPenyuplai)),
+                                  child: Text(daftar[index].namaPelanggan)),
                               Expanded(
                                   flex: 3, child: Text(daftar[index].alamat)),
                               Expanded(
@@ -137,10 +139,10 @@ class _DaftarSupplierState extends State<DaftarSupplier> {
                                 child: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    EdithPenyuplai(daftar[index]),
+                                    EditPelanggan(daftar[index]),
                                     IconButton(
                                         onPressed: () {
-                                          objectBox.deletePenyuplai(
+                                          objectBox.deletePelanggan(
                                               daftar[index].id);
                                         },
                                         icon: Icon(
