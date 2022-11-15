@@ -30,7 +30,14 @@ class _DaftarSupplierState extends State<DaftarSupplier> {
   @override
   Widget build(BuildContext context) {
     return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-      Container(decoration: BoxDecoration(  color: Colors.white,borderRadius: BorderRadius.circular(10)),
+      Container(decoration:  BoxDecoration(boxShadow: <BoxShadow>[
+            BoxShadow(
+              color: Colors.grey,
+              blurRadius: 4,
+              spreadRadius: 3,
+              offset: Offset(2, 2),
+            ),
+          ], color: Colors.white, borderRadius: BorderRadius.circular(10)),
           padding: EdgeInsets.only(left: 25, right: 25, top: 15),
         
           width: MediaQuery.of(context).size.width * 0.7,

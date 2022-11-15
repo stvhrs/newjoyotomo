@@ -1,79 +1,107 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'dart:typed_data';
 
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:newJoyo/models/customer.dart';
 import 'package:flutter/services.dart';
 import 'package:newJoyo/models/spk.dart';
 import 'package:newJoyo/library/pdf/lib/pdf.dart';
 
 import 'package:newJoyo/library/pdf/lib/widgets.dart' as pw;
+import 'package:newJoyo/widgets/customer/spk/spk_doc.dart';
+import 'package:printing/printing.dart';
+import 'package:widgets_to_image/widgets_to_image.dart';
 
-Future<Uint8List> generateCalendar(
-  Customer customer,Spk spk
-) async {
-  //Create a PDF document.
+void printKosongan(String name) async {
+  final pdf = await rootBundle.load(name);
+  await Printing.layoutPdf(onLayout: (_) => pdf.buffer.asUint8List());
+}
+
+void printPdf(Uint8List uint8list) async {
   final document = pw.Document();
+  final pw.MemoryImage memoryImage = pw.MemoryImage(uint8list);
+  // if (await File(filepath).exists()) {
+  //   return;
+  // }
 
-print(customer.customerName);
   document.addPage(pw.Page(
       margin: const pw.EdgeInsets.all(20),
       pageFormat: PdfPageFormat.a4,
-      build: ((pw.Context context) => pw.Container(
-          height: 1000 * 1.4,
-          width: 100,
-          child: pw.Column(
-              crossAxisAlignment: pw.CrossAxisAlignment.start,
-              children: [
-                pw.Row(
-                  mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                  children: [
-                    pw.Column(
-                      children: [
-                        pw.Text(
-                          textAlign: pw.TextAlign.justify,
-                          'JOYOTOMO',
-                          style: pw.TextStyle(
-                              fontWeight: pw.FontWeight.bold,
-                              fontSize: 23,
-                              fontStyle: pw.FontStyle.italic),
-                        ),
-                        pw.Text(customer.spk.target!.analisa,
-                          textAlign: pw.TextAlign.justify,
-                        
-                          style: pw.TextStyle(
-                            fontWeight: pw.FontWeight.bold,
-                            fontSize: 14,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                pw.Text(customer.alamat)
-              ])))));
-print(spk.sukuCadang+'ds');
-  return document.save();
-}
+      build: ((pw.Context context) {
+        return pw.Align(
+          alignment: pw.Alignment.topCenter,
+          child: pw.Image(memoryImage),
+        );
+      })));
 
-const examples = <Example>[
-  Example( generateCalendar),
-];
-
-typedef LayoutCallbackWithData = Future<Uint8List> Function(
-  Customer customer,Spk spk
-);
-
-class Example {
-  const Example(
-
-    this.builder,
+  Printing.layoutPdf(
+    usePrinterSettings: true,
+    onLayout: (format) async => document.save(),
   );
-
-
-
-  final LayoutCallbackWithData builder;
 }
+
+Future<Uint8List> generateCalendar(Customer customer, String filepath) async {
+  //Create a PDF document.
+
+  final document = pw.Document();
+  pw.MemoryImage image;
+  if (await File(filepath).exists()) {
+    return File(filepath).readAsBytesSync();
+  } else {
+    image = pw.MemoryImage(
+      (await rootBundle.load('images/logo.png')).buffer.asUint8List(),
+    );
+
+    document.addPage(pw.Page(
+        margin: const pw.EdgeInsets.all(20),
+        pageFormat: PdfPageFormat.a4,
+        build: ((pw.Context context) => pw.Container(
+              height: 1000 * 1.4,
+              width: 1000,
+              child: pw.Align(
+                  alignment: pw.Alignment.center,
+                  child: pw.Image(
+                    image,
+                  )),
+            ))));
+
+    return document.save();
+  }
+}
+
+createSpk(Uint8List uint8list, String fileName, BuildContext context,
+    String folder) async {
+  final document2 = pw.Document();
+
+  final pw.MemoryImage memoryImage = pw.MemoryImage(uint8list);
+  document2.addPage(pw.Page(
+      margin: pw.EdgeInsets.all(20),
+      pageFormat: PdfPageFormat.a4,
+      build: (pw.Context context) {
+        return pw.Align(
+          alignment: pw.Alignment.topCenter,
+          child: pw.Image(memoryImage),
+        );
+      }));
+  document2.save();
+  var year = DateTime.now().year;
+  var month = DateTime.now().month;
+  fileName = fileName.replaceAll('/', '-');
+  Directory('D:/$folder/$year-$month').create()
+      // The created directory is returned as a Future.
+      .then((Directory directory) async {
+    final file = File("${directory.path}/$fileName.pdf");
+    await file.writeAsBytes(await document2.save());
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text('Saved: ${file.path}')));
+  });
+}
+
+
+
 
 
 

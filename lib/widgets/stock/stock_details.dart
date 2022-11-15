@@ -96,9 +96,9 @@ class _StockDetailsState extends State<StockDetails> {
             Expanded(
                 child: SizedBox(
               height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width / 2.6,
+              width: MediaQuery.of(context).size.width / 2.31,
               child: DataTable2(
-                  headingRowHeight: 30,
+                  headingRowHeight: 50,
                   border: TableBorder.all(
                       width: 2,
                       color: Colors.black,
@@ -120,7 +120,10 @@ class _StockDetailsState extends State<StockDetails> {
                       label: Center(child: Text('Pihak')),
                     ),
                     DataColumn(
-                      label: Center(child: Text('Harga')),
+                      label: Center(child: Text(textAlign: TextAlign.center,'Harga\nBeli')),
+                    ),
+                     DataColumn(
+                      label: Center(child: Text(textAlign: TextAlign.center,'Harga\nJual')),
                     ),
                     DataColumn2(
                         label: Center(
@@ -162,7 +165,11 @@ class _StockDetailsState extends State<StockDetails> {
                                   ),
                                 )),
                                 DataCell(Center(
-                                  child: Text(formatCurrency.format(e.price),
+                                  child: Text(formatCurrency.format(e.buyPrice),
+                                      style: TextStyle(fontSize: 11)),
+                                )),
+                                DataCell(Center(
+                                  child: Text(formatCurrency.format(e.sellPrice),
                                       style: TextStyle(fontSize: 11)),
                                 )),
                                 DataCell(Center(

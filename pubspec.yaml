@@ -26,6 +26,7 @@ dependencies:
   data_table_2: ^2.3.6
   intl: ^0.17.0
   dropdownfield2: ^1.0.7
+  widgets_to_image: ^0.0.2
 
 dev_dependencies:
   build_runner: ^2.0.0

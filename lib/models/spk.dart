@@ -11,7 +11,7 @@ class Spk {
   String tipeKendaraan;
   int levelPekerjaan;
   String date;
-  int km;
+  String km;
   String noPkb;
   String noRangka;
   String alamat;
@@ -36,7 +36,7 @@ class Spk {
      this.noRangka='',
      this.tipeKendaraan='',
      this.sukuCadang='',
-     this.km=0,
+     this.km='0',
      this.policeNumber='',
      this.namaKendaraan='',
      this.date='DD/MM/YYYY',

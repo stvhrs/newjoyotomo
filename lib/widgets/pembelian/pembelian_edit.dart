@@ -91,10 +91,10 @@ class _SupplierEditState extends State<SupplierEdit> {
               SizedBox(
                 width: 200,
                 child: TextFormField(decoration: InputDecoration(hintText: 'Harga'),
-                  initialValue: _updatedDetailStock[i].price.toString(),
+                  initialValue: _updatedDetailStock[i].buyPrice.toString(),
                   onChanged: (value) {
                     if (_updatedStock.isNotEmpty) {
-                      _updatedDetailStock[i].price =
+                      _updatedDetailStock[i].buyPrice =
                           NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ')
                               .parse(value)
                               .toDouble();
@@ -197,7 +197,7 @@ class _SupplierEditState extends State<SupplierEdit> {
                                             SizedBox(
                                               width: 150,
                                               child:
-                                                  WebDatePicker(onChange: (v) {
+                                                  WebDatePicker(small: false,onChange: (v) {
                                                 if (v != null) {
                                                   _date = v;
                                                 }
@@ -254,13 +254,13 @@ class _SupplierEditState extends State<SupplierEdit> {
                                                         count: 0,
                                                         totalPrice: 0));
                                                     _updatedDetailStock.add(
-                                                        DetailStock(
+                                                        DetailStock(    sellPrice: 0,
                                                             pihakId: widget
                                                                 .supplier
                                                                 .pihakId,
                                                             supplier: '',
                                                             date: '',
-                                                            price: 0,
+                                                            buyPrice: 0,
                                                             count: 1,
                                                             totalPrice: 0));
                                                   });
@@ -279,7 +279,7 @@ class _SupplierEditState extends State<SupplierEdit> {
                               ElevatedButton(
                                 onPressed: () {
                                   if (_updatedDetailStock
-                                      .any((element) => element.price < 1)) {
+                                      .any((element) => element.buyPrice < 1)) {
                                     return;
                                   }
                                   _supplier = _controller.text;
@@ -309,9 +309,9 @@ class _SupplierEditState extends State<SupplierEdit> {
                                           name: _updatedStock[i].name,
                                           partName: _updatedStock[i].partname,
                                           count: _updatedDetailStock[i].count,
-                                          price: _updatedDetailStock[i].price,
+                                          price: _updatedDetailStock[i].buyPrice,
                                           totalPrice: _updatedDetailStock[i]
-                                                  .price *
+                                                  .buyPrice *
                                               _updatedDetailStock[i].count));
                                     }
 
@@ -320,14 +320,17 @@ class _SupplierEditState extends State<SupplierEdit> {
                                         i < _updatedStock.length;
                                         i++) {
                                       DetailStock history = DetailStock(
+                                        sellPrice: _updatedDetailStock[i].buyPrice* 1.3 +
+              1000 -
+              (_updatedDetailStock[i].buyPrice * 1.3 % 1000),
                                           supplier: _supplier,
                                           pihakId: widget.supplier.pihakId,
                                           date:
                                               DateTime.now().toIso8601String(),
-                                          price: _updatedDetailStock[i].price,
+                                          buyPrice: _updatedDetailStock[i].buyPrice,
                                           count: _updatedDetailStock[i].count,
                                           totalPrice:
-                                              _updatedDetailStock[i].price *
+                                              _updatedDetailStock[i].buyPrice *
                                                   _updatedDetailStock[i].count);
                                       // UPDATE STOCK
                                       DetailStock removeStock = _updatedStock[i]
@@ -338,9 +341,9 @@ class _SupplierEditState extends State<SupplierEdit> {
 
                                       _updatedStock[i].totalPrice =
                                           _updatedStock[i].totalPrice -
-                                              (removeStock.price *
+                                              (removeStock.buyPrice *
                                                   removeStock.count) +
-                                              (_updatedDetailStock[i].price *
+                                              (_updatedDetailStock[i].buyPrice *
                                                   _updatedDetailStock[i].count);
 
                                       _updatedStock[i].count =
@@ -361,7 +364,7 @@ class _SupplierEditState extends State<SupplierEdit> {
 
                                       widget.supplier.totalPrice =
                                           widget.supplier.totalPrice +
-                                              _updatedDetailStock[i].price *
+                                              _updatedDetailStock[i].buyPrice *
                                                   _updatedDetailStock[i].count;
 
                                       objectBox.insertStock(_updatedStock[i]);

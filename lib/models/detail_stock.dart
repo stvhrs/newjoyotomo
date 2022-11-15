@@ -8,7 +8,8 @@ class DetailStock {
   String supplier;
 String pihakId;
   int count;
-  double price;
+  double buyPrice;
+  double sellPrice;
   double totalPrice;
 
   DetailStock({
@@ -16,7 +17,8 @@ String pihakId;
     this.pihakId='',
     required this.supplier,
     required this.date,
-    required this.price,
+    required this.sellPrice,
+    required this.buyPrice,
     required this.count,
     required this.totalPrice,
     // required this.DetailStockHistory,

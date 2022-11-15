@@ -1,5 +1,5 @@
 import 'package:newJoyo/models/customer.dart';
-import 'package:newJoyo/models/invoice/payment.dart';
+import 'package:newJoyo/models/payment.dart';
 import 'package:newJoyo/models/mpi/mpiItem.dart';
 import 'package:newJoyo/models/realization.dart';
 import 'package:newJoyo/models/spk.dart';

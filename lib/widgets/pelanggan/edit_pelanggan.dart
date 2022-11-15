@@ -1,5 +1,5 @@
 import 'package:newJoyo/models/customer.dart';
-import 'package:newJoyo/models/invoice/payment.dart';
+
 import 'package:newJoyo/models/mpi/mpiItem.dart';
 import 'package:newJoyo/models/realization.dart';
 import 'package:newJoyo/models/spk.dart';
@@ -14,7 +14,7 @@ import '../../models/pelanggan.dart';
 
 class EditPelanggan extends StatefulWidget {
   final Pelanggan pelanggan;
-  EditPelanggan(this.pelanggan);
+  const EditPelanggan(this.pelanggan);
 
   @override
   State<EditPelanggan> createState() => _EditPelangganState();
@@ -123,13 +123,13 @@ class _EditPelangganState extends State<EditPelanggan> {
                   actions: <Widget>[
                     ElevatedButton(
                       onPressed: () {
-                        // if ((namaPelanggan.isNotEmpty || noHp.isNotEmpty)) {
-                        Pelanggan p=  Pelanggan( 
-                              namaPelanggan: namaPelanggan ,
-                              date: DateTime.now().microsecondsSinceEpoch,
-                              nomorHp: noHp,
-                              alamat: alamat);
-                              objectBox.insertPelanggan(p);
+                         
+                    
+                              widget.pelanggan.namaPelanggan=namaPelanggan;
+                              widget.pelanggan.date=DateTime.now().microsecondsSinceEpoch;
+                              widget.pelanggan.alamat=alamat;
+ widget.pelanggan.nomorHp=noHp;
+                              objectBox.insertPelanggan(widget.pelanggan);
                               Navigator.of(context).pop();
                         },
                       // },

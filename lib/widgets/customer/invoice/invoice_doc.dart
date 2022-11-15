@@ -1,9 +1,12 @@
 import 'dart:developer';
-
+import 'package:collection/collection.dart';
 import 'dart:io';
 import 'package:intl/intl.dart';
 import 'package:newJoyo/helper/border.dart';
 import 'package:newJoyo/helper/border2.dart';
+import 'package:newJoyo/library/date_picker/src/web_date_picker.dart';
+import 'package:newJoyo/main.dart';
+import 'package:newJoyo/models/invoice.dart';
 import 'package:newJoyo/models/stockService/stock_realization.dart';
 import 'package:newJoyo/widgets/kop.dart';
 import 'package:flutter/material.dart';
@@ -11,8 +14,13 @@ import 'package:flutter/services.dart';
 import 'package:newJoyo/library/pdf/lib/pdf.dart';
 import 'package:newJoyo/library/pdf/lib/widgets.dart' as pw;
 import 'package:printing/printing.dart';
-
+import 'package:provider/provider.dart';
+import 'package:widgets_to_image/widgets_to_image.dart';
+import 'dart:collection';
 import '../../../models/customer.dart';
+import '../../../models/examples.dart';
+import '../../../models/payment.dart';
+import '../../../provider/trigger.dart';
 
 class InvoiceDoc extends StatefulWidget {
   final Customer customer;
@@ -26,113 +34,30 @@ class _InvoiceDocState extends State<InvoiceDoc> {
   final formatCurrendcy =
       NumberFormat.currency(locale: "id_ID", decimalDigits: 0, symbol: 'Rp ');
   var asu = pw.Document();
-
-  buildPdf() async {
-    asu = pw.Document();
-    double base = 2700;
-    var img = (await rootBundle.load('images/logo.png')).buffer.asUint8List();
-
-    asu = pw.Document();
-    asu.addPage(pw.Page(
-        margin: const pw.EdgeInsets.all(20),
-        pageFormat: PdfPageFormat.a4,
-        build: ((pw.Context context) => pw.Container(
-            height: base * 1.4,
-            width: base,
-            child: pw.Column(
-                crossAxisAlignment: pw.CrossAxisAlignment.start,
-                children: [
-                  pw.Row(
-                    mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                    children: [
-                      pw.SizedBox(
-                          child: pw.Image(pw.MemoryImage(img), width: 80)),
-                      pw.Column(
-                        children: [
-                          pw.Text(
-                            textAlign: pw.TextAlign.justify,
-                            'JOYOTOMO',
-                            style: pw.TextStyle(
-                                fontWeight: pw.FontWeight.bold,
-                                fontSize: 23,
-                                fontStyle: pw.FontStyle.italic),
-                          ),
-                          pw.Text(
-                            textAlign: pw.TextAlign.justify,
-                            'Gemolong, Gandurejo, 4567',
-                            style: pw.TextStyle(
-                              fontWeight: pw.FontWeight.bold,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  pw.Text(defaul)
-                ])))));
-
-    log(defaul);
-    var year = DateTime.now().year;
-    var month = DateTime.now().month;
-    Directory('D:/Invoice/$month-$year').create()
-        // The created directory is returned as a Future.
-        .then((Directory directory) async {
-      final file = File("${directory.path}/$defaul.pdf");
-      await file.writeAsBytes(await asu.save());
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Saved: ${file.path}')));
-    });
+WidgetsToImageController _widgetsToImageController=WidgetsToImageController();
+  Widget buildAttention(int i) {
+    if (i == 1) {
+      return Icon(
+        Icons.check,
+        color: Colors.green,
+      );
+    } else if (i == 2) {
+      return Icon(
+        Icons.warning,
+        color: Colors.yellow,
+      );
+    } else {
+      return Icon(
+        Icons.dangerous_rounded,
+        color: Colors.red,
+      );
+    }
   }
 
-  printPdf() async {
-    log(defaul);
-    var img = (await rootBundle.load('images/logo.png')).buffer.asUint8List();
-    var asu2 = pw.Document();
-    String s = defaul;
-    asu2.addPage(pw.Page(
-        pageFormat: PdfPageFormat.a4,
-        build: ((pw.Context context) => pw.Center(
-            child: pw.Container(
-                height: 2700 * 1.4,
-                width: 2700,
-                child: pw.Column(children: [
-                  pw.Row(
-                    mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                    children: [
-                      pw.SizedBox(
-                          child: pw.Image(pw.MemoryImage(img), width: 80)),
-                      pw.Column(
-                        children: [
-                          pw.Text(
-                            textAlign: pw.TextAlign.justify,
-                            'JOYOTOMO',
-                            style: pw.TextStyle(
-                                fontWeight: pw.FontWeight.bold,
-                                fontSize: 23,
-                                fontStyle: pw.FontStyle.italic),
-                          ),
-                          pw.Text(
-                            textAlign: pw.TextAlign.justify,
-                            'Gemolong, Gandurejo, 4567',
-                            style: pw.TextStyle(
-                              fontWeight: pw.FontWeight.bold,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  pw.Text(s)
-                ]))))));
-    Printing.layoutPdf(
-        usePrinterSettings: true,
-        name: 'Steve',
-        onLayout: (format) async => asu2.save(),);
-  }
+  double totalMpiService = 0;
 
-  final bold = TextStyle(fontWeight: FontWeight.bold, fontSize: 11);
+  
+  final bold = TextStyle(fontWeight: FontWeight.bold, fontSize: 10);
   final small = TextStyle(fontSize: 10);
 
   Widget _buildPartName(int i, BuildContext context, StockRalization stocks) {
@@ -142,45 +67,40 @@ class _InvoiceDocState extends State<InvoiceDoc> {
         StateSetter setState,
       ) =>
           Container(
-              margin: EdgeInsets.all(5),
+              margin: EdgeInsets.only(top: 5, bottom: 5, left: 5),
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
-                    flex: 8,
-                    child: Container(
-                      child: Text(stocks.partname, style: small),
-                    ),
+                    flex: 32,
+                    child: Text(stocks.partname, style: small),
                   ),
                   Expanded(
-                    flex: 8,
-                    child: Container(
-                        width: 100, child: Text(stocks.name, style: small)),
+                    flex: 32,
+                    child: Text(stocks.name, style: small),
                   ),
                   Expanded(
-                    flex: 8,
-                    child: Container(
-                      child: Text(formatCurrendcy.format(stocks.servicePrice),
-                          style: small),
-                    ),
+                    flex: 32,
+                    child: Text(formatCurrendcy.format(stocks.servicePrice),
+                        style: small),
                   ),
                   Expanded(
-                    flex: 8,
-                    child: Container(
-                      child: Text(formatCurrendcy.format(stocks.price),
-                          style: small),
-                    ),
+                    flex: 30,
+                    child: Text(formatCurrendcy.format(stocks.price),
+                        style: small),
                   ),
                   Expanded(
-                    flex: 5,
-                    child: Container(
-                      child: Text(stocks.count.toString(), style: small),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 8,
+                    flex: 15,
                     child: Text(
+                      textAlign: TextAlign.center,
+                      stocks.count.toString(),
+                      style: small,
+                    ),
+                  ),
+                  Expanded(
+                    flex: 30,
+                    child: Text(
+                      textAlign: TextAlign.right,
                       formatCurrendcy.format(stocks.toalPrice),
                       style: small,
                     ),
@@ -191,8 +111,82 @@ class _InvoiceDocState extends State<InvoiceDoc> {
   }
 
   @override
+  void initState() {
+    widget.customer.mpi.target!.items.forEach((element) {
+      totalMpiService = totalMpiService + element.price;
+    });
+
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: Row(children: [ Padding(
+            padding: const EdgeInsets.only(left: 100,),
+            child: FloatingActionButton( child: const Icon(Icons.arrow_back),onPressed: (){
+              Navigator.of(context).pop();
+            }),
+          ),
+        const Spacer(),
+        Padding(
+            padding: const EdgeInsets.all(5),
+            child: FloatingActionButton(
+                heroTag: null,
+                backgroundColor: Colors.blue.shade600,
+                child: const Icon(Icons.save_as_rounded),
+                onPressed: () {
+                  Customer asu = widget.customer;
+                  asu.inv.target = Invoice(
+                      invId: widget.customer.inv.target!.invId,
+                    
+                      soDate: widget.customer.inv.target!.soDate,
+                      invoiceDate: widget.customer.inv.target!.invoiceDate);
+
+                  asu.proses = 'Invoice';
+                  // asu.rcp.target!.payments.add(Payment(date: widget.customer.dateTime,keterangan: 'Grand Total',saldo: widget.customer.realization.target!.biyaya,pay: 0))
+                  Provider.of<Trigger>(context, listen: false)
+                      .selectCustomer(asu, true);
+                  objectBox.insertCustomer(asu);
+                })),
+        Padding(
+            padding: const EdgeInsets.all(5),
+            child: FloatingActionButton(
+                heroTag: null,
+                backgroundColor: Colors.red.shade400,
+                child: const Icon(Icons.picture_as_pdf),
+                onPressed: () async{
+                   Customer asu = widget.customer;
+                  asu.inv.target = Invoice(
+                      invId: widget.customer.inv.target!.invId,
+                   
+                      soDate: widget.customer.inv.target!.soDate,
+                      invoiceDate: widget.customer.inv.target!.invoiceDate);
+
+                  asu.proses = 'Invoice';
+                  Provider.of<Trigger>(context, listen: false)
+                      .selectCustomer(asu, true);
+                  objectBox.insertCustomer(asu);
+                    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text('Loading.....')));
+          final bytes = await _widgetsToImageController.capture();
+                    await createSpk(bytes!, widget.customer.inv.target!.invId,
+                        context, 'Invoice');
+                    Provider.of<Trigger>(context, listen: false)
+                        .selectCustomer(widget.customer, true);
+                })),
+        Container(
+          padding: const EdgeInsets.all(10.0),
+          child: FloatingActionButton(
+              heroTag: null,
+              backgroundColor: Colors.green,
+              child: const Icon(Icons.print),
+              onPressed: ()async {
+                  final bytes = await _widgetsToImageController .capture();
+                printPdf(bytes!);
+              }),
+        )
+      ]),
       body: Hero(
         tag: 4,
         child: Center(
@@ -212,78 +206,438 @@ class _InvoiceDocState extends State<InvoiceDoc> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Container(
-                          height: MediaQuery.of(context).size.height,
-                          width: MediaQuery.of(context).size.height / 1.4142,
-                          padding: const EdgeInsets.all(20),
-                          margin: const EdgeInsets.only(top: 20, bottom: 10),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: [
-                              BoxShadow(
-                                color: const Color.fromARGB(255, 78, 77, 77)
-                                    .withOpacity(0.5),
-                                spreadRadius: 5,
-                                blurRadius: 7,
-                                offset: const Offset(
-                                    0, 3), // changes position of shadow
-                              ),
-                            ],
-                          ),
+                        height: MediaQuery.of(context).size.height,
+                        width: MediaQuery.of(context).size.height / 1.4142,
+                        padding: const EdgeInsets.all(20),
+                        margin: const EdgeInsets.only(top: 20, bottom: 10),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: const Color.fromARGB(255, 78, 77, 77)
+                                  .withOpacity(0.5),
+                              spreadRadius: 5,
+                              blurRadius: 7,
+                              offset: const Offset(
+                                  0, 3), // changes position of shadow
+                            ),
+                          ],
+                        ),
+                        child: WidgetsToImage(controller: _widgetsToImageController,
                           child: Container(
-                              alignment: Alignment.center,
-                              padding: const EdgeInsets.all(20),
-                              decoration: BoxDecoration(border: Border.all()),
-                              width: constraints.maxHeight / 1.4,
-                              height: constraints.maxHeight,
-                              child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    const Kop(),
-                                    Row(
-                                      children: [
-                                        Kotak2(
-                                            child: Column(
-                                              children: [
-                                                Text(
-                                                  'CUSTOMER',
+                            alignment: Alignment.center,
+                            //  padding: const EdgeInsets.all(20),
+                        
+                            width: constraints.maxHeight / 1.4,
+                            height: constraints.maxHeight,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                              
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: const Kop(),
+                                ),  Padding(
+                                    padding: const EdgeInsets.only(bottom: 5),
+                                    child: Text(
+                                        widget.customer.inv.target!.invId,
+                                        style:  TextStyle(fontSize: 12,
+                                            fontWeight: FontWeight.bold,
+                                            fontStyle: FontStyle.italic),
+                                      ),
+                                  ),
+                                Expanded(
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: Kotak2(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    'CUSTOMER',
+                                                    style: bold,
+                                                  ),
+                                                ],
+                                              ),
+                                              Divider(
+                                                height: 2,
+                                                color: Colors.black,
+                                              ),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Text(
+                                                  textAlign: TextAlign.right,
+                                                  widget.customer.customerName,
                                                   style: bold,
                                                 ),
-                                                Divider(
-                                                  height: 2,
-                                                  color: Colors.black,
-                                                )
-                                              ],
-                                            ),
-                                            height: 270,
-                                            width: 250),
-                                        Kotak2(
-                                            child: Column(
-                                              children: [
-                                                Text(
-                                                  'CAR DETAILS',
+                                              ),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Text(
+                                                  widget.customer.alamat,
                                                   style: bold,
                                                 ),
-                                                Divider(
-                                                  height: 2,
-                                                  color: Colors.black,
-                                                )
-                                              ],
-                                            ),
-                                            height: 270,
-                                            width: 250),
-                                      ],
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Kotak2(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.stretch,
+                                            children: [
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    'CAR DETAILS',
+                                                    style: bold,
+                                                  ),
+                                                ],
+                                              ),
+                                              Divider(
+                                                height: 2,
+                                                color: Colors.black,
+                                              ),
+                                              Row(
+                                                children: [
+                                                  Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(3),
+                                                            child: Text(
+                                                              'Kendaraan:',
+                                                              style: small,
+                                                            )),
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(3),
+                                                          child: Text(
+                                                            'Nomor Rangka:',
+                                                            style: small,
+                                                          ),
+                                                        ),
+                                                        Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(3),
+                                                            child: Text(
+                                                              'Tipe:',
+                                                              style: small,
+                                                            )),
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(3),
+                                                          child: Text(
+                                                            'Tanggal Invoce: ',
+                                                            style: small,
+                                                          ),
+                                                        ),
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(3),
+                                                          child: Text(
+                                                            'Tanggal Garansi: ',
+                                                            style: small,
+                                                          ),
+                                                        ),
+                                                      ]),
+                                                  Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment.start,
+                                                    children: [
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets.only(
+                                                                left: 40,
+                                                                top: 3,
+                                                                bottom: 3),
+                                                        child: Text(
+                                                          '${widget.customer.spk.target!.namaKendaraan} ',
+                                                          style: small,
+                                                        ),
+                                                      ),
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets.only(
+                                                                left: 40,
+                                                                top: 3,
+                                                                bottom: 3),
+                                                        child: Text(
+                                                          widget.customer.spk
+                                                              .target!.noRangka,
+                                                          style: small,
+                                                        ),
+                                                      ),
+                                                      Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  left: 40,
+                                                                  top: 3,
+                                                                  bottom: 3),
+                                                          child: Text(
+                                                            '${widget.customer.spk.target!.tipeKendaraan}',
+                                                            style: small,
+                                                          )),
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets.only(
+                                                                left: 40,
+                                                                top: 3,
+                                                                bottom: 3),
+                                                        child: WebDatePicker(
+                                                            initialDate: DateTime
+                                                                .parse(widget
+                                                                    .customer
+                                                                    .inv
+                                                                    .target!
+                                                                    .invoiceDate),
+                                                            small: true,
+                                                            onChange: (v) {
+                                                              if (v == null) {
+                                                                return;
+                                                              }
+                                                              widget
+                                                                      .customer
+                                                                      .inv
+                                                                      .target!
+                                                                      .invoiceDate =
+                                                                  v.toIso8601String();
+                                                            }),
+                                                      ),
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets.only(
+                                                                left: 40,
+                                                                top: 3,
+                                                                bottom: 3),
+                                                        child: WebDatePicker(
+                                                            initialDate:
+                                                                DateTime.parse(
+                                                                    widget
+                                                                        .customer
+                                                                        .inv
+                                                                        .target!
+                                                                        .soDate),
+                                                            small: true,
+                                                            onChange: (v) {
+                                                              if (v == null) {
+                                                                return;
+                                                              }
+                                                              widget
+                                                                      .customer
+                                                                      .inv
+                                                                      .target!
+                                                                      .soDate =
+                                                                 v.toIso8601String();
+                                                            }),
+                                                      )
+                                                    ],
+                                                  )
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                 Container(
+                                    child: Column(children: [
+                                      const Divider(
+                                        height: 0,
+                                        color: Colors.black,
+                                      ),
+                                      top2,
+                                      const Divider(
+                                        height: 0,
+                                        color: Colors.black,
+                                      ),
+                                      ...widget.customer.mpi.target!.items
+                                          .mapIndexed((i, element) => element
+                                                      .attention ==
+                                                  0
+                                              ? const Center()
+                                              : Container(
+                                                  width:
+                                                      constraints.maxHeight / 1.4,
+                                                  child: IntrinsicHeight(
+                                                    child: Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      children: [
+                                                        Transform.scale(
+                                                            alignment: Alignment
+                                                                .centerLeft,
+                                                            scale: 0.5,
+                                                            child: Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                Container(
+                                                                    child: buildAttention(
+                                                                        element
+                                                                            .attention))
+                                                              ],
+                                                            )),
+                                                        Expanded(
+                                                          flex: 6,
+                                                          child: Text(
+                                                            element.name,
+                                                            maxLines: 2,
+                                                            textAlign:
+                                                                TextAlign.left,
+                                                            style: small,
+                                                          ),
+                                                        ),
+                                                        Expanded(
+                                                            flex: 5,
+                                                            child: Text(
+                                                              formatCurrendcy
+                                                                  .format(element
+                                                                      .price),
+                                                              style: small,
+                                                            )),
+                                                        Expanded(
+                                                            flex: 5,
+                                                            child: Text(
+                                                              textAlign:
+                                                                  TextAlign.right,
+                                                              element.remark,
+                                                              style: small,
+                                                            ))
+                                                      ],
+                                                    ),
+                                                  )))
+                                          .toList(),
+                                      const Divider(
+                                        height: 0,
+                                        color: Colors.black,
+                                      ),
+                                    ]),
+                                  ),
+                                
+                                
+                                
+                                Expanded(flex: 2,
+                                  child: Container(
+                                      margin: EdgeInsets.only(top: 20),
+                                      child: Column(
+                                        children: [
+                                          top(),
+                                          Divider(
+                                            height: 2,
+                                            color: Colors.black,
+                                          ),
+                                          ...List.generate(
+                                              widget.customer.realization.target!
+                                                  .stockItems.length,
+                                              (index) => _buildPartName(
+                                                  index,
+                                                  context,
+                                                  widget.customer.realization
+                                                      .target!.stockItems[index])),
+                                                   
+                                          Divider(
+                                            height: 2,
+                                            color: Colors.black,
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                    top,
-                                    ...List.generate(
-                                        widget.customer.realization.target!
-                                            .stockItems.length,
-                                        (index) => _buildPartName(
-                                            index,
-                                            context,
-                                            widget.customer.realization.target!
-                                                .stockItems[index])),
-                                  ])))
+                                ),
+                                
+                                Container(margin: EdgeInsets.only(bottom: 30),
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        crossAxisAlignment: CrossAxisAlignment.end,
+                                        children: [
+                                          Container(
+                                            margin:
+                                                EdgeInsets.only(top: 5, right: 40),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.end,
+                                              children: [
+                                                Text(
+                                                  'Service Total',
+                                                  style: bold,
+                                                ),
+                                                Text(
+                                                  'Part Total',
+                                                  style: bold,
+                                                ),
+                                                Text(
+                                                  'Sub Total',
+                                                  style: bold,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.end,
+                                            children: [
+                                              Text(
+                                                formatCurrendcy.format(widget
+                                                    .customer
+                                                    .inv
+                                                    .target!
+                                                    .serviceTotal),
+                                                style: bold,
+                                              ),
+                                              Text(
+                                                  formatCurrendcy.format(
+                                                    widget.customer.inv.target!
+                                                        .partTotal,
+                                                  ),
+                                                  style: bold),
+                                              Text(
+                                                formatCurrendcy.format(widget
+                                                        .customer
+                                                        .inv
+                                                        .target!
+                                                        .partTotal +
+                                                    widget.customer.inv.target!.serviceTotal),
+                                                style: bold,
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      )
                     ]));
           }),
         ),
@@ -291,69 +645,83 @@ class _InvoiceDocState extends State<InvoiceDoc> {
     );
   }
 
-  Widget top = Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: [
-      Expanded(
-        flex: 8,
-        child: Container(
-          margin: EdgeInsets.only(left: 10),
-          child: const Text(
-            "Partname",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+  Widget top2 = Container(
+    margin: EdgeInsets.only(top: 20),
+    child: Row(
+      children: [
+        Expanded(
+          flex: 6,
+          child: Container(
+            child: const Text(
+              textAlign: TextAlign.left,
+              "Inspection",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+            ),
           ),
         ),
-      ),
-      Expanded(
-        flex: 8,
-        child: Container(
-          margin: EdgeInsets.only(left: 10),
-          child: const Text(
-            "Name",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
-          ),
-        ),
-      ),
-      Expanded(
-        flex: 8,
-        child: Container(
-          margin: EdgeInsets.only(left: 10),
+        Expanded(
+          flex: 4,
           child: const Text(
             "Service",
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
           ),
         ),
-      ),
-      Expanded(
-        flex: 8,
-        child: Container(
-          margin: EdgeInsets.only(left: 10),
+        Expanded(
+          flex: 5,
           child: const Text(
-            "Price",
+            textAlign: TextAlign.right,
+            "Catatan",
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
           ),
-        ),
-      ),
-      Expanded(
-        flex: 5,
-        child: Container(
-          margin: EdgeInsets.only(left: 10),
-          child: const Text(
-            "Count",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
-          ),
-        ),
-      ),
-      Expanded(
-        flex: 8,
-        child: Container(
-          margin: EdgeInsets.only(left: 10),
-          child: const Text(
-            "Total",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
-          ),
-        ),
-      ),
-    ],
+        )
+      ],
+    ),
   );
+  Widget top() => Padding(
+        padding: const EdgeInsets.only(top: 5),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              flex: 8,
+              child: const Text(
+                "Partname",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+              ),
+            ),
+            Expanded(
+              flex: 8,
+              child: const Text(
+                "Name",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+              ),
+            ),
+            Expanded(
+              flex: 8,
+              child: const Text(
+                "Service",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+              ),
+            ),
+            Expanded(
+              flex: 8,
+              child: const Text(
+                "Harga",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+              ),
+            ),
+            Expanded(
+              flex: 8,
+              child: const Text(
+                "Jumlah",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+              ),
+            ),
+            const Text(
+              "Total",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+            ),
+          ],
+        ),
+      );
 }

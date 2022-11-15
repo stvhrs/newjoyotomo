@@ -37,7 +37,8 @@ class _StockPageState extends State<StockPage> {
   void dispose() {
     log('dis');
     super.dispose();
-  }
+  }  final formatCurrency =
+      NumberFormat.currency(locale: "id_ID", decimalDigits: 0, symbol: 'Rp ');
 
   @override
   Widget build(BuildContext context2) {
@@ -73,8 +74,14 @@ class _StockPageState extends State<StockPage> {
                 Provider.of<Trigger>(context, listen: false)
                     .selectListStock(stocks, false);
               }
+double totalAsset=0;
+for (var element in snapshot.data!) {
+  totalAsset= totalAsset +element.totalPrice;
+  
+}
 
               return Consumer<Trigger>(builder: (context, val, c) {
+             
                 return Padding(
                   padding: const EdgeInsets.only(
                     top: 20,
@@ -82,8 +89,8 @@ class _StockPageState extends State<StockPage> {
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Column(
-                          children: [
+                        Column(crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [Text('  Total Asset : ${formatCurrency.format(totalAsset) }',style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold),),
                             Container(
                               width: MediaQuery.of(context).size.width / 2.5,
                               padding:

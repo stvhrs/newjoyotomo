@@ -7,7 +7,7 @@ class Realization {
   @Id(assignable: true)
   int id;
   String rlId;
-  int selesai;
+  String selesai;
   double biyaya;
   String dateOut;
   final mpiItems=ToMany<MpiItem>();
@@ -18,7 +18,7 @@ class Realization {
     this.id = 0,
     required this.rlId,
     this.dateOut='',
-     this.selesai=0,
+     this.selesai='DD/MM/YYYY',
      this.biyaya=0,
     this.done=false,
   });

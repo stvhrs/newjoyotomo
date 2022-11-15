@@ -13,6 +13,7 @@ import 'package:provider/provider.dart';
 import '../../helper/currency.dart';
 import '../../models/stock.dart';
 import '../../provider/trigger.dart';
+import 'package:collection/collection.dart';
 
 class SupplierAdd extends StatefulWidget {
   const SupplierAdd({super.key});
@@ -30,7 +31,13 @@ class _SupplierAddState extends State<SupplierAdd> {
 
   List<Stock> _updatedStock = [];
   List<DetailStock> _updatedDetailStock = [
-    DetailStock(supplier: '', date: '', price: 0, count: 1, totalPrice: 0)
+    DetailStock(
+        supplier: '',
+        date: '',
+        buyPrice: 0,
+        count: 1,
+        totalPrice: 0,
+        sellPrice: 0)
   ];
   List<String> itemsSupplier = [];
   Widget _buildPartName(int i, BuildContext context) {
@@ -74,7 +81,7 @@ class _SupplierAddState extends State<SupplierAdd> {
                         decoration: InputDecoration(hintText: 'Harga'),
                         onChanged: (value) {
                           if (_updatedStock.isNotEmpty) {
-                            _updatedDetailStock[i].price =
+                            _updatedDetailStock[i].buyPrice =
                                 NumberFormat.currency(
                                         locale: 'id_ID', symbol: 'Rp ')
                                     .parse(value)
@@ -178,12 +185,13 @@ class _SupplierAddState extends State<SupplierAdd> {
                                             ),
                                             SizedBox(
                                               width: 150,
-                                              child:
-                                                  WebDatePicker(onChange: (v) {
-                                                if (v != null) {
-                                                  _date = v;
-                                                }
-                                              }),
+                                              child: WebDatePicker(
+                                                  small: false,
+                                                  onChange: (v) {
+                                                    if (v != null) {
+                                                      _date = v;
+                                                    }
+                                                  }),
                                             ),
                                           ],
                                         ),
@@ -233,9 +241,10 @@ class _SupplierAddState extends State<SupplierAdd> {
                                                     jumlahOpsi = jumlahOpsi + 1;
                                                     _updatedDetailStock.add(
                                                         DetailStock(
+                                                            sellPrice: 0,
                                                             supplier: '',
                                                             date: '',
-                                                            price: 0,
+                                                            buyPrice: 0,
                                                             count: 1,
                                                             totalPrice: 0));
                                                   });
@@ -253,8 +262,24 @@ class _SupplierAddState extends State<SupplierAdd> {
                             actions: <Widget>[
                               ElevatedButton(
                                 onPressed: () {
-                                  if (_updatedDetailStock
-                                      .any((element) => element.price < 1)) {
+                                  bool duplicate = false;
+                                  List<String> filterDuplicate = [];
+                                  _updatedStock
+                                      .map((e) => e.partname)
+                                      .toList()
+                                      .forEach((element) {
+                                    if (filterDuplicate.contains(element)) {
+                                      duplicate = true;
+                                      print('true');
+                                    } else {
+                                      filterDuplicate.add(element);
+                                      //  duplicate=false;
+                                      print('false');
+                                    }
+                                  });
+                                  if (_updatedDetailStock.any(
+                                          (element) => element.buyPrice < 1) ||
+                                      duplicate) {
                                     return;
                                   }
                                   _supplier = _controller.text;
@@ -288,9 +313,10 @@ class _SupplierAddState extends State<SupplierAdd> {
                                           name: _updatedStock[i].name,
                                           partName: _updatedStock[i].partname,
                                           count: _updatedDetailStock[i].count,
-                                          price: _updatedDetailStock[i].price,
+                                          price:
+                                              _updatedDetailStock[i].buyPrice,
                                           totalPrice: _updatedDetailStock[i]
-                                                  .price *
+                                                  .buyPrice *
                                               _updatedDetailStock[i].count));
                                     }
 
@@ -298,7 +324,21 @@ class _SupplierAddState extends State<SupplierAdd> {
                                     for (var i = 0;
                                         i < _updatedStock.length;
                                         i++) {
+                                      int roundUp = 1000;
+                                      if (_updatedDetailStock[i].buyPrice *
+                                              1.3 %
+                                              1000 ==
+                                          0) {
+                                        roundUp = 0;
+                                      }
                                       DetailStock history = DetailStock(
+                                          sellPrice: _updatedDetailStock[i]
+                                                      .buyPrice *
+                                                  1.3 +
+                                              roundUp -
+                                              (_updatedDetailStock[i].buyPrice *
+                                                  1.3 %
+                                                  1000),
                                           pihakId: 'SUP/JT/000000'.replaceRange(
                                               13 -
                                                   int.parse(
@@ -311,17 +351,18 @@ class _SupplierAddState extends State<SupplierAdd> {
                                                   .toString()),
                                           supplier: _supplier,
                                           date: _date.toIso8601String(),
-                                          price: _updatedDetailStock[i].price,
+                                          buyPrice:
+                                              _updatedDetailStock[i].buyPrice,
                                           count: _updatedDetailStock[i].count,
                                           totalPrice:
-                                              _updatedDetailStock[i].price *
+                                              _updatedDetailStock[i].buyPrice *
                                                   _updatedDetailStock[i].count);
                                       //UPDATE STOCK
                                       _updatedStock[i].items.add(history);
 
                                       _updatedStock[i].totalPrice =
                                           _updatedStock[i].totalPrice +
-                                              (_updatedDetailStock[i].price *
+                                              (_updatedDetailStock[i].buyPrice *
                                                   _updatedDetailStock[i].count);
 
                                       _updatedStock[i].count =
@@ -336,7 +377,7 @@ class _SupplierAddState extends State<SupplierAdd> {
 
                                       tempSupplier.totalPrice =
                                           tempSupplier.totalPrice +
-                                              _updatedDetailStock[i].price *
+                                              _updatedDetailStock[i].buyPrice *
                                                   _updatedDetailStock[i].count;
 
                                       objectBox.insertStock(_updatedStock[i]);
@@ -356,9 +397,10 @@ class _SupplierAddState extends State<SupplierAdd> {
                     _supplier = '';
                     _updatedDetailStock = [
                       DetailStock(
+                          sellPrice: 0,
                           supplier: '',
                           date: '',
-                          price: 0,
+                          buyPrice: 0,
                           count: 1,
                           totalPrice: 0)
                     ];

@@ -14,6 +14,7 @@ class StockRalization {
   double price;
   double servicePrice;
   double toalPrice;
+  double sellPrice;
  bool done;
   StockRalization({
     this.id = 0,
@@ -22,6 +23,7 @@ class StockRalization {
  this.desc='dest',
     this.price=0.0,
     this.count=1,
+   this.sellPrice=0,
     this.servicePrice=0.0,
     this.toalPrice=0.0,
     this.done=false

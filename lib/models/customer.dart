@@ -15,18 +15,20 @@ class Customer {
   String namaKendaraan;
   String alamat;
   String proses;
-ToMany<RincianPembayarran> rincian = ToMany<RincianPembayarran>();
+String dateTime;
   ToOne<Spk> spk = ToOne<Spk>();
   ToOne<Invoice> inv = ToOne<Invoice>();
   ToOne<Realization> realization = ToOne<Realization>();
   ToOne<Mpi> mpi = ToOne<Mpi>();
+   ToOne<RincianPembayarran> rcp = ToOne<RincianPembayarran>();
 
   Customer(
       {this.id = 0,
       required this.csId,
-      this.proses='Proses SPK',
+      this.proses='SPK',
+      required this.dateTime,
       required this.customerName,
-      required this.policeNumber,
-      required this.namaKendaraan,
-      required this.alamat});
+     this.policeNumber='',
+   this.namaKendaraan='',
+      this.alamat=''});
 }

@@ -126,14 +126,14 @@ class _StockRemoveState extends State<StockRemove> {
                                     onPressed: () {
                                       late DetailStock history;
 
-                                      history = DetailStock(
+                                      history = DetailStock(sellPrice: stock.items[0].sellPrice,
                                           supplier: _reduceDes,
                                           date:
                                               DateTime.now().toIso8601String(),
-                                          price: stock.items[0].price,
+                                          buyPrice: stock.items[0].buyPrice,
                                           count: _reduce,
                                           totalPrice:
-                                              stock.items[0].price * _reduce);
+                                              stock.items[0].buyPrice * _reduce);
 
                                       stock.items.add(history);
                                       stock.totalPrice = stock.totalPrice -

@@ -33,8 +33,14 @@ class _DaftarPelangganState extends State<DaftarPelanggan> {
     return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
       Container(
           padding: EdgeInsets.only(left: 25, right: 25, top: 15),
-          decoration: BoxDecoration(
-              color: Colors.white, borderRadius: BorderRadius.circular(10)),
+          decoration: BoxDecoration(boxShadow: <BoxShadow>[
+            BoxShadow(
+              color: Colors.grey,
+              blurRadius: 4,
+              spreadRadius: 3,
+              offset: Offset(2, 2),
+            ),
+          ], color: Colors.white, borderRadius: BorderRadius.circular(10)),
           width: MediaQuery.of(context).size.width * 0.7,
           child: Column(
             children: [

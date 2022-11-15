@@ -9,6 +9,7 @@ class WebDatePicker extends StatefulWidget {
     this.initialDate,
     this.firstDate,
     this.lastDate,
+    required this.small,
     required this.onChange,
     this.style,
     this.width = 200,
@@ -19,7 +20,7 @@ class WebDatePicker extends StatefulWidget {
     this.overlayHorizontalPosiition = 0.0,
     this.inputDecoration,
   }) : super(key: key);
-
+final bool small;
   /// The initial date first
   final DateTime? initialDate;
 
@@ -63,8 +64,8 @@ class _WebDatePickerState extends State<WebDatePicker> {
 
   final LayerLink _layerLink = LayerLink();
 
-  final _controller = TextEditingController();
-
+  // final _controller = TextEditingController();
+  String _controller = 'DD/MM/YYYY';
   late DateTime? _selectedDate;
   late DateTime _firstDate;
   late DateTime _lastDate;
@@ -80,7 +81,7 @@ class _WebDatePickerState extends State<WebDatePicker> {
     _lastDate = widget.lastDate ?? DateTime(2100);
 
     if (_selectedDate != null) {
-      _controller.text = _selectedDate?.parseToString(widget.dateformat) ?? '';
+      _controller = _selectedDate?.parseToString(widget.dateformat) ?? '';
     }
 
     _focusNode.addListener(() {
@@ -88,7 +89,7 @@ class _WebDatePickerState extends State<WebDatePicker> {
         _overlayEntry = _createOverlayEntry();
         Overlay.of(context)?.insert(_overlayEntry);
       } else {
-        _controller.text = _selectedDate.parseToString(widget.dateformat);
+        _controller = _selectedDate.parseToString(widget.dateformat);
         widget.onChange.call(_selectedDate);
         _overlayEntry.remove();
       }
@@ -97,9 +98,12 @@ class _WebDatePickerState extends State<WebDatePicker> {
 
   void onChange(DateTime? selectedDate) {
     _selectedDate = selectedDate;
-    _controller.text = _selectedDate.parseToString(widget.dateformat);
+    _controller = _selectedDate.parseToString(widget.dateformat);
 
     _focusNode.unfocus();
+    setState(() {
+      
+    });
   }
 
   OverlayEntry _createOverlayEntry() {
@@ -143,20 +147,10 @@ class _WebDatePickerState extends State<WebDatePicker> {
             _isEnterDateField = false;
           });
         },
-        child: SizedBox(
-          width: widget.width,
-          height: widget.height,
-          child: TextFormField(
-            focusNode: _focusNode,
-            controller: _controller,
-            decoration: widget.inputDecoration ??
-                InputDecoration(
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 10),
-                  border: const OutlineInputBorder(),
-                  suffixIcon: _buildPrefixIcon(),
-                ),
-            onChanged: (dateString) {
-              final date = dateString.parseToDateTime(widget.dateformat);
+        child: InkWell(focusNode: _focusNode,
+            onTap: () {
+              _focusNode.requestFocus();
+              final date = _controller.parseToDateTime(widget.dateformat);
               if (date.isBefore(_firstDate)) {
                 _selectedDate = _firstDate;
               } else if (date.isAfter(_lastDate)) {
@@ -164,25 +158,34 @@ class _WebDatePickerState extends State<WebDatePicker> {
               } else {
                 _selectedDate = date;
               }
+              setState(() {
+                
+              });
             },
+            child: Text(textAlign: TextAlign.right,
+              _controller,
+              style: TextStyle(
+                fontSize:widget.small? 10:14,
+              ),
+            ),
           ),
-        ),
+        
       ),
     );
   }
 
-  Widget _buildPrefixIcon() {
-    if (_controller.text.isNotEmpty && _isEnterDateField) {
-      return IconButton(
-        icon: const Icon(Icons.close),
-        onPressed: () {
-          _controller.clear();
-          _selectedDate = null;
-        },
-        splashRadius: 16,
-      );
-    } else {
-      return widget.prefix ?? const Icon(Icons.date_range);
-    }
-  }
+  // Widget _buildPrefixIcon() {
+  //   if (_controller.text.isNotEmpty && _isEnterDateField) {
+  //     return IconButton(
+  //       icon: const Icon(Icons.close),
+  //       onPressed: () {
+  //         _controller.clear();
+  //         _selectedDate = null;
+  //       },
+  //       splashRadius: 16,
+  //     );
+  //   } else {
+  //     return widget.prefix ?? const Icon(Icons.date_range);
+  //   }
+  // }
 }

@@ -44,7 +44,7 @@ class Kop extends StatelessWidget {
                       ),
                       Text(
                         textAlign: TextAlign.justify,
-                        'TELP:08578181929',
+                        'TELP: 0821-3408-4425',
                         style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,

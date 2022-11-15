@@ -18,9 +18,9 @@ import 'models/customer.dart';
 import 'models/detail_pembelian.dart';
 import 'models/detail_stock.dart';
 import 'models/invoice.dart';
-import 'models/invoice/payment.dart';
 import 'models/mpi.dart';
 import 'models/mpi/mpiItem.dart';
+import 'models/payment.dart';
 import 'models/pelanggan.dart';
 import 'models/pembelian.dart';
 import 'models/realization.dart';
@@ -34,115 +34,122 @@ export 'package:objectbox/objectbox.dart'; // so that callers only have to impor
 
 final _entities = <ModelEntity>[
   ModelEntity(
-      id: const IdUid(1, 745458929365753382),
+      id: const IdUid(1, 8039437475238809495),
       name: 'Customer',
-      lastPropertyId: const IdUid(11, 3434357994284291078),
+      lastPropertyId: const IdUid(13, 1449318229780625188),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
-            id: const IdUid(1, 2322543429729524872),
+            id: const IdUid(1, 2527454078568625731),
             name: 'id',
             type: 6,
             flags: 129),
         ModelProperty(
-            id: const IdUid(2, 4159462102279235104),
+            id: const IdUid(2, 1303265176278243219),
             name: 'csId',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(3, 1486686031113899889),
+            id: const IdUid(3, 123524986503755584),
             name: 'customerName',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(4, 8750488238225982785),
+            id: const IdUid(4, 6378101380687164264),
             name: 'policeNumber',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(5, 3752506444403847506),
+            id: const IdUid(5, 7012977539950290583),
             name: 'namaKendaraan',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(6, 8095060899457558159),
+            id: const IdUid(6, 1732376969683531773),
             name: 'alamat',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(7, 1119289962352442808),
+            id: const IdUid(7, 8463773154054099512),
             name: 'proses',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(8, 6585158967883377254),
+            id: const IdUid(8, 8371367363255556635),
+            name: 'dateTime',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(9, 6696864901014296420),
             name: 'spkId',
             type: 11,
             flags: 520,
-            indexId: const IdUid(1, 5063354248052942212),
+            indexId: const IdUid(1, 7253469277055053514),
             relationTarget: 'Spk'),
         ModelProperty(
-            id: const IdUid(9, 6920302302352712171),
+            id: const IdUid(10, 7261633555162333243),
             name: 'invId',
             type: 11,
             flags: 520,
-            indexId: const IdUid(2, 8135500053041788579),
+            indexId: const IdUid(2, 6629409812020381600),
             relationTarget: 'Invoice'),
         ModelProperty(
-            id: const IdUid(10, 5384602353263289152),
+            id: const IdUid(11, 8409516101790282775),
             name: 'realizationId',
             type: 11,
             flags: 520,
-            indexId: const IdUid(3, 515839201963956845),
+            indexId: const IdUid(3, 7613715059559970932),
             relationTarget: 'Realization'),
         ModelProperty(
-            id: const IdUid(11, 3434357994284291078),
+            id: const IdUid(12, 7540245761900222681),
             name: 'mpiId',
             type: 11,
             flags: 520,
-            indexId: const IdUid(4, 1306563531241788222),
-            relationTarget: 'Mpi')
+            indexId: const IdUid(4, 2921864268229630053),
+            relationTarget: 'Mpi'),
+        ModelProperty(
+            id: const IdUid(13, 1449318229780625188),
+            name: 'rcpId',
+            type: 11,
+            flags: 520,
+            indexId: const IdUid(5, 8865266006979889603),
+            relationTarget: 'RincianPembayarran')
       ],
-      relations: <ModelRelation>[
-        ModelRelation(
-            id: const IdUid(1, 3899648394111936798),
-            name: 'rincian',
-            targetId: const IdUid(11, 8112975015994656801))
-      ],
+      relations: <ModelRelation>[],
       backlinks: <ModelBacklink>[]),
   ModelEntity(
-      id: const IdUid(2, 4267532564051428046),
+      id: const IdUid(2, 3802626658971982346),
       name: 'DetailPembelian',
-      lastPropertyId: const IdUid(6, 5834674471862646203),
+      lastPropertyId: const IdUid(6, 8495361578291453734),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
-            id: const IdUid(1, 5046915864459071815),
+            id: const IdUid(1, 4877041499802402883),
             name: 'id',
             type: 6,
             flags: 129),
         ModelProperty(
-            id: const IdUid(2, 7896050351046937176),
+            id: const IdUid(2, 5903370847538072711),
             name: 'partName',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(3, 1120114501388928255),
+            id: const IdUid(3, 3740408848022313245),
             name: 'name',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(4, 7567780596031099979),
+            id: const IdUid(4, 1435187413042207960),
             name: 'count',
             type: 6,
             flags: 0),
         ModelProperty(
-            id: const IdUid(5, 7672913207622721487),
+            id: const IdUid(5, 4796754023945795020),
             name: 'price',
             type: 8,
             flags: 0),
         ModelProperty(
-            id: const IdUid(6, 5834674471862646203),
+            id: const IdUid(6, 8495361578291453734),
             name: 'totalPrice',
             type: 8,
             flags: 0)
@@ -150,165 +157,160 @@ final _entities = <ModelEntity>[
       relations: <ModelRelation>[],
       backlinks: <ModelBacklink>[]),
   ModelEntity(
-      id: const IdUid(3, 5707353236487289197),
+      id: const IdUid(3, 4625775930867920763),
       name: 'DetailStock',
-      lastPropertyId: const IdUid(7, 6127142026764374640),
+      lastPropertyId: const IdUid(9, 1709134524150820305),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
-            id: const IdUid(1, 4906309131800108725),
+            id: const IdUid(1, 741171437921176046),
             name: 'id',
             type: 6,
             flags: 129),
         ModelProperty(
-            id: const IdUid(2, 2592130750409856914),
+            id: const IdUid(2, 7498978692890790410),
             name: 'date',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(3, 9105905000071831329),
+            id: const IdUid(3, 756347886557124448),
             name: 'supplier',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(4, 5366213967109445086),
+            id: const IdUid(4, 2455585590835250408),
             name: 'pihakId',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(5, 7192670489039739974),
+            id: const IdUid(5, 2465586386045087963),
             name: 'count',
             type: 6,
             flags: 0),
         ModelProperty(
-            id: const IdUid(6, 6976386997700370672),
-            name: 'price',
+            id: const IdUid(7, 1295582114816336096),
+            name: 'totalPrice',
             type: 8,
             flags: 0),
         ModelProperty(
-            id: const IdUid(7, 6127142026764374640),
-            name: 'totalPrice',
+            id: const IdUid(8, 7544690128232840111),
+            name: 'buyPrice',
+            type: 8,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(9, 1709134524150820305),
+            name: 'sellPrice',
             type: 8,
             flags: 0)
       ],
       relations: <ModelRelation>[],
       backlinks: <ModelBacklink>[]),
   ModelEntity(
-      id: const IdUid(4, 3165534908122492960),
+      id: const IdUid(4, 2789380421560663495),
       name: 'Invoice',
-      lastPropertyId: const IdUid(8, 5355185737646097039),
+      lastPropertyId: const IdUid(7, 2639543342217552722),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
-            id: const IdUid(1, 4903456972806855787),
+            id: const IdUid(1, 1199002369465848324),
             name: 'id',
             type: 6,
             flags: 129),
         ModelProperty(
-            id: const IdUid(2, 6680755500562664225),
+            id: const IdUid(2, 2530469158101740123),
             name: 'invId',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(3, 4951541229410950586),
-            name: 'saldo',
-            type: 8,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(4, 4294753702498882059),
+            id: const IdUid(3, 1364802094783820317),
             name: 'partTotal',
             type: 8,
             flags: 0),
         ModelProperty(
-            id: const IdUid(5, 4162098543485240332),
+            id: const IdUid(4, 9034225276065794680),
             name: 'serviceTotal',
             type: 8,
             flags: 0),
         ModelProperty(
-            id: const IdUid(6, 7350841043156342700),
+            id: const IdUid(5, 5039196502525162086),
             name: 'invoiceTotal',
             type: 8,
             flags: 0),
         ModelProperty(
-            id: const IdUid(7, 4200314686044778857),
+            id: const IdUid(6, 7852580894582937179),
             name: 'invoiceDate',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(8, 5355185737646097039),
+            id: const IdUid(7, 2639543342217552722),
             name: 'soDate',
             type: 9,
             flags: 0)
       ],
-      relations: <ModelRelation>[
-        ModelRelation(
-            id: const IdUid(2, 8876572125375253216),
-            name: 'payments',
-            targetId: const IdUid(7, 461355948299197699))
-      ],
+      relations: <ModelRelation>[],
       backlinks: <ModelBacklink>[]),
   ModelEntity(
-      id: const IdUid(5, 7228710310078049848),
+      id: const IdUid(5, 7358057014878844928),
       name: 'Mpi',
-      lastPropertyId: const IdUid(2, 2514280434825682869),
+      lastPropertyId: const IdUid(2, 2793149833041022552),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
-            id: const IdUid(1, 5303152066945420290),
+            id: const IdUid(1, 1544399780804534171),
             name: 'id',
             type: 6,
             flags: 129),
         ModelProperty(
-            id: const IdUid(2, 2514280434825682869),
+            id: const IdUid(2, 2793149833041022552),
             name: 'mpiId',
             type: 9,
             flags: 0)
       ],
       relations: <ModelRelation>[
         ModelRelation(
-            id: const IdUid(3, 6383050910052057391),
+            id: const IdUid(1, 1016766914287128854),
             name: 'items',
-            targetId: const IdUid(6, 6508396849694241533))
+            targetId: const IdUid(6, 204361129886708792))
       ],
       backlinks: <ModelBacklink>[]),
   ModelEntity(
-      id: const IdUid(6, 6508396849694241533),
+      id: const IdUid(6, 204361129886708792),
       name: 'MpiItem',
-      lastPropertyId: const IdUid(7, 4529966758026360832),
+      lastPropertyId: const IdUid(7, 3654429397267949814),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
-            id: const IdUid(1, 8069473499311977835),
+            id: const IdUid(1, 3126604639397567702),
             name: 'id',
             type: 6,
             flags: 129),
         ModelProperty(
-            id: const IdUid(2, 2984491458337637721),
+            id: const IdUid(2, 7332154222207210717),
             name: 'category',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(3, 4420698054628947011),
+            id: const IdUid(3, 8077687310203041043),
             name: 'name',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(4, 3875400152751240378),
+            id: const IdUid(4, 1210345570424409965),
             name: 'price',
             type: 8,
             flags: 0),
         ModelProperty(
-            id: const IdUid(5, 5481823111451864091),
+            id: const IdUid(5, 8114686753038573279),
             name: 'remark',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(6, 8389083593483358777),
+            id: const IdUid(6, 6603585423891120085),
             name: 'done',
             type: 1,
             flags: 0),
         ModelProperty(
-            id: const IdUid(7, 4529966758026360832),
+            id: const IdUid(7, 3654429397267949814),
             name: 'attention',
             type: 6,
             flags: 0)
@@ -316,292 +318,297 @@ final _entities = <ModelEntity>[
       relations: <ModelRelation>[],
       backlinks: <ModelBacklink>[]),
   ModelEntity(
-      id: const IdUid(7, 461355948299197699),
+      id: const IdUid(7, 49854581121624890),
       name: 'Payment',
-      lastPropertyId: const IdUid(3, 4349027166466147647),
+      lastPropertyId: const IdUid(5, 5375742972574808495),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
-            id: const IdUid(1, 7181087827867877512),
+            id: const IdUid(1, 6960350539647399856),
             name: 'id',
             type: 6,
             flags: 129),
         ModelProperty(
-            id: const IdUid(2, 5310532903344811402),
+            id: const IdUid(2, 1872201386913959584),
             name: 'pay',
             type: 8,
             flags: 0),
         ModelProperty(
-            id: const IdUid(3, 4349027166466147647),
+            id: const IdUid(3, 5246514276699511472),
+            name: 'keterangan',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(4, 4547815339190761642),
             name: 'date',
             type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(5, 5375742972574808495),
+            name: 'saldo',
+            type: 8,
             flags: 0)
       ],
       relations: <ModelRelation>[],
       backlinks: <ModelBacklink>[]),
   ModelEntity(
-      id: const IdUid(8, 4231891392643915930),
+      id: const IdUid(8, 1190472486636710173),
       name: 'Pelanggan',
-      lastPropertyId: const IdUid(5, 228669662714724332),
+      lastPropertyId: const IdUid(5, 1148223169105057252),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
-            id: const IdUid(1, 4092493598295712006),
+            id: const IdUid(1, 4739133905337576847),
             name: 'id',
             type: 6,
             flags: 129),
         ModelProperty(
-            id: const IdUid(2, 4591236730173982826),
+            id: const IdUid(2, 2322289045945737775),
             name: 'namaPelanggan',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(3, 206385186470449517),
+            id: const IdUid(3, 1191715123452934982),
             name: 'nomorHp',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(4, 1056757794145561075),
-            name: 'alamat',
-            type: 9,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(5, 228669662714724332),
+            id: const IdUid(4, 3704075884785223833),
             name: 'date',
             type: 6,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(5, 1148223169105057252),
+            name: 'alamat',
+            type: 9,
             flags: 0)
       ],
       relations: <ModelRelation>[],
       backlinks: <ModelBacklink>[]),
   ModelEntity(
-      id: const IdUid(9, 7938775090727424681),
+      id: const IdUid(9, 5479916139900650257),
       name: 'Penyuplai',
-      lastPropertyId: const IdUid(5, 6783068128066839005),
+      lastPropertyId: const IdUid(5, 1721302608886012944),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
-            id: const IdUid(1, 7549082909142473358),
+            id: const IdUid(1, 5370541037664604689),
             name: 'id',
             type: 6,
             flags: 129),
         ModelProperty(
-            id: const IdUid(2, 8040645283840791939),
+            id: const IdUid(2, 8761787956773215735),
             name: 'namaPenyuplai',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(3, 3696516184682942617),
+            id: const IdUid(3, 6500597819544710545),
             name: 'nomorHp',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(4, 7186106893214161687),
-            name: 'alamat',
-            type: 9,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(5, 6783068128066839005),
+            id: const IdUid(4, 2925920490476272543),
             name: 'date',
             type: 6,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(5, 1721302608886012944),
+            name: 'alamat',
+            type: 9,
             flags: 0)
       ],
       relations: <ModelRelation>[],
       backlinks: <ModelBacklink>[]),
   ModelEntity(
-      id: const IdUid(10, 7249660919292159282),
+      id: const IdUid(10, 7436101342014513337),
       name: 'Realization',
-      lastPropertyId: const IdUid(6, 2649796977213601200),
+      lastPropertyId: const IdUid(6, 20766834634510067),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
-            id: const IdUid(1, 1239430574524959239),
+            id: const IdUid(1, 7433886701809848164),
             name: 'id',
             type: 6,
             flags: 129),
         ModelProperty(
-            id: const IdUid(2, 2546335628027621544),
+            id: const IdUid(2, 4466445309191943777),
             name: 'rlId',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(3, 3992034472000088951),
+            id: const IdUid(3, 686187533364867912),
             name: 'selesai',
-            type: 6,
+            type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(4, 5152584816596128964),
+            id: const IdUid(4, 7228852354698215253),
             name: 'biyaya',
             type: 8,
             flags: 0),
         ModelProperty(
-            id: const IdUid(5, 3620492139566355430),
+            id: const IdUid(5, 3626559515352252797),
             name: 'dateOut',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(6, 2649796977213601200),
+            id: const IdUid(6, 20766834634510067),
             name: 'done',
             type: 1,
             flags: 0)
       ],
       relations: <ModelRelation>[
         ModelRelation(
-            id: const IdUid(4, 4173805796183523593),
+            id: const IdUid(2, 8776044619376573560),
             name: 'mpiItems',
-            targetId: const IdUid(6, 6508396849694241533)),
+            targetId: const IdUid(6, 204361129886708792)),
         ModelRelation(
-            id: const IdUid(5, 2325601314425803450),
+            id: const IdUid(3, 2811611457061444237),
             name: 'stockItems',
-            targetId: const IdUid(14, 8252230295905294995))
+            targetId: const IdUid(14, 1836238050978758724))
       ],
       backlinks: <ModelBacklink>[]),
   ModelEntity(
-      id: const IdUid(11, 8112975015994656801),
+      id: const IdUid(11, 8499969845473737878),
       name: 'RincianPembayarran',
-      lastPropertyId: const IdUid(5, 1732365915741016725),
+      lastPropertyId: const IdUid(3, 260819322094188330),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
-            id: const IdUid(1, 1925734716809141454),
+            id: const IdUid(1, 8149588962516200627),
             name: 'id',
             type: 6,
             flags: 129),
         ModelProperty(
-            id: const IdUid(2, 2943212456241773923),
-            name: 'rincianPembayarranId',
+            id: const IdUid(2, 8230654805328008511),
+            name: 'rcpId',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(3, 5888434343774102611),
-            name: 'nomorHp',
-            type: 9,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(4, 2868903761315449846),
-            name: 'tanggal',
-            type: 9,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(5, 1732365915741016725),
-            name: 'amount',
+            id: const IdUid(3, 260819322094188330),
+            name: 'saldo',
             type: 8,
             flags: 0)
       ],
-      relations: <ModelRelation>[],
+      relations: <ModelRelation>[
+        ModelRelation(
+            id: const IdUid(4, 5426740503179881960),
+            name: 'payments',
+            targetId: const IdUid(7, 49854581121624890))
+      ],
       backlinks: <ModelBacklink>[]),
   ModelEntity(
-      id: const IdUid(12, 3389311333147401659),
+      id: const IdUid(12, 9006908669418226350),
       name: 'Spk',
-      lastPropertyId: const IdUid(22, 7821124043581012898),
+      lastPropertyId: const IdUid(22, 8172179748210389465),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
-            id: const IdUid(1, 2036313179231286946),
+            id: const IdUid(1, 1689466751621562137),
             name: 'id',
             type: 6,
             flags: 129),
         ModelProperty(
-            id: const IdUid(2, 7853031521436688451),
+            id: const IdUid(2, 1852854363711171894),
             name: 'jtId',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(3, 3136407084783273439),
+            id: const IdUid(3, 3022282028703121074),
             name: 'customerName',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(4, 3207199856924153408),
+            id: const IdUid(4, 3320249591083323740),
             name: 'policeNumber',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(5, 583332186576190328),
+            id: const IdUid(5, 8292437398565051194),
             name: 'namaKendaraan',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(6, 4804777362297338525),
+            id: const IdUid(6, 7890529735656314256),
             name: 'tipeKendaraan',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(7, 2822671690712378835),
+            id: const IdUid(7, 1070025387223667471),
             name: 'levelPekerjaan',
             type: 6,
             flags: 0),
         ModelProperty(
-            id: const IdUid(8, 6228318340789893821),
+            id: const IdUid(8, 5171544988961164078),
             name: 'date',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(9, 1268583191653085332),
+            id: const IdUid(9, 1972455866641562075),
             name: 'km',
-            type: 6,
+            type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(10, 7347171252299267808),
+            id: const IdUid(10, 8345981115663931499),
             name: 'noPkb',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(11, 6804182537668267386),
+            id: const IdUid(11, 4667170580015619861),
             name: 'noRangka',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(12, 6537285385965332137),
+            id: const IdUid(12, 1620735561204571379),
             name: 'alamat',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(13, 5770405988449320558),
+            id: const IdUid(13, 140688280157159804),
             name: 'analisa',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(14, 5165601188029653490),
+            id: const IdUid(14, 195657800799395009),
             name: 'keluhanKonsumen',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(15, 8693151492870885576),
+            id: const IdUid(15, 2348824809484129607),
             name: 'jenisPekrjaan',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(16, 5250106259996027892),
+            id: const IdUid(16, 3090636289907187412),
             name: 'sukuCadang',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(17, 5131654052082902415),
+            id: const IdUid(17, 2635205699244136520),
             name: 'catatan',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(18, 1199497322744702189),
+            id: const IdUid(18, 3841283757200626509),
             name: 'namaMekanik',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(19, 8127993700823814145),
+            id: const IdUid(19, 4474214516040354646),
             name: 'estimasiBiyaya',
             type: 8,
             flags: 0),
         ModelProperty(
-            id: const IdUid(20, 8998191852607205917),
+            id: const IdUid(20, 306740997443233911),
             name: 'estimasiSelesai',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(21, 7904750356019749286),
+            id: const IdUid(21, 5494131770161182148),
             name: 'namaInspeektor',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(22, 7821124043581012898),
+            id: const IdUid(22, 8172179748210389465),
             name: 'namaAdvisor',
             type: 9,
             flags: 0)
@@ -609,170 +616,175 @@ final _entities = <ModelEntity>[
       relations: <ModelRelation>[],
       backlinks: <ModelBacklink>[]),
   ModelEntity(
-      id: const IdUid(13, 5389668336874805663),
+      id: const IdUid(13, 7079102823371189561),
       name: 'Stock',
-      lastPropertyId: const IdUid(7, 6823922173508952596),
+      lastPropertyId: const IdUid(7, 8502800314542570820),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
-            id: const IdUid(1, 8078727726342567438),
+            id: const IdUid(1, 3469750279406276000),
             name: 'id',
             type: 6,
             flags: 129),
         ModelProperty(
-            id: const IdUid(2, 1612755521515953140),
+            id: const IdUid(2, 4295641430515353850),
             name: 'name',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(3, 6147357063854235302),
+            id: const IdUid(3, 5308687086950015620),
             name: 'partname',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(4, 4267336037774257271),
+            id: const IdUid(4, 8642497469166616081),
             name: 'desc',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(5, 8994379995284502924),
+            id: const IdUid(5, 9103310748645521061),
             name: 'count',
             type: 6,
             flags: 0),
         ModelProperty(
-            id: const IdUid(6, 8830119418651827585),
+            id: const IdUid(6, 2625233295167406113),
             name: 'totalPrice',
             type: 8,
             flags: 0),
         ModelProperty(
-            id: const IdUid(7, 6823922173508952596),
+            id: const IdUid(7, 8502800314542570820),
             name: 'date',
             type: 6,
             flags: 0)
       ],
       relations: <ModelRelation>[
         ModelRelation(
-            id: const IdUid(6, 7275607165978716096),
+            id: const IdUid(5, 7416912505157283077),
             name: 'items',
-            targetId: const IdUid(3, 5707353236487289197))
+            targetId: const IdUid(3, 4625775930867920763))
       ],
       backlinks: <ModelBacklink>[]),
   ModelEntity(
-      id: const IdUid(14, 8252230295905294995),
+      id: const IdUid(14, 1836238050978758724),
       name: 'StockRalization',
-      lastPropertyId: const IdUid(10, 7982991647627568346),
+      lastPropertyId: const IdUid(11, 8385815352274725365),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
-            id: const IdUid(1, 5005904759454546772),
+            id: const IdUid(1, 9141509822001820199),
             name: 'id',
             type: 6,
             flags: 129),
         ModelProperty(
-            id: const IdUid(2, 4263678117326537519),
+            id: const IdUid(2, 6211658954713082523),
             name: 'name',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(3, 5390991884097494752),
+            id: const IdUid(3, 442477921240568375),
             name: 'partname',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(4, 4242488554711566035),
+            id: const IdUid(4, 363433296347809942),
             name: 'desc',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(5, 4852305308480745740),
+            id: const IdUid(5, 651351571333824148),
             name: 'realizationId',
             type: 11,
             flags: 520,
-            indexId: const IdUid(5, 3007326015940417547),
+            indexId: const IdUid(6, 6026186748257595411),
             relationTarget: 'Stock'),
         ModelProperty(
-            id: const IdUid(6, 3072906914271333229),
+            id: const IdUid(6, 6936142990228633183),
             name: 'count',
             type: 6,
             flags: 0),
         ModelProperty(
-            id: const IdUid(7, 5717857448536813574),
+            id: const IdUid(7, 4541205081547850116),
             name: 'price',
             type: 8,
             flags: 0),
         ModelProperty(
-            id: const IdUid(8, 6152191143077776767),
+            id: const IdUid(8, 7391092456291512568),
             name: 'servicePrice',
             type: 8,
             flags: 0),
         ModelProperty(
-            id: const IdUid(9, 2359055127732270752),
+            id: const IdUid(9, 7713625955562194883),
             name: 'toalPrice',
             type: 8,
             flags: 0),
         ModelProperty(
-            id: const IdUid(10, 7982991647627568346),
+            id: const IdUid(10, 4952641409640380096),
             name: 'done',
             type: 1,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(11, 8385815352274725365),
+            name: 'sellPrice',
+            type: 8,
             flags: 0)
       ],
       relations: <ModelRelation>[],
       backlinks: <ModelBacklink>[]),
   ModelEntity(
-      id: const IdUid(15, 2609290811543905393),
+      id: const IdUid(15, 6098909903408490769),
       name: 'Supplier',
-      lastPropertyId: const IdUid(7, 492008693173469467),
+      lastPropertyId: const IdUid(7, 7047974696920561082),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
-            id: const IdUid(1, 6552733856157548979),
+            id: const IdUid(1, 5623336049350666018),
             name: 'id',
             type: 6,
             flags: 129),
         ModelProperty(
-            id: const IdUid(2, 6281117777761137762),
+            id: const IdUid(2, 2769662808576915787),
             name: 'supplier',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(3, 4812390050071224507),
+            id: const IdUid(3, 663255728581907997),
             name: 'desc',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(4, 3249128586996604007),
+            id: const IdUid(4, 9024694054848561625),
             name: 'count',
             type: 6,
             flags: 0),
         ModelProperty(
-            id: const IdUid(5, 223740548000063795),
+            id: const IdUid(5, 7567540445891835491),
             name: 'date',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(6, 3663653490940576907),
+            id: const IdUid(6, 9056511746704404803),
             name: 'pihakId',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(7, 492008693173469467),
+            id: const IdUid(7, 7047974696920561082),
             name: 'totalPrice',
             type: 8,
             flags: 0)
       ],
       relations: <ModelRelation>[
         ModelRelation(
-            id: const IdUid(7, 6913169932183535864),
+            id: const IdUid(6, 6820777666953836629),
             name: 'items',
-            targetId: const IdUid(2, 4267532564051428046)),
+            targetId: const IdUid(2, 3802626658971982346)),
         ModelRelation(
-            id: const IdUid(8, 3810464679638851644),
+            id: const IdUid(7, 8594457615602589511),
             name: 'stockItems',
-            targetId: const IdUid(13, 5389668336874805663)),
+            targetId: const IdUid(13, 7079102823371189561)),
         ModelRelation(
-            id: const IdUid(9, 1862484081618474252),
+            id: const IdUid(8, 8767648696213699788),
             name: 'detailStockItems',
-            targetId: const IdUid(3, 5707353236487289197))
+            targetId: const IdUid(3, 4625775930867920763))
       ],
       backlinks: <ModelBacklink>[])
 ];
@@ -797,13 +809,13 @@ Future<Store> openStore(
 ModelDefinition getObjectBoxModel() {
   final model = ModelInfo(
       entities: _entities,
-      lastEntityId: const IdUid(15, 2609290811543905393),
-      lastIndexId: const IdUid(5, 3007326015940417547),
-      lastRelationId: const IdUid(9, 1862484081618474252),
+      lastEntityId: const IdUid(15, 6098909903408490769),
+      lastIndexId: const IdUid(6, 6026186748257595411),
+      lastRelationId: const IdUid(8, 8767648696213699788),
       lastSequenceId: const IdUid(0, 0),
       retiredEntityUids: const [],
       retiredIndexUids: const [],
-      retiredPropertyUids: const [],
+      retiredPropertyUids: const [3209655501032753516],
       retiredRelationUids: const [],
       modelVersion: 5,
       modelVersionParserMinimum: 5,
@@ -812,10 +824,14 @@ ModelDefinition getObjectBoxModel() {
   final bindings = <Type, EntityDefinition>{
     Customer: EntityDefinition<Customer>(
         model: _entities[0],
-        toOneRelations: (Customer object) =>
-            [object.spk, object.inv, object.realization, object.mpi],
-        toManyRelations: (Customer object) =>
-            {RelInfo<Customer>.toMany(1, object.id): object.rincian},
+        toOneRelations: (Customer object) => [
+              object.spk,
+              object.inv,
+              object.realization,
+              object.mpi,
+              object.rcp
+            ],
+        toManyRelations: (Customer object) => {},
         getId: (Customer object) => object.id,
         setId: (Customer object, int id) {
           object.id = id;
@@ -827,7 +843,8 @@ ModelDefinition getObjectBoxModel() {
           final namaKendaraanOffset = fbb.writeString(object.namaKendaraan);
           final alamatOffset = fbb.writeString(object.alamat);
           final prosesOffset = fbb.writeString(object.proses);
-          fbb.startTable(12);
+          final dateTimeOffset = fbb.writeString(object.dateTime);
+          fbb.startTable(14);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, csIdOffset);
           fbb.addOffset(2, customerNameOffset);
@@ -835,10 +852,12 @@ ModelDefinition getObjectBoxModel() {
           fbb.addOffset(4, namaKendaraanOffset);
           fbb.addOffset(5, alamatOffset);
           fbb.addOffset(6, prosesOffset);
-          fbb.addInt64(7, object.spk.targetId);
-          fbb.addInt64(8, object.inv.targetId);
-          fbb.addInt64(9, object.realization.targetId);
-          fbb.addInt64(10, object.mpi.targetId);
+          fbb.addOffset(7, dateTimeOffset);
+          fbb.addInt64(8, object.spk.targetId);
+          fbb.addInt64(9, object.inv.targetId);
+          fbb.addInt64(10, object.realization.targetId);
+          fbb.addInt64(11, object.mpi.targetId);
+          fbb.addInt64(12, object.rcp.targetId);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -852,6 +871,8 @@ ModelDefinition getObjectBoxModel() {
                   .vTableGet(buffer, rootOffset, 6, ''),
               proses: const fb.StringReader(asciiOptimization: true)
                   .vTableGet(buffer, rootOffset, 16, ''),
+              dateTime: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 18, ''),
               customerName: const fb.StringReader(asciiOptimization: true)
                   .vTableGet(buffer, rootOffset, 8, ''),
               policeNumber: const fb.StringReader(asciiOptimization: true)
@@ -861,19 +882,20 @@ ModelDefinition getObjectBoxModel() {
               alamat: const fb.StringReader(asciiOptimization: true)
                   .vTableGet(buffer, rootOffset, 14, ''));
           object.spk.targetId =
-              const fb.Int64Reader().vTableGet(buffer, rootOffset, 18, 0);
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 20, 0);
           object.spk.attach(store);
           object.inv.targetId =
-              const fb.Int64Reader().vTableGet(buffer, rootOffset, 20, 0);
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 22, 0);
           object.inv.attach(store);
           object.realization.targetId =
-              const fb.Int64Reader().vTableGet(buffer, rootOffset, 22, 0);
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 24, 0);
           object.realization.attach(store);
           object.mpi.targetId =
-              const fb.Int64Reader().vTableGet(buffer, rootOffset, 24, 0);
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 26, 0);
           object.mpi.attach(store);
-          InternalToManyAccess.setRelInfo(object.rincian, store,
-              RelInfo<Customer>.toMany(1, object.id), store.box<Customer>());
+          object.rcp.targetId =
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 28, 0);
+          object.rcp.attach(store);
           return object;
         }),
     DetailPembelian: EntityDefinition<DetailPembelian>(
@@ -928,14 +950,15 @@ ModelDefinition getObjectBoxModel() {
           final dateOffset = fbb.writeString(object.date);
           final supplierOffset = fbb.writeString(object.supplier);
           final pihakIdOffset = fbb.writeString(object.pihakId);
-          fbb.startTable(8);
+          fbb.startTable(10);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, dateOffset);
           fbb.addOffset(2, supplierOffset);
           fbb.addOffset(3, pihakIdOffset);
           fbb.addInt64(4, object.count);
-          fbb.addFloat64(5, object.price);
           fbb.addFloat64(6, object.totalPrice);
+          fbb.addFloat64(7, object.buyPrice);
+          fbb.addFloat64(8, object.sellPrice);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -951,8 +974,10 @@ ModelDefinition getObjectBoxModel() {
                   .vTableGet(buffer, rootOffset, 8, ''),
               date: const fb.StringReader(asciiOptimization: true)
                   .vTableGet(buffer, rootOffset, 6, ''),
-              price:
-                  const fb.Float64Reader().vTableGet(buffer, rootOffset, 14, 0),
+              sellPrice:
+                  const fb.Float64Reader().vTableGet(buffer, rootOffset, 20, 0),
+              buyPrice:
+                  const fb.Float64Reader().vTableGet(buffer, rootOffset, 18, 0),
               count:
                   const fb.Int64Reader().vTableGet(buffer, rootOffset, 12, 0),
               totalPrice: const fb.Float64Reader()
@@ -963,8 +988,7 @@ ModelDefinition getObjectBoxModel() {
     Invoice: EntityDefinition<Invoice>(
         model: _entities[3],
         toOneRelations: (Invoice object) => [],
-        toManyRelations: (Invoice object) =>
-            {RelInfo<Invoice>.toMany(2, object.id): object.payments},
+        toManyRelations: (Invoice object) => {},
         getId: (Invoice object) => object.id,
         setId: (Invoice object, int id) {
           object.id = id;
@@ -973,15 +997,14 @@ ModelDefinition getObjectBoxModel() {
           final invIdOffset = fbb.writeString(object.invId);
           final invoiceDateOffset = fbb.writeString(object.invoiceDate);
           final soDateOffset = fbb.writeString(object.soDate);
-          fbb.startTable(9);
+          fbb.startTable(8);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, invIdOffset);
-          fbb.addFloat64(2, object.saldo);
-          fbb.addFloat64(3, object.partTotal);
-          fbb.addFloat64(4, object.serviceTotal);
-          fbb.addFloat64(5, object.invoiceTotal);
-          fbb.addOffset(6, invoiceDateOffset);
-          fbb.addOffset(7, soDateOffset);
+          fbb.addFloat64(2, object.partTotal);
+          fbb.addFloat64(3, object.serviceTotal);
+          fbb.addFloat64(4, object.invoiceTotal);
+          fbb.addOffset(5, invoiceDateOffset);
+          fbb.addOffset(6, soDateOffset);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -993,27 +1016,24 @@ ModelDefinition getObjectBoxModel() {
               id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
               invId: const fb.StringReader(asciiOptimization: true)
                   .vTableGet(buffer, rootOffset, 6, ''),
-              saldo:
-                  const fb.Float64Reader().vTableGet(buffer, rootOffset, 8, 0),
               partTotal:
-                  const fb.Float64Reader().vTableGet(buffer, rootOffset, 10, 0),
+                  const fb.Float64Reader().vTableGet(buffer, rootOffset, 8, 0),
               invoiceDate: const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 16, ''),
+                  .vTableGet(buffer, rootOffset, 14, ''),
               serviceTotal:
-                  const fb.Float64Reader().vTableGet(buffer, rootOffset, 12, 0),
+                  const fb.Float64Reader().vTableGet(buffer, rootOffset, 10, 0),
               invoiceTotal:
-                  const fb.Float64Reader().vTableGet(buffer, rootOffset, 14, 0),
+                  const fb.Float64Reader().vTableGet(buffer, rootOffset, 12, 0),
               soDate: const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 18, ''));
-          InternalToManyAccess.setRelInfo(object.payments, store,
-              RelInfo<Invoice>.toMany(2, object.id), store.box<Invoice>());
+                  .vTableGet(buffer, rootOffset, 16, ''));
+
           return object;
         }),
     Mpi: EntityDefinition<Mpi>(
         model: _entities[4],
         toOneRelations: (Mpi object) => [],
         toManyRelations: (Mpi object) =>
-            {RelInfo<Mpi>.toMany(3, object.id): object.items},
+            {RelInfo<Mpi>.toMany(1, object.id): object.items},
         getId: (Mpi object) => object.id,
         setId: (Mpi object, int id) {
           object.id = id;
@@ -1035,7 +1055,7 @@ ModelDefinition getObjectBoxModel() {
               mpiId: const fb.StringReader(asciiOptimization: true)
                   .vTableGet(buffer, rootOffset, 6, ''));
           InternalToManyAccess.setRelInfo(object.items, store,
-              RelInfo<Mpi>.toMany(3, object.id), store.box<Mpi>());
+              RelInfo<Mpi>.toMany(1, object.id), store.box<Mpi>());
           return object;
         }),
     MpiItem: EntityDefinition<MpiItem>(
@@ -1091,11 +1111,14 @@ ModelDefinition getObjectBoxModel() {
           object.id = id;
         },
         objectToFB: (Payment object, fb.Builder fbb) {
+          final keteranganOffset = fbb.writeString(object.keterangan);
           final dateOffset = fbb.writeString(object.date);
-          fbb.startTable(4);
+          fbb.startTable(6);
           fbb.addInt64(0, object.id);
           fbb.addFloat64(1, object.pay);
-          fbb.addOffset(2, dateOffset);
+          fbb.addOffset(2, keteranganOffset);
+          fbb.addOffset(3, dateOffset);
+          fbb.addFloat64(4, object.saldo);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -1105,9 +1128,13 @@ ModelDefinition getObjectBoxModel() {
 
           final object = Payment(
               id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
+              saldo:
+                  const fb.Float64Reader().vTableGet(buffer, rootOffset, 12, 0),
               pay: const fb.Float64Reader().vTableGet(buffer, rootOffset, 6, 0),
+              keterangan: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 8, ''),
               date: const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 8, ''));
+                  .vTableGet(buffer, rootOffset, 10, ''));
 
           return object;
         }),
@@ -1127,8 +1154,8 @@ ModelDefinition getObjectBoxModel() {
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, namaPelangganOffset);
           fbb.addOffset(2, nomorHpOffset);
-          fbb.addOffset(3, alamatOffset);
-          fbb.addInt64(4, object.date);
+          fbb.addInt64(3, object.date);
+          fbb.addOffset(4, alamatOffset);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -1140,11 +1167,11 @@ ModelDefinition getObjectBoxModel() {
               id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
               namaPelanggan: const fb.StringReader(asciiOptimization: true)
                   .vTableGet(buffer, rootOffset, 6, ''),
-              date: const fb.Int64Reader().vTableGet(buffer, rootOffset, 12, 0),
+              date: const fb.Int64Reader().vTableGet(buffer, rootOffset, 10, 0),
               nomorHp: const fb.StringReader(asciiOptimization: true)
                   .vTableGet(buffer, rootOffset, 8, ''),
               alamat: const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 10, ''));
+                  .vTableGet(buffer, rootOffset, 12, ''));
 
           return object;
         }),
@@ -1164,8 +1191,8 @@ ModelDefinition getObjectBoxModel() {
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, namaPenyuplaiOffset);
           fbb.addOffset(2, nomorHpOffset);
-          fbb.addOffset(3, alamatOffset);
-          fbb.addInt64(4, object.date);
+          fbb.addInt64(3, object.date);
+          fbb.addOffset(4, alamatOffset);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -1177,11 +1204,11 @@ ModelDefinition getObjectBoxModel() {
               id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
               namaPenyuplai: const fb.StringReader(asciiOptimization: true)
                   .vTableGet(buffer, rootOffset, 6, ''),
-              date: const fb.Int64Reader().vTableGet(buffer, rootOffset, 12, 0),
+              date: const fb.Int64Reader().vTableGet(buffer, rootOffset, 10, 0),
               nomorHp: const fb.StringReader(asciiOptimization: true)
                   .vTableGet(buffer, rootOffset, 8, ''),
               alamat: const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 10, ''));
+                  .vTableGet(buffer, rootOffset, 12, ''));
 
           return object;
         }),
@@ -1189,8 +1216,8 @@ ModelDefinition getObjectBoxModel() {
         model: _entities[9],
         toOneRelations: (Realization object) => [],
         toManyRelations: (Realization object) => {
-              RelInfo<Realization>.toMany(4, object.id): object.mpiItems,
-              RelInfo<Realization>.toMany(5, object.id): object.stockItems
+              RelInfo<Realization>.toMany(2, object.id): object.mpiItems,
+              RelInfo<Realization>.toMany(3, object.id): object.stockItems
             },
         getId: (Realization object) => object.id,
         setId: (Realization object, int id) {
@@ -1198,11 +1225,12 @@ ModelDefinition getObjectBoxModel() {
         },
         objectToFB: (Realization object, fb.Builder fbb) {
           final rlIdOffset = fbb.writeString(object.rlId);
+          final selesaiOffset = fbb.writeString(object.selesai);
           final dateOutOffset = fbb.writeString(object.dateOut);
           fbb.startTable(7);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, rlIdOffset);
-          fbb.addInt64(2, object.selesai);
+          fbb.addOffset(2, selesaiOffset);
           fbb.addFloat64(3, object.biyaya);
           fbb.addOffset(4, dateOutOffset);
           fbb.addBool(5, object.done);
@@ -1219,8 +1247,8 @@ ModelDefinition getObjectBoxModel() {
                   .vTableGet(buffer, rootOffset, 6, ''),
               dateOut: const fb.StringReader(asciiOptimization: true)
                   .vTableGet(buffer, rootOffset, 12, ''),
-              selesai:
-                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 8, 0),
+              selesai: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 8, ''),
               biyaya:
                   const fb.Float64Reader().vTableGet(buffer, rootOffset, 10, 0),
               done: const fb.BoolReader()
@@ -1228,34 +1256,30 @@ ModelDefinition getObjectBoxModel() {
           InternalToManyAccess.setRelInfo(
               object.mpiItems,
               store,
-              RelInfo<Realization>.toMany(4, object.id),
+              RelInfo<Realization>.toMany(2, object.id),
               store.box<Realization>());
           InternalToManyAccess.setRelInfo(
               object.stockItems,
               store,
-              RelInfo<Realization>.toMany(5, object.id),
+              RelInfo<Realization>.toMany(3, object.id),
               store.box<Realization>());
           return object;
         }),
     RincianPembayarran: EntityDefinition<RincianPembayarran>(
         model: _entities[10],
         toOneRelations: (RincianPembayarran object) => [],
-        toManyRelations: (RincianPembayarran object) => {},
+        toManyRelations: (RincianPembayarran object) =>
+            {RelInfo<RincianPembayarran>.toMany(4, object.id): object.payments},
         getId: (RincianPembayarran object) => object.id,
         setId: (RincianPembayarran object, int id) {
           object.id = id;
         },
         objectToFB: (RincianPembayarran object, fb.Builder fbb) {
-          final rincianPembayarranIdOffset =
-              fbb.writeString(object.rincianPembayarranId);
-          final nomorHpOffset = fbb.writeString(object.nomorHp);
-          final tanggalOffset = fbb.writeString(object.tanggal);
-          fbb.startTable(6);
+          final rcpIdOffset = fbb.writeString(object.rcpId);
+          fbb.startTable(4);
           fbb.addInt64(0, object.id);
-          fbb.addOffset(1, rincianPembayarranIdOffset);
-          fbb.addOffset(2, nomorHpOffset);
-          fbb.addOffset(3, tanggalOffset);
-          fbb.addFloat64(4, object.amount);
+          fbb.addOffset(1, rcpIdOffset);
+          fbb.addFloat64(2, object.saldo);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -1265,16 +1289,15 @@ ModelDefinition getObjectBoxModel() {
 
           final object = RincianPembayarran(
               id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
-              rincianPembayarranId:
-                  const fb.StringReader(asciiOptimization: true)
-                      .vTableGet(buffer, rootOffset, 6, ''),
-              tanggal: const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 10, ''),
-              nomorHp: const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 8, ''),
-              amount: const fb.Float64Reader()
-                  .vTableGet(buffer, rootOffset, 12, 0));
-
+              rcpId: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 6, ''),
+              saldo:
+                  const fb.Float64Reader().vTableGet(buffer, rootOffset, 8, 0));
+          InternalToManyAccess.setRelInfo(
+              object.payments,
+              store,
+              RelInfo<RincianPembayarran>.toMany(4, object.id),
+              store.box<RincianPembayarran>());
           return object;
         }),
     Spk: EntityDefinition<Spk>(
@@ -1292,6 +1315,7 @@ ModelDefinition getObjectBoxModel() {
           final namaKendaraanOffset = fbb.writeString(object.namaKendaraan);
           final tipeKendaraanOffset = fbb.writeString(object.tipeKendaraan);
           final dateOffset = fbb.writeString(object.date);
+          final kmOffset = fbb.writeString(object.km);
           final noPkbOffset = fbb.writeString(object.noPkb);
           final noRangkaOffset = fbb.writeString(object.noRangka);
           final alamatOffset = fbb.writeString(object.alamat);
@@ -1313,7 +1337,7 @@ ModelDefinition getObjectBoxModel() {
           fbb.addOffset(5, tipeKendaraanOffset);
           fbb.addInt64(6, object.levelPekerjaan);
           fbb.addOffset(7, dateOffset);
-          fbb.addInt64(8, object.km);
+          fbb.addOffset(8, kmOffset);
           fbb.addOffset(9, noPkbOffset);
           fbb.addOffset(10, noRangkaOffset);
           fbb.addOffset(11, alamatOffset);
@@ -1352,7 +1376,7 @@ ModelDefinition getObjectBoxModel() {
                   .vTableGet(buffer, rootOffset, 14, ''),
               sukuCadang: const fb.StringReader(asciiOptimization: true)
                   .vTableGet(buffer, rootOffset, 34, ''),
-              km: const fb.Int64Reader().vTableGet(buffer, rootOffset, 20, 0),
+              km: const fb.StringReader(asciiOptimization: true).vTableGet(buffer, rootOffset, 20, ''),
               policeNumber: const fb.StringReader(asciiOptimization: true).vTableGet(buffer, rootOffset, 10, ''),
               namaKendaraan: const fb.StringReader(asciiOptimization: true).vTableGet(buffer, rootOffset, 12, ''),
               date: const fb.StringReader(asciiOptimization: true).vTableGet(buffer, rootOffset, 18, ''),
@@ -1372,7 +1396,7 @@ ModelDefinition getObjectBoxModel() {
         model: _entities[12],
         toOneRelations: (Stock object) => [],
         toManyRelations: (Stock object) =>
-            {RelInfo<Stock>.toMany(6, object.id): object.items},
+            {RelInfo<Stock>.toMany(5, object.id): object.items},
         getId: (Stock object) => object.id,
         setId: (Stock object, int id) {
           object.id = id;
@@ -1410,7 +1434,7 @@ ModelDefinition getObjectBoxModel() {
               totalPrice: const fb.Float64Reader()
                   .vTableGet(buffer, rootOffset, 14, 0));
           InternalToManyAccess.setRelInfo(object.items, store,
-              RelInfo<Stock>.toMany(6, object.id), store.box<Stock>());
+              RelInfo<Stock>.toMany(5, object.id), store.box<Stock>());
           return object;
         }),
     StockRalization: EntityDefinition<StockRalization>(
@@ -1425,7 +1449,7 @@ ModelDefinition getObjectBoxModel() {
           final nameOffset = fbb.writeString(object.name);
           final partnameOffset = fbb.writeString(object.partname);
           final descOffset = fbb.writeString(object.desc);
-          fbb.startTable(11);
+          fbb.startTable(12);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, nameOffset);
           fbb.addOffset(2, partnameOffset);
@@ -1436,6 +1460,7 @@ ModelDefinition getObjectBoxModel() {
           fbb.addFloat64(7, object.servicePrice);
           fbb.addFloat64(8, object.toalPrice);
           fbb.addBool(9, object.done);
+          fbb.addFloat64(10, object.sellPrice);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -1455,6 +1480,8 @@ ModelDefinition getObjectBoxModel() {
                   const fb.Float64Reader().vTableGet(buffer, rootOffset, 16, 0),
               count:
                   const fb.Int64Reader().vTableGet(buffer, rootOffset, 14, 0),
+              sellPrice:
+                  const fb.Float64Reader().vTableGet(buffer, rootOffset, 24, 0),
               servicePrice:
                   const fb.Float64Reader().vTableGet(buffer, rootOffset, 18, 0),
               toalPrice:
@@ -1470,9 +1497,9 @@ ModelDefinition getObjectBoxModel() {
         model: _entities[14],
         toOneRelations: (Supplier object) => [],
         toManyRelations: (Supplier object) => {
-              RelInfo<Supplier>.toMany(7, object.id): object.items,
-              RelInfo<Supplier>.toMany(8, object.id): object.stockItems,
-              RelInfo<Supplier>.toMany(9, object.id): object.detailStockItems
+              RelInfo<Supplier>.toMany(6, object.id): object.items,
+              RelInfo<Supplier>.toMany(7, object.id): object.stockItems,
+              RelInfo<Supplier>.toMany(8, object.id): object.detailStockItems
             },
         getId: (Supplier object) => object.id,
         setId: (Supplier object, int id) {
@@ -1513,11 +1540,11 @@ ModelDefinition getObjectBoxModel() {
               totalPrice: const fb.Float64Reader()
                   .vTableGet(buffer, rootOffset, 16, 0));
           InternalToManyAccess.setRelInfo(object.items, store,
-              RelInfo<Supplier>.toMany(7, object.id), store.box<Supplier>());
+              RelInfo<Supplier>.toMany(6, object.id), store.box<Supplier>());
           InternalToManyAccess.setRelInfo(object.stockItems, store,
-              RelInfo<Supplier>.toMany(8, object.id), store.box<Supplier>());
+              RelInfo<Supplier>.toMany(7, object.id), store.box<Supplier>());
           InternalToManyAccess.setRelInfo(object.detailStockItems, store,
-              RelInfo<Supplier>.toMany(9, object.id), store.box<Supplier>());
+              RelInfo<Supplier>.toMany(8, object.id), store.box<Supplier>());
           return object;
         })
   };
@@ -1553,25 +1580,29 @@ class Customer_ {
   static final proses =
       QueryStringProperty<Customer>(_entities[0].properties[6]);
 
+  /// see [Customer.dateTime]
+  static final dateTime =
+      QueryStringProperty<Customer>(_entities[0].properties[7]);
+
   /// see [Customer.spk]
   static final spk =
-      QueryRelationToOne<Customer, Spk>(_entities[0].properties[7]);
+      QueryRelationToOne<Customer, Spk>(_entities[0].properties[8]);
 
   /// see [Customer.inv]
   static final inv =
-      QueryRelationToOne<Customer, Invoice>(_entities[0].properties[8]);
+      QueryRelationToOne<Customer, Invoice>(_entities[0].properties[9]);
 
   /// see [Customer.realization]
   static final realization =
-      QueryRelationToOne<Customer, Realization>(_entities[0].properties[9]);
+      QueryRelationToOne<Customer, Realization>(_entities[0].properties[10]);
 
   /// see [Customer.mpi]
   static final mpi =
-      QueryRelationToOne<Customer, Mpi>(_entities[0].properties[10]);
+      QueryRelationToOne<Customer, Mpi>(_entities[0].properties[11]);
 
-  /// see [Customer.rincian]
-  static final rincian = QueryRelationToMany<Customer, RincianPembayarran>(
-      _entities[0].relations[0]);
+  /// see [Customer.rcp]
+  static final rcp = QueryRelationToOne<Customer, RincianPembayarran>(
+      _entities[0].properties[12]);
 }
 
 /// [DetailPembelian] entity fields to define ObjectBox queries.
@@ -1623,13 +1654,17 @@ class DetailStock_ {
   static final count =
       QueryIntegerProperty<DetailStock>(_entities[2].properties[4]);
 
-  /// see [DetailStock.price]
-  static final price =
-      QueryDoubleProperty<DetailStock>(_entities[2].properties[5]);
-
   /// see [DetailStock.totalPrice]
   static final totalPrice =
+      QueryDoubleProperty<DetailStock>(_entities[2].properties[5]);
+
+  /// see [DetailStock.buyPrice]
+  static final buyPrice =
       QueryDoubleProperty<DetailStock>(_entities[2].properties[6]);
+
+  /// see [DetailStock.sellPrice]
+  static final sellPrice =
+      QueryDoubleProperty<DetailStock>(_entities[2].properties[7]);
 }
 
 /// [Invoice] entity fields to define ObjectBox queries.
@@ -1640,32 +1675,25 @@ class Invoice_ {
   /// see [Invoice.invId]
   static final invId = QueryStringProperty<Invoice>(_entities[3].properties[1]);
 
-  /// see [Invoice.saldo]
-  static final saldo = QueryDoubleProperty<Invoice>(_entities[3].properties[2]);
-
   /// see [Invoice.partTotal]
   static final partTotal =
-      QueryDoubleProperty<Invoice>(_entities[3].properties[3]);
+      QueryDoubleProperty<Invoice>(_entities[3].properties[2]);
 
   /// see [Invoice.serviceTotal]
   static final serviceTotal =
-      QueryDoubleProperty<Invoice>(_entities[3].properties[4]);
+      QueryDoubleProperty<Invoice>(_entities[3].properties[3]);
 
   /// see [Invoice.invoiceTotal]
   static final invoiceTotal =
-      QueryDoubleProperty<Invoice>(_entities[3].properties[5]);
+      QueryDoubleProperty<Invoice>(_entities[3].properties[4]);
 
   /// see [Invoice.invoiceDate]
   static final invoiceDate =
-      QueryStringProperty<Invoice>(_entities[3].properties[6]);
+      QueryStringProperty<Invoice>(_entities[3].properties[5]);
 
   /// see [Invoice.soDate]
   static final soDate =
-      QueryStringProperty<Invoice>(_entities[3].properties[7]);
-
-  /// see [Invoice.payments]
-  static final payments =
-      QueryRelationToMany<Invoice, Payment>(_entities[3].relations[0]);
+      QueryStringProperty<Invoice>(_entities[3].properties[6]);
 }
 
 /// [Mpi] entity fields to define ObjectBox queries.
@@ -1716,8 +1744,15 @@ class Payment_ {
   /// see [Payment.pay]
   static final pay = QueryDoubleProperty<Payment>(_entities[6].properties[1]);
 
+  /// see [Payment.keterangan]
+  static final keterangan =
+      QueryStringProperty<Payment>(_entities[6].properties[2]);
+
   /// see [Payment.date]
-  static final date = QueryStringProperty<Payment>(_entities[6].properties[2]);
+  static final date = QueryStringProperty<Payment>(_entities[6].properties[3]);
+
+  /// see [Payment.saldo]
+  static final saldo = QueryDoubleProperty<Payment>(_entities[6].properties[4]);
 }
 
 /// [Pelanggan] entity fields to define ObjectBox queries.
@@ -1733,13 +1768,13 @@ class Pelanggan_ {
   static final nomorHp =
       QueryStringProperty<Pelanggan>(_entities[7].properties[2]);
 
-  /// see [Pelanggan.alamat]
-  static final alamat =
-      QueryStringProperty<Pelanggan>(_entities[7].properties[3]);
-
   /// see [Pelanggan.date]
   static final date =
-      QueryIntegerProperty<Pelanggan>(_entities[7].properties[4]);
+      QueryIntegerProperty<Pelanggan>(_entities[7].properties[3]);
+
+  /// see [Pelanggan.alamat]
+  static final alamat =
+      QueryStringProperty<Pelanggan>(_entities[7].properties[4]);
 }
 
 /// [Penyuplai] entity fields to define ObjectBox queries.
@@ -1755,13 +1790,13 @@ class Penyuplai_ {
   static final nomorHp =
       QueryStringProperty<Penyuplai>(_entities[8].properties[2]);
 
-  /// see [Penyuplai.alamat]
-  static final alamat =
-      QueryStringProperty<Penyuplai>(_entities[8].properties[3]);
-
   /// see [Penyuplai.date]
   static final date =
-      QueryIntegerProperty<Penyuplai>(_entities[8].properties[4]);
+      QueryIntegerProperty<Penyuplai>(_entities[8].properties[3]);
+
+  /// see [Penyuplai.alamat]
+  static final alamat =
+      QueryStringProperty<Penyuplai>(_entities[8].properties[4]);
 }
 
 /// [Realization] entity fields to define ObjectBox queries.
@@ -1776,7 +1811,7 @@ class Realization_ {
 
   /// see [Realization.selesai]
   static final selesai =
-      QueryIntegerProperty<Realization>(_entities[9].properties[2]);
+      QueryStringProperty<Realization>(_entities[9].properties[2]);
 
   /// see [Realization.biyaya]
   static final biyaya =
@@ -1805,21 +1840,17 @@ class RincianPembayarran_ {
   static final id =
       QueryIntegerProperty<RincianPembayarran>(_entities[10].properties[0]);
 
-  /// see [RincianPembayarran.rincianPembayarranId]
-  static final rincianPembayarranId =
+  /// see [RincianPembayarran.rcpId]
+  static final rcpId =
       QueryStringProperty<RincianPembayarran>(_entities[10].properties[1]);
 
-  /// see [RincianPembayarran.nomorHp]
-  static final nomorHp =
-      QueryStringProperty<RincianPembayarran>(_entities[10].properties[2]);
+  /// see [RincianPembayarran.saldo]
+  static final saldo =
+      QueryDoubleProperty<RincianPembayarran>(_entities[10].properties[2]);
 
-  /// see [RincianPembayarran.tanggal]
-  static final tanggal =
-      QueryStringProperty<RincianPembayarran>(_entities[10].properties[3]);
-
-  /// see [RincianPembayarran.amount]
-  static final amount =
-      QueryDoubleProperty<RincianPembayarran>(_entities[10].properties[4]);
+  /// see [RincianPembayarran.payments]
+  static final payments = QueryRelationToMany<RincianPembayarran, Payment>(
+      _entities[10].relations[0]);
 }
 
 /// [Spk] entity fields to define ObjectBox queries.
@@ -1854,7 +1885,7 @@ class Spk_ {
   static final date = QueryStringProperty<Spk>(_entities[11].properties[7]);
 
   /// see [Spk.km]
-  static final km = QueryIntegerProperty<Spk>(_entities[11].properties[8]);
+  static final km = QueryStringProperty<Spk>(_entities[11].properties[8]);
 
   /// see [Spk.noPkb]
   static final noPkb = QueryStringProperty<Spk>(_entities[11].properties[9]);
@@ -1976,6 +2007,10 @@ class StockRalization_ {
   /// see [StockRalization.done]
   static final done =
       QueryBooleanProperty<StockRalization>(_entities[13].properties[9]);
+
+  /// see [StockRalization.sellPrice]
+  static final sellPrice =
+      QueryDoubleProperty<StockRalization>(_entities[13].properties[10]);
 }
 
 /// [Supplier] entity fields to define ObjectBox queries.

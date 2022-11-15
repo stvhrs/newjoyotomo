@@ -1,5 +1,7 @@
+import 'dart:developer';
+
 import 'package:bitsdojo_window/bitsdojo_window.dart';
-import 'package:newJoyo/pages/customer_page.dart';
+import 'package:newJoyo/pages/pekerjaan_page.dart';
 import 'package:newJoyo/pages/daftar_supplier.dart';
 import 'package:newJoyo/pages/daftar_pelangan.dart';
 import 'package:newJoyo/pages/riwayat_pemakaian.dart';
@@ -79,14 +81,14 @@ class _SideState extends State<Side> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
-        onPressed: () {
-          objectBox.deleteAllSupplier();
+      // floatingActionButton: FloatingActionButton(
+      //   child: const Icon(Icons.add),
+      //   onPressed: () {
+      //     objectBox.deleteAllSupplier();
 
-          objectBox.deleteAllStock();
-        },
-      ),
+      //     objectBox.deleteAllStock();
+      //   },
+      // ),
       body: WindowBorder(
         color: const Color.fromARGB(255, 79, 117, 134),
         child: Column(
@@ -181,36 +183,48 @@ class _SideState extends State<Side> {
                         },
                         icon: const Icon(Icons.shopify_rounded),
                       ),
+                      // SideMenuItem(
+                      //   priority: 2,
+                      //   title: 'Riwayat Pemakaian',
+                      //   onTap: () {
+                      //     page.jumpToPage(2);
+                      //   },
+                      //   icon:
+                      //       const Icon(Icons.format_textdirection_l_to_r_sharp),
+                      // ),
                       SideMenuItem(
                         priority: 2,
-                        title: 'Riwayat Pemakaian',
-                        onTap: () {
-                          page.jumpToPage(2);
-                        },
-                        icon:
-                            const Icon(Icons.format_textdirection_l_to_r_sharp),
-                      ),
-                      SideMenuItem(
-                        priority: 3,
                         title: 'Pekerjaan',
                         onTap: () {
-                          page.jumpToPage(3);
+                          if (page.page == 2) {
+                            page.jumpToPage(5);
+                            Future.delayed(
+                              Duration(milliseconds: 100),
+                              () {
+                                page.jumpToPage(2);
+                              },
+                            );
+
+                            log('message');
+                          } else {
+                            page.jumpToPage(2);
+                          }
                         },
                         icon: const Icon(Icons.engineering_rounded),
                       ),
                       SideMenuItem(
-                        priority: 4,
+                        priority: 3,
                         title: 'Daftar Supplier',
                         onTap: () {
-                          page.jumpToPage(4);
+                          page.jumpToPage(3);
                         },
                         icon: const Icon(Icons.apartment_sharp),
                       ),
                       SideMenuItem(
-                        priority: 5,
+                        priority: 4,
                         title: 'Daftar Pelanggan',
                         onTap: () {
-                          page.jumpToPage(5);
+                          page.jumpToPage(4);
                         },
                         icon: const Icon(Icons.people_alt),
                       ),
@@ -219,13 +233,13 @@ class _SideState extends State<Side> {
                   Expanded(
                     child: PageView(
                       controller: page,
-                      children: const [
+                      children: [
                         StockPage(),
                         SupplierPage(),
-                        RiwayatPemakaian(),
-                        CustomerPage(),  DaftarSupplier(),
+                        // RiwayatPemakaian(),
+                        CustomerPage(), DaftarSupplier(),
                         DaftarPelanggan(),
-                      
+                        Container()
                       ],
                     ),
                   ),

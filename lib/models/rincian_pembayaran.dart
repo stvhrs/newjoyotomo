@@ -1,20 +1,18 @@
-
+import 'package:newJoyo/models/payment.dart';
 import 'package:objectbox/objectbox.dart';
 
 @Entity()
 class RincianPembayarran {
   @Id(assignable: true)
   int id;
-  String rincianPembayarranId;
-  String nomorHp;
-String tanggal;
-  double amount;
+  String rcpId;
+  double saldo;
 
+  ToMany<Payment> payments = ToMany<Payment>();
 
-  RincianPembayarran(
-      {this.id = 0,
-      required this.rincianPembayarranId,
-      required this.tanggal,
-     required this.nomorHp,
-      required this.amount});
+  RincianPembayarran({
+    this.id = 0,
+   this.rcpId='',
+    this.saldo = 1,
+  });
 }

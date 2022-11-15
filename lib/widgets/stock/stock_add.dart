@@ -24,7 +24,7 @@ class AddPartName extends StatelessWidget {
                   children: [Container(decoration: BoxDecoration( color: Color.fromARGB(255, 79, 117, 134),borderRadius: BorderRadius.circular(10)),height: 400,width:570,),
                     AlertDialog(
                       actionsPadding: const EdgeInsets.only(right: 15, bottom: 15),
-                      title: const Text("Insert Part Number"),
+                      title: const Text("Tambah Partnumber"),
                       content: IntrinsicHeight(
                         child: Container(
                           width: 500,
@@ -34,7 +34,7 @@ class AddPartName extends StatelessWidget {
                                 margin: const EdgeInsets.only(bottom: 20),
                                 child: TextFormField(
                                   decoration: const InputDecoration(
-                                    hintText: 'Part Number',
+                                    hintText: 'Partnumber',
                                   ),
                                   onChanged: (val) {
                                     p = val.toString();
@@ -78,7 +78,7 @@ class AddPartName extends StatelessWidget {
                                     },
                                     maxLines: 3,
                                     decoration: InputDecoration(
-                                      hintText: 'Description',
+                                      hintText: 'Deskripsi',
                                       contentPadding: const EdgeInsets.only(
                                           left: 10, top: 10, bottom: 10),
                                       fillColor: Colors.white,
@@ -124,7 +124,7 @@ class AddPartName extends StatelessWidget {
                               Navigator.of(context).pop();
                             }
                           },
-                          child: const Text("Insert"),
+                          child: const Text("Tambah Stock"),
                         ),
                       ],
                     ),

@@ -70,12 +70,12 @@ class _SupplierDetailsState extends State<SupplierDetails> {
                       label: Center(child: Text('PartName')),
                     ),
                     DataColumn(
-                      label: Center(child: Text('Item Cost')),
+                      label: Center(child: Text('Harga Peritem')),
                     ),
                     DataColumn2(
                         label: Center(
                             child: Text(
-                          'Count',
+                          'Jumlah',
                         )),
                         size: ColumnSize.S),
                     DataColumn(
