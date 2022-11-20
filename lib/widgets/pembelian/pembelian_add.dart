@@ -262,7 +262,7 @@ class _SupplierAddState extends State<SupplierAdd> {
                             actions: <Widget>[
                               ElevatedButton(
                                 onPressed: () {
-                                  for (var i = 0; i < 1000; i++) {
+                              
                                     
                                 
                                   bool duplicate = false;
@@ -387,7 +387,7 @@ class _SupplierAddState extends State<SupplierAdd> {
                                     }
 
                                     objectBox.insertSupplier(tempSupplier);}
-                                      }
+                                      
                                     Navigator.of(context).pop();
                                   
                                 },

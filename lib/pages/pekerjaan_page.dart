@@ -248,11 +248,7 @@ class _CustomerPageState extends State<CustomerPage> {
                                                           1
                                                       ? '_____'
                                                       : formatCurrency.format(e
-                                                          .rcp
-                                                          .target!
-                                                          .payments
-                                                          .first
-                                                          .saldo),
+                                                          .realization.target!.biyaya),
                                                   style: const TextStyle(
                                                       fontWeight:
                                                           FontWeight.bold),

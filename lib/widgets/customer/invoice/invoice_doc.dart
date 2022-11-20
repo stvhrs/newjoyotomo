@@ -351,7 +351,7 @@ class _InvoiceDocState extends State<InvoiceDoc> {
                                                               const EdgeInsets
                                                                   .all(3),
                                                           child: Text(
-                                                            'Tanggal Invoce: ',
+                                                            'Tanggal Invoice: ',
                                                             style: small,
                                                           ),
                                                         ),

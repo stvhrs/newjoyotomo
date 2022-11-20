@@ -20,10 +20,19 @@ class AddPartName extends StatelessWidget {
           showDialog(
               context: context,
               builder: (context) {
-                return Stack(alignment: Alignment.center,
-                  children: [Container(decoration: BoxDecoration( color: const Color.fromARGB(255, 79, 117, 134),borderRadius: BorderRadius.circular(10)),height: 400,width:570,),
+                return Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 79, 117, 134),
+                          borderRadius: BorderRadius.circular(10)),
+                      height: 400,
+                      width: 570,
+                    ),
                     AlertDialog(
-                      actionsPadding: const EdgeInsets.only(right: 15, bottom: 15),
+                      actionsPadding:
+                          const EdgeInsets.only(right: 15, bottom: 15),
                       title: const Text("Tambah Partnumber"),
                       content: IntrinsicHeight(
                         child: SizedBox(
@@ -60,13 +69,13 @@ class AddPartName extends StatelessWidget {
                                           height: 2),
                                       focusedBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(7),
-                                        borderSide:
-                                            BorderSide(color: Colors.grey.shade300),
+                                        borderSide: BorderSide(
+                                            color: Colors.grey.shade300),
                                       ),
                                       enabledBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(7),
-                                        borderSide:
-                                            BorderSide(color: Colors.grey.shade300),
+                                        borderSide: BorderSide(
+                                            color: Colors.grey.shade300),
                                       ),
                                     )),
                               ),
@@ -88,13 +97,13 @@ class AddPartName extends StatelessWidget {
                                           height: 2),
                                       focusedBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(7),
-                                        borderSide:
-                                            BorderSide(color: Colors.grey.shade300),
+                                        borderSide: BorderSide(
+                                            color: Colors.grey.shade300),
                                       ),
                                       enabledBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(7),
-                                        borderSide:
-                                            BorderSide(color: Colors.grey.shade300),
+                                        borderSide: BorderSide(
+                                            color: Colors.grey.shade300),
                                       ),
                                     )),
                               )
@@ -105,12 +114,14 @@ class AddPartName extends StatelessWidget {
                       actions: <Widget>[
                         ElevatedButton(
                           onPressed: () {
-                            if ((p.isNotEmpty || d.isNotEmpty || n.isNotEmpty)) {
+                            if ((p.isNotEmpty ||
+                                d.isNotEmpty ||
+                                n.isNotEmpty)) {
                               Stock stock = Stock(
-                                  
                                   partname: p,
                                   name: n,
-                                  desc: d,date: DateTime.now().microsecondsSinceEpoch,
+                                  desc: d,
+                                  date: DateTime.now().microsecondsSinceEpoch,
                                   count: 0,
                                   totalPrice: 0);
                               // for (var i = 0; i < 10000; i++) {

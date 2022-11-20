@@ -130,7 +130,7 @@ class _RincianDocState extends State<RincianDoc> {
                               .parse(v)
                               .toDouble();
                       totaling();
-                      setState(() {});
+                  
                     },
                     style: small),
               ),
@@ -198,11 +198,11 @@ class _RincianDocState extends State<RincianDoc> {
                     backgroundColor: Colors.red.shade400,
                     child: const Icon(Icons.picture_as_pdf),
                     onPressed: () async {
+                  
                       ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('Loading.....')));
                       widget.customer.proses = 'Pembayaran';
-                      showPrint = false;
-                      setState(() {});
+               
                       Customer cs = widget.customer;
                       cs.rcp.target!.payments.clear();
                       cs.rcp.target = RincianPembayarran(
@@ -411,7 +411,7 @@ class _RincianDocState extends State<RincianDoc> {
                                                                         const EdgeInsets
                                                                             .all(3),
                                                                     child: Text(
-                                                                      'Tanggal Invoce: ',
+                                                                      'Tanggal Invoice: ',
                                                                       style:
                                                                           small,
                                                                     ),
@@ -578,11 +578,7 @@ class _RincianDocState extends State<RincianDoc> {
                                                                           .toIso8601String(),
                                                                       keterangan:
                                                                           'Keterangan',
-                                                                      saldo: widget
-                                                                          .customer
-                                                                          .realization
-                                                                          .target!
-                                                                          .biyaya,
+                                                                      saldo: payments[jumlahOpsi-1].saldo,
                                                                       pay: 0));
                                                                   jumlahOpsi =
                                                                       jumlahOpsi +

@@ -12,17 +12,23 @@ class EdithPenyuplai extends StatefulWidget {
 }
 
 class _EdithPenyuplaiState extends State<EdithPenyuplai> {
+     String namaSupplier = '';
+    String noHp = '';
+    String alamat = '';
   @override
   void initState() {
+    
     super.initState();
+    namaSupplier=widget.penyuplai.namaPenyuplai;
+    noHp=widget.penyuplai.nomorHp;
+    alamat=widget.penyuplai.alamat;
   }
+
+
 
   @override
   Widget build(BuildContext context) {
-    String namaSupplier = '';
-    String noHp = '';
-    String alamat = '';
-
+   
     return IconButton(
       style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all(

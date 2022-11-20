@@ -90,7 +90,8 @@ class _SupplierEditState extends State<SupplierEdit> {
               const Spacer(),
               SizedBox(
                 width: 200,
-                child: TextFormField(decoration: const InputDecoration(hintText: 'Harga'),
+                child: TextFormField(
+                  decoration: const InputDecoration(hintText: 'Harga'),
                   initialValue: _updatedDetailStock[i].buyPrice.toString(),
                   onChanged: (value) {
                     if (_updatedStock.isNotEmpty) {
@@ -173,7 +174,8 @@ class _SupplierEditState extends State<SupplierEdit> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Container(
-                                        margin: const EdgeInsets.only(bottom: 20),
+                                        margin:
+                                            const EdgeInsets.only(bottom: 20),
                                         child: Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
@@ -196,12 +198,13 @@ class _SupplierEditState extends State<SupplierEdit> {
                                             ),
                                             SizedBox(
                                               width: 150,
-                                              child:
-                                                  WebDatePicker(small: false,onChange: (v) {
-                                                if (v != null) {
-                                                  _date = v;
-                                                }
-                                              }),
+                                              child: WebDatePicker(
+                                                  small: false,
+                                                  onChange: (v) {
+                                                    if (v != null) {
+                                                      _date = v;
+                                                    }
+                                                  }),
                                             ),
                                           ],
                                         ),
@@ -209,7 +212,9 @@ class _SupplierEditState extends State<SupplierEdit> {
                                       Container(
                                         margin:
                                             const EdgeInsets.only(bottom: 20),
-                                        child: TextFormField(decoration: const InputDecoration(hintText: 'Deskripsi'),
+                                        child: TextFormField(
+                                          decoration: const InputDecoration(
+                                              hintText: 'Deskripsi'),
                                           onChanged: (val) {
                                             _desc = val;
                                           },
@@ -254,7 +259,8 @@ class _SupplierEditState extends State<SupplierEdit> {
                                                         count: 0,
                                                         totalPrice: 0));
                                                     _updatedDetailStock.add(
-                                                        DetailStock(    sellPrice: 0,
+                                                        DetailStock(
+                                                            sellPrice: 0,
                                                             pihakId: widget
                                                                 .supplier
                                                                 .pihakId,
@@ -285,7 +291,7 @@ class _SupplierEditState extends State<SupplierEdit> {
                                   _supplier = _controller.text;
 
                                   widget.supplier.date =
-                                      DateTime.now().toIso8601String();
+                                    _date.toIso8601String();
                                   widget.supplier.desc = _desc;
                                   widget.supplier.supplier = _supplier;
 
@@ -309,7 +315,8 @@ class _SupplierEditState extends State<SupplierEdit> {
                                           name: _updatedStock[i].name,
                                           partName: _updatedStock[i].partname,
                                           count: _updatedDetailStock[i].count,
-                                          price: _updatedDetailStock[i].buyPrice,
+                                          price:
+                                              _updatedDetailStock[i].buyPrice,
                                           totalPrice: _updatedDetailStock[i]
                                                   .buyPrice *
                                               _updatedDetailStock[i].count));
@@ -320,14 +327,18 @@ class _SupplierEditState extends State<SupplierEdit> {
                                         i < _updatedStock.length;
                                         i++) {
                                       DetailStock history = DetailStock(
-                                        sellPrice: _updatedDetailStock[i].buyPrice* 1.3 +
-              1000 -
-              (_updatedDetailStock[i].buyPrice * 1.3 % 1000),
+                                          sellPrice: _updatedDetailStock[i]
+                                                      .buyPrice *
+                                                  1.3 +
+                                              1000 -
+                                              (_updatedDetailStock[i].buyPrice *
+                                                  1.3 %
+                                                  1000),
                                           supplier: _supplier,
                                           pihakId: widget.supplier.pihakId,
-                                          date:
-                                              DateTime.now().toIso8601String(),
-                                          buyPrice: _updatedDetailStock[i].buyPrice,
+                                          date: _date.toIso8601String(),
+                                          buyPrice:
+                                              _updatedDetailStock[i].buyPrice,
                                           count: _updatedDetailStock[i].count,
                                           totalPrice:
                                               _updatedDetailStock[i].buyPrice *
