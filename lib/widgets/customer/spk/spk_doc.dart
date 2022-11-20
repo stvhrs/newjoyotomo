@@ -1,6 +1,6 @@
-import 'dart:io';
 
 import 'package:newJoyo/helper/currency.dart';
+import 'package:newJoyo/library/date_picker/src/web_date_picker.dart';
 import 'package:newJoyo/main.dart';
 import 'package:newJoyo/provider/trigger.dart';
 import 'package:newJoyo/widgets/kop.dart';
@@ -17,14 +17,14 @@ import '../../../models/spk.dart';
 
 class SpkDoc extends StatefulWidget {
   final Customer customer;
-   SpkDoc({super.key, required this.customer});
+  const SpkDoc({super.key, required this.customer});
 
   @override
   State<SpkDoc> createState() => _SpkDocState();
 }
 
 class _SpkDocState extends State<SpkDoc> {
-  TextEditingController dateinput = TextEditingController();
+
   TextEditingController estimasiSelesaiInput = TextEditingController();
   WidgetsToImageController controller = WidgetsToImageController();
   late Spk spk;
@@ -32,15 +32,15 @@ class _SpkDocState extends State<SpkDoc> {
   void initState() {
     super.initState();
     spk = widget.customer.spk.target!;
-    dateinput.text = spk.date;
+   
     estimasiSelesaiInput.text = spk.estimasiSelesai;
   }
 
   final formatCurrendcy =
       NumberFormat.currency(locale: "id_ID", decimalDigits: 0, symbol: 'Rp ');
-  TextStyle small =  TextStyle(fontSize: 10);
-  TextStyle med =  TextStyle(fontSize: 10, fontWeight: FontWeight.bold);
-  TextStyle big =  TextStyle(fontSize: 11, fontWeight: FontWeight.bold);
+  TextStyle small = const TextStyle(fontSize: 10);
+  TextStyle med = const TextStyle(fontSize: 10, fontWeight: FontWeight.bold);
+  TextStyle big = const TextStyle(fontSize: 11, fontWeight: FontWeight.bold);
   @override
   Widget build(BuildContext context) {
     double width1 = MediaQuery.of(context).size.height / 4.8;
@@ -54,7 +54,7 @@ class _SpkDocState extends State<SpkDoc> {
       body: Center(
           child: Container(
               width: double.infinity,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   image: DecorationImage(
                       image: AssetImage(
                         'images/icon.jpg',
@@ -67,19 +67,18 @@ class _SpkDocState extends State<SpkDoc> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Container(
-                    padding:  EdgeInsets.all(25),
-                    margin:  EdgeInsets.only(top: 20, bottom: 10),
+                    padding: const EdgeInsets.all(25),
+                    margin: const EdgeInsets.only(top: 20, bottom: 10),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(10),
                       boxShadow: [
                         BoxShadow(
-                          color:  Color.fromARGB(255, 78, 77, 77)
-                              .withOpacity(0.5),
+                          color:
+                              const Color.fromARGB(255, 78, 77, 77).withOpacity(0.5),
                           spreadRadius: 5,
                           blurRadius: 7,
-                          offset:
-                               Offset(0, 3), // changes position of shadow
+                          offset: const Offset(0, 3), // changes position of shadow
                         ),
                       ],
                     ),
@@ -89,19 +88,18 @@ class _SpkDocState extends State<SpkDoc> {
                         controller: controller,
                         child: Theme(
                           data: ThemeData(
-                            inputDecorationTheme: InputDecorationTheme(
-                              contentPadding:  EdgeInsets.only(
-                                  left:5, bottom: 22,top: 5),
-                              hintStyle:  TextStyle(
-                                  color: Color.fromARGB(255, 251, 251, 251),
-                                  fontSize: 15,
-                                  height: 2),
-                               border: InputBorder.none,
-        focusedBorder: InputBorder.none,
-        enabledBorder: InputBorder.none,
-        errorBorder: InputBorder.none,
-        disabledBorder: InputBorder.none
-                            ),
+                            inputDecorationTheme: const InputDecorationTheme(
+                                contentPadding: EdgeInsets.only(
+                                    left: 5, bottom: 22, top: 5),
+                                hintStyle: TextStyle(
+                                    color: Color.fromARGB(255, 251, 251, 251),
+                                    fontSize: 15,
+                                    height: 2),
+                                border: InputBorder.none,
+                                focusedBorder: InputBorder.none,
+                                enabledBorder: InputBorder.none,
+                                errorBorder: InputBorder.none,
+                                disabledBorder: InputBorder.none),
                           ),
                           child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -109,13 +107,13 @@ class _SpkDocState extends State<SpkDoc> {
                                 SizedBox(
                                     width: MediaQuery.of(context).size.height /
                                         1.6,
-                                    child: Kop()),
+                                    child: const Kop()),
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
                                       'Perintah Bengkel: ${spk.jtId}',
-                                      style:  TextStyle(
+                                      style: const TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontStyle: FontStyle.italic),
                                     ),
@@ -123,8 +121,7 @@ class _SpkDocState extends State<SpkDoc> {
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
                                         Container(
-                                            margin:
-                                                 EdgeInsets.only(top: 5),
+                                            margin: const EdgeInsets.only(top: 5),
                                             decoration: BoxDecoration(
                                               border: Border.all(
                                                   color: Colors.black,
@@ -224,8 +221,8 @@ class _SpkDocState extends State<SpkDoc> {
                                                                           (v) {
                                                                         setState(
                                                                             () {});
-                                                                        spk.km =v;
-                                                                           
+                                                                        spk.km =
+                                                                            v;
                                                                       },
                                                                       initialValue: spk
                                                                           .km
@@ -253,69 +250,20 @@ class _SpkDocState extends State<SpkDoc> {
                                                               ),
                                                               Flexible(
                                                                   child:
-                                                                      TextFormField(
-                                                                controller:
-                                                                    dateinput,
-                                                                //editing controller of this TextField
-
-                                                                onTap:
-                                                                    () async {
-                                                                  DateTime?
-                                                                      pickedDate =
-                                                                      await showDatePicker(
-                                                                          builder: (context, child) =>
-                                                                              Theme(
-                                                                                data: Theme.of(context).copyWith(
-                                                                                  colorScheme:  ColorScheme.light(
-                                                                                    primary: Color.fromARGB(255, 79, 117, 134), // header background color
-                                                                                  ),
-                                                                                  textButtonTheme: TextButtonThemeData(
-                                                                                    style: TextButton.styleFrom(
-                                                                                      foregroundColor: Colors.green, // button text color
-                                                                                    ),
-                                                                                  ),
-                                                                                ),
-                                                                                child: child!,
-                                                                              ),
-                                                                          locale: Localizations.localeOf(
-                                                                              context),
-                                                                          context:
-                                                                              context,
-                                                                          initialDate: DateTime
-                                                                              .now(),
-                                                                          firstDate: DateTime(
-                                                                              2022), //DateTime.now() - not to allow to choose before today.
-                                                                          lastDate:
-                                                                              DateTime(2101));
-
-                                                                  if (pickedDate !=
-                                                                      null) {
-                                                                    print(
-                                                                        pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
-                                                                    String
-                                                                        formattedDate =
-                                                                        DateFormat('dd/MM/yyyy')
-                                                                            .format(pickedDate);
-                                                                    print(
-                                                                        formattedDate); //formatted date output using intl package =>  2021-03-16
-                                                                    //you can implement different kind of Date Format here according to your requirement
-
-                                                                    setState(
-                                                                        () {
-                                                                      dateinput
-                                                                              .text =
-                                                                          formattedDate; //set output date to TextField value.
-                                                                      spk.date =
-                                                                          dateinput
-                                                                              .text;
-                                                                    });
-                                                                  } else {
-                                                                    print(
-                                                                        "Date is not selected");
-                                                                  }
-                                                                },
-                                                                style: small,
-                                                              )),
+                                                                      WebDatePicker(
+                                                                          initialDate: widget.customer.spk.target!.date == 'DD/MM/YYYY'
+                                                                              ? null
+                                                                              : DateTime.parse(widget
+                                                                                  .customer.spk.target!.date),
+                                                                          small:
+                                                                              true,
+                                                                          onChange:
+                                                                              (v) {
+                                                                            if (v !=
+                                                                                null) {
+                                                                              widget.customer.spk.target!.date = v.toIso8601String();
+                                                                            }
+                                                                          })),
                                                             ],
                                                           )),
                                                     ],
@@ -812,58 +760,16 @@ class _SpkDocState extends State<SpkDoc> {
                                                                     style: med,
                                                                   ),
                                                                   Flexible(
-                                                                      child:
-                                                                          TextFormField(
-                                                                    onTap:
-                                                                        (() async {
-                                                                      DateTime? pickedDate = await showDatePicker(
-                                                                          builder: (context, child) => Theme(
-                                                                                data: Theme.of(context).copyWith(
-                                                                                  colorScheme:  ColorScheme.light(
-                                                                                    primary: Color.fromARGB(255, 79, 117, 134), // header background color
-                                                                                  ),
-                                                                                  textButtonTheme: TextButtonThemeData(
-                                                                                    style: TextButton.styleFrom(
-                                                                                      foregroundColor: Colors.green, // button text color
-                                                                                    ),
-                                                                                  ),
-                                                                                ),
-                                                                                child: child!,
-                                                                              ),
-                                                                          locale: Localizations.localeOf(context),
-                                                                          context: context,
-                                                                          initialDate: DateTime.now(),
-                                                                          firstDate: DateTime(2022), //DateTime.now() - not to allow to choose before today.
-                                                                          lastDate: DateTime(2101));
-
-                                                                      if (pickedDate !=
-                                                                          null) {
-                                                                        print(
-                                                                            pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
-                                                                        String
-                                                                            formattedDate =
-                                                                            DateFormat('dd/MM/yyyy').format(pickedDate);
-                                                                        print(
-                                                                            formattedDate); //formatted date output using intl package =>  2021-03-16
-                                                                        //you can implement different kind of Date Format here according to your requirement
-
-                                                                        setState(
-                                                                            () {
-                                                                          estimasiSelesaiInput.text =
-                                                                              formattedDate; //set output date to TextField value.
-                                                                          spk.estimasiSelesai =
-                                                                              estimasiSelesaiInput.text;
-                                                                        });
-                                                                      } else {
-                                                                        print(
-                                                                            "Date is not selected");
-                                                                      }
-                                                                    }),
-                                                                    style:
-                                                                        small,
-                                                                    controller:
-                                                                        estimasiSelesaiInput,
-                                                                  )),
+                                                                      child: WebDatePicker(
+                                                                          overlayVerticalPosition: -200,
+                                                                          initialDate: widget.customer.spk.target!.estimasiSelesai == 'DD/MM/YYYY' ? null : DateTime.parse(widget.customer.spk.target!.estimasiSelesai),
+                                                                          small: true,
+                                                                          onChange: (v) {
+                                                                            if (v !=
+                                                                                null) {
+                                                                              widget.customer.spk.target!.estimasiSelesai = v.toIso8601String();
+                                                                            }
+                                                                          })),
                                                                 ],
                                                               )),
                                                         ],
@@ -885,15 +791,19 @@ class _SpkDocState extends State<SpkDoc> {
                                                                 style: med,
                                                               ),
                                                               Flexible(
-                                                                  child: TextFormField(
-                                                                      style: small,
-                                                                      onChanged: (v) {
-                                                                        setState(
-                                                                            () {});
-                                                                        spk.customerName =
-                                                                            v;
-                                                                      },
-                                                                      initialValue:widget.customer.customerName)),
+                                                                  child:
+                                                                      TextFormField(
+                                                                          style:
+                                                                              small,
+                                                                          onChanged:
+                                                                              (v) {
+                                                                            setState(() {});
+                                                                            spk.customerName =
+                                                                                v;
+                                                                          },
+                                                                          initialValue: widget
+                                                                              .customer
+                                                                              .customerName)),
                                                             ],
                                                           )),
                                                       Kotak(
@@ -964,19 +874,24 @@ class _SpkDocState extends State<SpkDoc> {
                   )
                 ],
               ))),
-      floatingActionButton: Row(children: [ Padding(
-            padding: const EdgeInsets.only(left: 100,),
-            child: FloatingActionButton( child: const Icon(Icons.arrow_back),onPressed: (){
-              Navigator.of(context).pop();
-            }),
-          ),
-         Spacer(),
+      floatingActionButton: Row(children: [
         Padding(
-            padding:  EdgeInsets.all(5),
+          padding: const EdgeInsets.only(
+            left: 100,
+          ),
+          child: FloatingActionButton(
+              child: const Icon(Icons.arrow_back),
+              onPressed: () {
+                Navigator.of(context).pop();
+              }),
+        ),
+        const Spacer(),
+        Padding(
+            padding: const EdgeInsets.all(5),
             child: FloatingActionButton(
                 heroTag: null,
                 backgroundColor: Colors.blue.shade600,
-                child:  Icon(Icons.save_as_rounded),
+                child: const Icon(Icons.save_as_rounded),
                 onPressed: () {
                   widget.customer.spk.target = Spk(
                     jtId: spk.jtId,
@@ -1008,16 +923,16 @@ class _SpkDocState extends State<SpkDoc> {
                   objectBox.insertCustomer(widget.customer);
                 })),
         Padding(
-            padding:  EdgeInsets.all(5),
+            padding: const EdgeInsets.all(5),
             child: FloatingActionButton(
                 heroTag: null,
                 backgroundColor: Colors.red.shade400,
-                child:  Icon(Icons.picture_as_pdf),
+                child: const Icon(Icons.picture_as_pdf),
                 onPressed: () async {
-                   ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text('Loading.....')));
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(const SnackBar(content: Text('Loading.....')));
 
-                   widget.customer.spk.target = Spk(
+                  widget.customer.spk.target = Spk(
                     jtId: spk.jtId,
                     customerName: spk.customerName,
                     policeNumber: spk.policeNumber,
@@ -1044,21 +959,20 @@ class _SpkDocState extends State<SpkDoc> {
                   Provider.of<Trigger>(context, listen: false)
                       .selectCustomer(widget.customer, true);
 
-                 
                   final bytes = await controller.capture();
-                  await createSpk(bytes!, spk.jtId, context,'SPK');
-                   Provider.of<Trigger>(context, listen: false)
+                  await createSpk(bytes!, spk.jtId, context, 'SPK');
+                  Provider.of<Trigger>(context, listen: false)
                       .selectCustomer(widget.customer, true);
 
                   objectBox.insertCustomer(widget.customer);
                 })),
         Container(
-          padding:  EdgeInsets.all(10.0),
+          padding: const EdgeInsets.all(10.0),
           child: FloatingActionButton(
               heroTag: null,
               backgroundColor: Colors.green,
-              child:  Icon(Icons.print),
-              onPressed: () async{
+              child: const Icon(Icons.print),
+              onPressed: () async {
                 final bytes = await controller.capture();
                 printPdf(bytes!);
               }),

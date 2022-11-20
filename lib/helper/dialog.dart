@@ -15,7 +15,8 @@ import 'package:flutter/material.dart';
              
               
             },
-            icon: Icon(Icons.check_box),
+            icon: const Icon(Icons.check_circle_outline_rounded, color:
+            Colors.red,),
           )
         ],
       );

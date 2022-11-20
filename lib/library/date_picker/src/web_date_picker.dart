@@ -15,7 +15,7 @@ class WebDatePicker extends StatefulWidget {
     this.width = 200,
     this.height = 36,
     this.prefix,
-    this.dateformat = 'yyyy/MM/dd',
+    this.dateformat = 'dd/MM/yyyy',
     this.overlayVerticalPosition = 5.0,
     this.overlayHorizontalPosiition = 0.0,
     this.inputDecoration,

@@ -1,17 +1,17 @@
 import 'dart:developer';
 
 import 'package:bitsdojo_window/bitsdojo_window.dart';
+import 'package:newJoyo/pages/monthly_page.dart';
 import 'package:newJoyo/pages/pekerjaan_page.dart';
 import 'package:newJoyo/pages/daftar_supplier.dart';
 import 'package:newJoyo/pages/daftar_pelangan.dart';
-import 'package:newJoyo/pages/riwayat_pemakaian.dart';
+
 
 import 'package:newJoyo/pages/riwayat_pembelian.dart';
 import 'package:newJoyo/pages/stock_page.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 
-import '../main.dart';
 
 final buttonColors = WindowButtonColors(
     iconNormal: const Color.fromARGB(255, 79, 117, 134),
@@ -199,7 +199,7 @@ class _SideState extends State<Side> {
                           if (page.page == 2) {
                             page.jumpToPage(5);
                             Future.delayed(
-                              Duration(milliseconds: 100),
+                              const Duration(milliseconds: 100),
                               () {
                                 page.jumpToPage(2);
                               },
@@ -228,18 +228,26 @@ class _SideState extends State<Side> {
                         },
                         icon: const Icon(Icons.people_alt),
                       ),
+                      SideMenuItem(
+                        priority: 5,
+                        title: 'Laporan Bulanan',
+                        onTap: () {
+                          page.jumpToPage(6);
+                        },
+                        icon: const Icon(Icons.document_scanner_rounded),
+                      ),
                     ],
                   ),
                   Expanded(
                     child: PageView(
                       controller: page,
                       children: [
-                        StockPage(),
-                        SupplierPage(),
+                        const StockPage(),
+                        const SupplierPage(),
                         // RiwayatPemakaian(),
-                        CustomerPage(), DaftarSupplier(),
-                        DaftarPelanggan(),
-                        Container()
+                        const CustomerPage(), const DaftarSupplier(),
+                        const DaftarPelanggan(),
+                        Container(), const MonthlyPagae()
                       ],
                     ),
                   ),

@@ -1,8 +1,5 @@
-import 'dart:developer';
 import 'package:collection/collection.dart';
-import 'dart:io';
 import 'package:intl/intl.dart';
-import 'package:newJoyo/helper/border.dart';
 import 'package:newJoyo/helper/border2.dart';
 import 'package:newJoyo/library/date_picker/src/web_date_picker.dart';
 import 'package:newJoyo/main.dart';
@@ -10,21 +7,16 @@ import 'package:newJoyo/models/invoice.dart';
 import 'package:newJoyo/models/stockService/stock_realization.dart';
 import 'package:newJoyo/widgets/kop.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:newJoyo/library/pdf/lib/pdf.dart';
 import 'package:newJoyo/library/pdf/lib/widgets.dart' as pw;
-import 'package:printing/printing.dart';
 import 'package:provider/provider.dart';
 import 'package:widgets_to_image/widgets_to_image.dart';
-import 'dart:collection';
 import '../../../models/customer.dart';
 import '../../../models/examples.dart';
-import '../../../models/payment.dart';
 import '../../../provider/trigger.dart';
 
 class InvoiceDoc extends StatefulWidget {
   final Customer customer;
-  InvoiceDoc({Key? key, required this.customer}) : super(key: key);
+  const InvoiceDoc({Key? key, required this.customer}) : super(key: key);
   @override
   State<InvoiceDoc> createState() => _InvoiceDocState();
 }
@@ -34,20 +26,21 @@ class _InvoiceDocState extends State<InvoiceDoc> {
   final formatCurrendcy =
       NumberFormat.currency(locale: "id_ID", decimalDigits: 0, symbol: 'Rp ');
   var asu = pw.Document();
-WidgetsToImageController _widgetsToImageController=WidgetsToImageController();
+  final WidgetsToImageController _widgetsToImageController =
+      WidgetsToImageController();
   Widget buildAttention(int i) {
     if (i == 1) {
-      return Icon(
+      return const Icon(
         Icons.check,
         color: Colors.green,
       );
     } else if (i == 2) {
-      return Icon(
+      return const Icon(
         Icons.warning,
         color: Colors.yellow,
       );
     } else {
-      return Icon(
+      return const Icon(
         Icons.dangerous_rounded,
         color: Colors.red,
       );
@@ -56,9 +49,8 @@ WidgetsToImageController _widgetsToImageController=WidgetsToImageController();
 
   double totalMpiService = 0;
 
-  
-  final bold = TextStyle(fontWeight: FontWeight.bold, fontSize: 10);
-  final small = TextStyle(fontSize: 10);
+  final bold = const TextStyle(fontWeight: FontWeight.bold, fontSize: 10);
+  final small = const TextStyle(fontSize: 10);
 
   Widget _buildPartName(int i, BuildContext context, StockRalization stocks) {
     return StatefulBuilder(
@@ -67,7 +59,7 @@ WidgetsToImageController _widgetsToImageController=WidgetsToImageController();
         StateSetter setState,
       ) =>
           Container(
-              margin: EdgeInsets.only(top: 5, bottom: 5, left: 5),
+              margin: const EdgeInsets.only(top: 5, bottom: 5, left: 5),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -112,9 +104,9 @@ WidgetsToImageController _widgetsToImageController=WidgetsToImageController();
 
   @override
   void initState() {
-    widget.customer.mpi.target!.items.forEach((element) {
+    for (var element in widget.customer.mpi.target!.items) {
       totalMpiService = totalMpiService + element.price;
-    });
+    }
 
     super.initState();
   }
@@ -122,12 +114,17 @@ WidgetsToImageController _widgetsToImageController=WidgetsToImageController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: Row(children: [ Padding(
-            padding: const EdgeInsets.only(left: 100,),
-            child: FloatingActionButton( child: const Icon(Icons.arrow_back),onPressed: (){
-              Navigator.of(context).pop();
-            }),
+      floatingActionButton: Row(children: [
+        Padding(
+          padding: const EdgeInsets.only(
+            left: 100,
           ),
+          child: FloatingActionButton(
+              child: const Icon(Icons.arrow_back),
+              onPressed: () {
+                Navigator.of(context).pop();
+              }),
+        ),
         const Spacer(),
         Padding(
             padding: const EdgeInsets.all(5),
@@ -139,7 +136,9 @@ WidgetsToImageController _widgetsToImageController=WidgetsToImageController();
                   Customer asu = widget.customer;
                   asu.inv.target = Invoice(
                       invId: widget.customer.inv.target!.invId,
-                    
+                      invoiceTotal: widget.customer.inv.target!.invoiceTotal,
+                      partTotal: widget.customer.inv.target!.partTotal,
+                      serviceTotal: widget.customer.inv.target!.serviceTotal,
                       soDate: widget.customer.inv.target!.soDate,
                       invoiceDate: widget.customer.inv.target!.invoiceDate);
 
@@ -155,11 +154,13 @@ WidgetsToImageController _widgetsToImageController=WidgetsToImageController();
                 heroTag: null,
                 backgroundColor: Colors.red.shade400,
                 child: const Icon(Icons.picture_as_pdf),
-                onPressed: () async{
-                   Customer asu = widget.customer;
+                onPressed: () async {
+                  Customer asu = widget.customer;
                   asu.inv.target = Invoice(
+                      invoiceTotal: widget.customer.inv.target!.invoiceTotal,
+                      partTotal: widget.customer.inv.target!.partTotal,
+                      serviceTotal: widget.customer.inv.target!.serviceTotal,
                       invId: widget.customer.inv.target!.invId,
-                   
                       soDate: widget.customer.inv.target!.soDate,
                       invoiceDate: widget.customer.inv.target!.invoiceDate);
 
@@ -167,13 +168,13 @@ WidgetsToImageController _widgetsToImageController=WidgetsToImageController();
                   Provider.of<Trigger>(context, listen: false)
                       .selectCustomer(asu, true);
                   objectBox.insertCustomer(asu);
-                    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text('Loading.....')));
-          final bytes = await _widgetsToImageController.capture();
-                    await createSpk(bytes!, widget.customer.inv.target!.invId,
-                        context, 'Invoice');
-                    Provider.of<Trigger>(context, listen: false)
-                        .selectCustomer(widget.customer, true);
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(const SnackBar(content: Text('Loading.....')));
+                  final bytes = await _widgetsToImageController.capture();
+                  await createSpk(bytes!, widget.customer.inv.target!.invId,
+                      context, 'Invoice');
+                  Provider.of<Trigger>(context, listen: false)
+                      .selectCustomer(widget.customer, true);
                 })),
         Container(
           padding: const EdgeInsets.all(10.0),
@@ -181,8 +182,8 @@ WidgetsToImageController _widgetsToImageController=WidgetsToImageController();
               heroTag: null,
               backgroundColor: Colors.green,
               child: const Icon(Icons.print),
-              onPressed: ()async {
-                  final bytes = await _widgetsToImageController .capture();
+              onPressed: () async {
+                final bytes = await _widgetsToImageController.capture();
                 printPdf(bytes!);
               }),
         )
@@ -193,7 +194,7 @@ WidgetsToImageController _widgetsToImageController=WidgetsToImageController();
           child: LayoutBuilder(builder: (context, BoxConstraints constraints) {
             return Container(
                 width: double.infinity,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                     image: DecorationImage(
                         image: AssetImage(
                           'images/icon.jpg',
@@ -224,29 +225,31 @@ WidgetsToImageController _widgetsToImageController=WidgetsToImageController();
                             ),
                           ],
                         ),
-                        child: WidgetsToImage(controller: _widgetsToImageController,
+                        child: WidgetsToImage(
+                          controller: _widgetsToImageController,
                           child: Container(
                             alignment: Alignment.center,
                             //  padding: const EdgeInsets.all(20),
-                        
+
                             width: constraints.maxHeight / 1.4,
                             height: constraints.maxHeight,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                              
+                                const Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Kop(),
+                                ),
                                 Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: const Kop(),
-                                ),  Padding(
-                                    padding: const EdgeInsets.only(bottom: 5),
-                                    child: Text(
-                                        widget.customer.inv.target!.invId,
-                                        style:  TextStyle(fontSize: 12,
-                                            fontWeight: FontWeight.bold,
-                                            fontStyle: FontStyle.italic),
-                                      ),
+                                  padding: const EdgeInsets.only(bottom: 5),
+                                  child: Text(
+                                    widget.customer.inv.target!.invId,
+                                    style: const TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold,
+                                        fontStyle: FontStyle.italic),
                                   ),
+                                ),
                                 Expanded(
                                   child: Row(
                                     children: [
@@ -266,7 +269,7 @@ WidgetsToImageController _widgetsToImageController=WidgetsToImageController();
                                                   ),
                                                 ],
                                               ),
-                                              Divider(
+                                              const Divider(
                                                 height: 2,
                                                 color: Colors.black,
                                               ),
@@ -307,7 +310,7 @@ WidgetsToImageController _widgetsToImageController=WidgetsToImageController();
                                                   ),
                                                 ],
                                               ),
-                                              Divider(
+                                              const Divider(
                                                 height: 2,
                                                 color: Colors.black,
                                               ),
@@ -364,11 +367,13 @@ WidgetsToImageController _widgetsToImageController=WidgetsToImageController();
                                                       ]),
                                                   Column(
                                                     crossAxisAlignment:
-                                                        CrossAxisAlignment.start,
+                                                        CrossAxisAlignment
+                                                            .start,
                                                     children: [
                                                       Padding(
                                                         padding:
-                                                            const EdgeInsets.only(
+                                                            const EdgeInsets
+                                                                    .only(
                                                                 left: 40,
                                                                 top: 3,
                                                                 bottom: 3),
@@ -379,7 +384,8 @@ WidgetsToImageController _widgetsToImageController=WidgetsToImageController();
                                                       ),
                                                       Padding(
                                                         padding:
-                                                            const EdgeInsets.only(
+                                                            const EdgeInsets
+                                                                    .only(
                                                                 left: 40,
                                                                 top: 3,
                                                                 bottom: 3),
@@ -397,16 +403,19 @@ WidgetsToImageController _widgetsToImageController=WidgetsToImageController();
                                                                   top: 3,
                                                                   bottom: 3),
                                                           child: Text(
-                                                            '${widget.customer.spk.target!.tipeKendaraan}',
+                                                            widget.customer.spk.target!.tipeKendaraan,
                                                             style: small,
                                                           )),
                                                       Padding(
                                                         padding:
-                                                            const EdgeInsets.only(
+                                                            const EdgeInsets
+                                                                    .only(
                                                                 left: 40,
                                                                 top: 3,
                                                                 bottom: 3),
                                                         child: WebDatePicker(
+                                                            dateformat:
+                                                                'dd/MM/yyy',
                                                             initialDate: DateTime
                                                                 .parse(widget
                                                                     .customer
@@ -428,18 +437,20 @@ WidgetsToImageController _widgetsToImageController=WidgetsToImageController();
                                                       ),
                                                       Padding(
                                                         padding:
-                                                            const EdgeInsets.only(
+                                                            const EdgeInsets
+                                                                    .only(
                                                                 left: 40,
                                                                 top: 3,
                                                                 bottom: 3),
                                                         child: WebDatePicker(
-                                                            initialDate:
-                                                                DateTime.parse(
-                                                                    widget
-                                                                        .customer
-                                                                        .inv
-                                                                        .target!
-                                                                        .soDate),
+                                                            dateformat:
+                                                                'dd/MM/yyy',
+                                                            initialDate: DateTime
+                                                                .parse(widget
+                                                                    .customer
+                                                                    .inv
+                                                                    .target!
+                                                                    .soDate),
                                                             small: true,
                                                             onChange: (v) {
                                                               if (v == null) {
@@ -450,7 +461,7 @@ WidgetsToImageController _widgetsToImageController=WidgetsToImageController();
                                                                       .inv
                                                                       .target!
                                                                       .soDate =
-                                                                 v.toIso8601String();
+                                                                  v.toIso8601String();
                                                             }),
                                                       )
                                                     ],
@@ -464,122 +475,124 @@ WidgetsToImageController _widgetsToImageController=WidgetsToImageController();
                                     ],
                                   ),
                                 ),
-                                 Container(
-                                    child: Column(children: [
-                                      const Divider(
-                                        height: 0,
-                                        color: Colors.black,
-                                      ),
-                                      top2,
-                                      const Divider(
-                                        height: 0,
-                                        color: Colors.black,
-                                      ),
-                                      ...widget.customer.mpi.target!.items
-                                          .mapIndexed((i, element) => element
-                                                      .attention ==
-                                                  0
-                                              ? const Center()
-                                              : Container(
-                                                  width:
-                                                      constraints.maxHeight / 1.4,
-                                                  child: IntrinsicHeight(
-                                                    child: Row(
-                                                      mainAxisSize:
-                                                          MainAxisSize.min,
-                                                      children: [
-                                                        Transform.scale(
-                                                            alignment: Alignment
-                                                                .centerLeft,
-                                                            scale: 0.5,
-                                                            child: Row(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .start,
-                                                              children: [
-                                                                Container(
-                                                                    child: buildAttention(
-                                                                        element
-                                                                            .attention))
-                                                              ],
-                                                            )),
-                                                        Expanded(
-                                                          flex: 6,
-                                                          child: Text(
-                                                            element.name,
-                                                            maxLines: 2,
-                                                            textAlign:
-                                                                TextAlign.left,
-                                                            style: small,
-                                                          ),
-                                                        ),
-                                                        Expanded(
-                                                            flex: 5,
-                                                            child: Text(
-                                                              formatCurrendcy
-                                                                  .format(element
-                                                                      .price),
-                                                              style: small,
-                                                            )),
-                                                        Expanded(
-                                                            flex: 5,
-                                                            child: Text(
-                                                              textAlign:
-                                                                  TextAlign.right,
-                                                              element.remark,
-                                                              style: small,
-                                                            ))
-                                                      ],
-                                                    ),
-                                                  )))
-                                          .toList(),
-                                      const Divider(
-                                        height: 0,
-                                        color: Colors.black,
-                                      ),
-                                    ]),
-                                  ),
-                                
-                                
-                                
-                                Expanded(flex: 2,
-                                  child: Container(
-                                      margin: EdgeInsets.only(top: 20),
-                                      child: Column(
-                                        children: [
-                                          top(),
-                                          Divider(
-                                            height: 2,
-                                            color: Colors.black,
-                                          ),
-                                          ...List.generate(
-                                              widget.customer.realization.target!
-                                                  .stockItems.length,
-                                              (index) => _buildPartName(
-                                                  index,
-                                                  context,
-                                                  widget.customer.realization
-                                                      .target!.stockItems[index])),
-                                                   
-                                          Divider(
-                                            height: 2,
-                                            color: Colors.black,
-                                          ),
-                                        ],
-                                      ),
+                                Container(
+                                  child: Column(children: [
+                                    const Divider(
+                                      height: 0,
+                                      color: Colors.black,
                                     ),
+                                    top2,
+                                    const Divider(
+                                      height: 0,
+                                      color: Colors.black,
+                                    ),
+                                    ...widget.customer.mpi.target!.items
+                                        .mapIndexed((i, element) => element
+                                                    .attention ==
+                                                0
+                                            ? const Center()
+                                            : SizedBox(
+                                                width:
+                                                    constraints.maxHeight / 1.4,
+                                                child: IntrinsicHeight(
+                                                  child: Row(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: [
+                                                      Transform.scale(
+                                                          alignment: Alignment
+                                                              .centerLeft,
+                                                          scale: 0.5,
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Container(
+                                                                  child: buildAttention(
+                                                                      element
+                                                                          .attention))
+                                                            ],
+                                                          )),
+                                                      Expanded(
+                                                        flex: 6,
+                                                        child: Text(
+                                                          element.name,
+                                                          maxLines: 2,
+                                                          textAlign:
+                                                              TextAlign.left,
+                                                          style: small,
+                                                        ),
+                                                      ),
+                                                      Expanded(
+                                                          flex: 5,
+                                                          child: Text(
+                                                            formatCurrendcy
+                                                                .format(element
+                                                                    .price),
+                                                            style: small,
+                                                          )),
+                                                      Expanded(
+                                                          flex: 5,
+                                                          child: Text(
+                                                            textAlign:
+                                                                TextAlign.right,
+                                                            element.remark,
+                                                            style: small,
+                                                          ))
+                                                    ],
+                                                  ),
+                                                )))
+                                        .toList(),
+                                    const Divider(
+                                      height: 0,
+                                      color: Colors.black,
+                                    ),
+                                  ]),
                                 ),
-                                
-                                Container(margin: EdgeInsets.only(bottom: 30),
+                                Expanded(
+                                  flex: 2,
+                                  child: Container(
+                                    margin: const EdgeInsets.only(top: 20),
+                                    child: Column(
+                                      children: [
+                                        top(),
+                                        const Divider(
+                                          height: 2,
+                                          color: Colors.black,
+                                        ),
+                                        ...List.generate(
+                                            widget.customer.realization.target!
+                                                .stockItems.length,
+                                            (index) => _buildPartName(
+                                                index,
+                                                context,
+                                                widget
+                                                    .customer
+                                                    .realization
+                                                    .target!
+                                                    .stockItems[index])),
+                                        const Divider(
+                                          height: 2,
+                                          color: Colors.black,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  margin: const EdgeInsets.only(bottom: 30),
                                   child: Column(
                                     children: [
                                       Row(
-                                        mainAxisAlignment: MainAxisAlignment.end,
-                                        crossAxisAlignment: CrossAxisAlignment.end,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
                                         children: [
                                           Container(
-                                            margin:
-                                                EdgeInsets.only(top: 5, right: 40),
+                                            margin: const EdgeInsets.only(
+                                                top: 5, right: 40),
                                             child: Column(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.end,
@@ -623,7 +636,8 @@ WidgetsToImageController _widgetsToImageController=WidgetsToImageController();
                                                         .inv
                                                         .target!
                                                         .partTotal +
-                                                    widget.customer.inv.target!.serviceTotal),
+                                                    widget.customer.inv.target!
+                                                        .serviceTotal),
                                                 style: bold,
                                               ),
                                             ],
@@ -646,7 +660,7 @@ WidgetsToImageController _widgetsToImageController=WidgetsToImageController();
   }
 
   Widget top2 = Container(
-    margin: EdgeInsets.only(top: 20),
+    margin: const EdgeInsets.only(top: 20),
     child: Row(
       children: [
         Expanded(
@@ -659,16 +673,16 @@ WidgetsToImageController _widgetsToImageController=WidgetsToImageController();
             ),
           ),
         ),
-        Expanded(
+        const Expanded(
           flex: 4,
-          child: const Text(
+          child: Text(
             "Service",
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
           ),
         ),
-        Expanded(
+        const Expanded(
           flex: 5,
-          child: const Text(
+          child: Text(
             textAlign: TextAlign.right,
             "Catatan",
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
@@ -681,43 +695,43 @@ WidgetsToImageController _widgetsToImageController=WidgetsToImageController();
         padding: const EdgeInsets.only(top: 5),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
+          children: const [
             Expanded(
               flex: 8,
-              child: const Text(
+              child: Text(
                 "Partname",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
               ),
             ),
             Expanded(
               flex: 8,
-              child: const Text(
+              child: Text(
                 "Name",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
               ),
             ),
             Expanded(
               flex: 8,
-              child: const Text(
+              child: Text(
                 "Service",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
               ),
             ),
             Expanded(
               flex: 8,
-              child: const Text(
+              child: Text(
                 "Harga",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
               ),
             ),
             Expanded(
               flex: 8,
-              child: const Text(
+              child: Text(
                 "Jumlah",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
               ),
             ),
-            const Text(
+            Text(
               "Total",
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
             ),

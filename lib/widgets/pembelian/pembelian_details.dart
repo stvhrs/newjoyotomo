@@ -30,8 +30,8 @@ class _SupplierDetailsState extends State<SupplierDetails> {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child:
-              Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
-            Row(crossAxisAlignment: CrossAxisAlignment.center,mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Row(crossAxisAlignment: CrossAxisAlignment.end,mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   value.selectedSupplier.supplier,
@@ -41,14 +41,15 @@ class _SupplierDetailsState extends State<SupplierDetails> {
               SupplierEdit( value.selectedSupplier)
               ],
             ),
-            Container(
-                padding: const EdgeInsets.all(8),
-                margin: const EdgeInsets.only(bottom: 40, top: 10),
-                decoration: BoxDecoration(
-                    color: Colors.grey.shade300,
-                    border: Border.all(),
-                    borderRadius: BorderRadius.circular(5)),
-                child: Text(value.selectedSupplier.desc)),
+             Container(width: MediaQuery.of(context).size.width / 2.7,
+                  padding: const EdgeInsets.all(8),
+                  margin: const EdgeInsets.only(bottom: 40, top: 10),
+                  decoration: BoxDecoration(
+                      color: Colors.grey.shade300,
+                      border: Border.all(),
+                      borderRadius: BorderRadius.circular(5)),
+                  child: Text(value.selectedSupplier.desc ,)),
+            
             Expanded(
                 child: SizedBox(
               height: MediaQuery.of(context).size.height,

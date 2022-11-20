@@ -1,7 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:newJoyo/models/supplier.dart';
 import 'package:newJoyo/widgets/penyuplai/edit_penyuplai.dart';
 import 'package:newJoyo/widgets/penyuplai/tambah_penyuplai.dart';
@@ -30,7 +27,7 @@ class _DaftarSupplierState extends State<DaftarSupplier> {
   @override
   Widget build(BuildContext context) {
     return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-      Container(decoration:  BoxDecoration(boxShadow: <BoxShadow>[
+      Container(decoration:  BoxDecoration(boxShadow: const <BoxShadow>[
             BoxShadow(
               color: Colors.grey,
               blurRadius: 4,
@@ -38,12 +35,12 @@ class _DaftarSupplierState extends State<DaftarSupplier> {
               offset: Offset(2, 2),
             ),
           ], color: Colors.white, borderRadius: BorderRadius.circular(10)),
-          padding: EdgeInsets.only(left: 25, right: 25, top: 15),
+          padding: const EdgeInsets.only(left: 25, right: 25, top: 15),
         
           width: MediaQuery.of(context).size.width * 0.7,
           child: Column(
             children: [
-              Text(
+              const Text(
                 'Daftar Supplier',
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
@@ -89,10 +86,10 @@ class _DaftarSupplierState extends State<DaftarSupplier> {
               Container(
                 color: Colors.grey.shade300,
                 padding:
-                    EdgeInsets.only(top: 8, bottom: 8, left: 15, right: 15),
+                    const EdgeInsets.only(top: 8, bottom: 8, left: 15, right: 15),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
+                  children: const [
                     Expanded(flex: 11, child: Text('Nama')),
                     Expanded(flex: 11, child: Text('Alamat')),
                     Expanded(flex: 11, child: Text('Nomor Hp')),
@@ -129,7 +126,7 @@ class _DaftarSupplierState extends State<DaftarSupplier> {
                           color: index.isEven
                               ? const Color.fromARGB(255, 193, 216, 226)
                               : Colors.transparent,
-                          padding: EdgeInsets.only(left: 15, right: 0),
+                          padding: const EdgeInsets.only(left: 15, right: 0),
                           child: Row(
                             children: [
                               Expanded(
@@ -155,7 +152,7 @@ class _DaftarSupplierState extends State<DaftarSupplier> {
                                           size: 16,
                                           color: Colors.red.shade700,
                                         )),
-                                    Spacer(),
+                                    const Spacer(),
                                   ],
                                 ),
                               )

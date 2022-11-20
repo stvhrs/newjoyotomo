@@ -25,7 +25,7 @@ class MpiDoc extends StatefulWidget {
 class _MpiDocState extends State<MpiDoc> {
   late List<MpiItem> data;
   List<MpiItem> data2 = [];
-  WidgetsToImageController _controller = WidgetsToImageController();
+  final WidgetsToImageController _controller = WidgetsToImageController();
   @override
   void initState() {
     data = widget.customer.mpi.target!.items;
@@ -77,7 +77,7 @@ class _MpiDocState extends State<MpiDoc> {
                   child: const Icon(Icons.picture_as_pdf),
                   onPressed: () async {
                             ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text('Loading.....')));
+        .showSnackBar(const SnackBar(content: Text('Loading.....')));
 
                     Customer asu = widget.customer;
                     asu.mpi.target =
@@ -123,7 +123,7 @@ class _MpiDocState extends State<MpiDoc> {
           return Center(
               child: Container(
                   width: double.infinity,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                       image: DecorationImage(
                           image: AssetImage(
                             'images/icon.jpg',
@@ -224,8 +224,8 @@ class _MpiDocState extends State<MpiDoc> {
                                   ), Padding(
                                     padding: const EdgeInsets.only(left: 5),
                                     child: Text(
-                                        '${widget.customer.mpi.target!.mpiId}',
-                                        style:  TextStyle(fontSize: 12,
+                                        widget.customer.mpi.target!.mpiId,
+                                        style:  const TextStyle(fontSize: 12,
                                             fontWeight: FontWeight.bold,
                                             fontStyle: FontStyle.italic),
                                       ),
@@ -265,7 +265,7 @@ class _MpiDocState extends State<MpiDoc> {
                                             padding: const EdgeInsets.all(4),
                                             width:
                                                 constraints.maxHeight / 1.4 / 5.15,
-                                            child: Text('PRICE',
+                                            child: const Text('PRICE',
                                                 style: TextStyle(
                                                     fontSize: 11,
                                                     fontWeight:
@@ -278,7 +278,7 @@ class _MpiDocState extends State<MpiDoc> {
                                             padding: const EdgeInsets.all(4),
                                             width:
                                                 constraints.maxHeight / 1.4 / 5,
-                                            child: Text('REMARK',
+                                            child: const Text('REMARK',
                                                 style: TextStyle(
                                                     fontSize: 11,
                                                     fontWeight:

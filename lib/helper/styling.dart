@@ -9,7 +9,7 @@ var input=const InputDecoration(
        
         hintText: "Cari Nama");
 
-         inputNone(String s)=>InputDecoration(
+         inputNone(String s)=>const InputDecoration(
         border: InputBorder.none,
         focusedBorder: InputBorder.none,hintStyle: TextStyle(fontSize: 10),errorStyle: TextStyle(fontSize: 10),labelStyle: TextStyle(fontSize: 10),helperStyle: TextStyle(fontSize: 10),
         enabledBorder: InputBorder.none,prefixStyle: TextStyle(fontSize: 10),suffixStyle: TextStyle(fontSize: 10),counterStyle: TextStyle(fontSize: 10),floatingLabelStyle: TextStyle(fontSize: 10),

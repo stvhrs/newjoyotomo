@@ -90,7 +90,7 @@ for (var element in snapshot.data!) {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Column(crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [Text('  Total Asset : ${formatCurrency.format(totalAsset) }',style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold),),
+                          children: [Text('  Total Asset : ${formatCurrency.format(totalAsset) }',style: const TextStyle(fontSize: 25,fontWeight: FontWeight.bold),),
                             Container(
                               width: MediaQuery.of(context).size.width / 2.5,
                               padding:
@@ -197,7 +197,7 @@ for (var element in snapshot.data!) {
                           ],
                         ),
                         _divier_,
-                        StockDetails(),
+                        const StockDetails(),
                       ]),
                 );
               });

@@ -41,6 +41,9 @@ class ObjectBox extends ChangeNotifier {
   List<Pelanggan> fetchPelanggan() {
     return _pelangganBox.query().build().find();
   }
+    List<Customer> fetchCustomer() {
+    return _customerBox.query().build().find();
+  }
 
   int insertPelanggan(Pelanggan pelanggan) => _pelangganBox.put(pelanggan);
 

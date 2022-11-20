@@ -1,16 +1,8 @@
-import 'package:newJoyo/models/customer.dart';
 
-import 'package:newJoyo/models/mpi/mpiItem.dart';
 import 'package:newJoyo/models/pelanggan.dart';
-import 'package:newJoyo/models/realization.dart';
-import 'package:newJoyo/models/spk.dart';
-import 'package:newJoyo/models/stockService/stock_realization.dart';
 import 'package:flutter/material.dart';
-import 'package:newJoyo/models/supplier.dart';
 
 import '../../main.dart';
-import '../../models/invoice.dart';
-import '../../models/mpi.dart';
 
 class TambahPelanggan extends StatelessWidget {
   @override

@@ -19,11 +19,9 @@ import '../../../helper/dropdown.dart';
 import '../../../models/customer.dart';
 import '../../../models/examples.dart';
 import '../../../models/mpi/mpiItem.dart';
-import '../../../models/rincian_pembayaran.dart';
 import '../../../models/stock.dart';
 import '../../../provider/trigger.dart';
 import 'package:newJoyo/library/date_picker/web_date_picker.dart';
-import 'dart:math' as mh;
 import 'package:collection/collection.dart';
 
 class RealizationDoc extends StatefulWidget {
@@ -37,44 +35,54 @@ class RealizationDoc extends StatefulWidget {
 class _RealizationDocState extends State<RealizationDoc> {
   Widget buildAttention(int i) {
     if (i == 1) {
-      return Icon(
+      return const Icon(
         Icons.check,
         color: Colors.green,
       );
     } else if (i == 2) {
-      return Icon(
+      return const Icon(
         Icons.warning,
         color: Colors.yellow,
       );
     } else {
-      return Icon(
+      return const Icon(
         Icons.dangerous_rounded,
         color: Colors.red,
       );
     }
   }
 
-  TextStyle small = TextStyle(fontSize: 12);
+  TextStyle small = const TextStyle(fontSize: 12);
   final formatCurrendcy =
       NumberFormat.currency(locale: "id_ID", decimalDigits: 0, symbol: 'Rp ');
   int jumlahOpsi = 1;
 
   final List<TextEditingController> _partValue = [TextEditingController()];
   final List<TextEditingController> _nameValue = [TextEditingController()];
+  final List<TextEditingController> _countValue = [TextEditingController()];
   final List<TextEditingController> _priceValue = [TextEditingController()];
   WidgetsToImageController widgetsToImageController =
       WidgetsToImageController();
   List<StockRalization> _stockRealization = [StockRalization()];
   Widget _buildPartName(int i, BuildContext context) {
+    final _formKey = GlobalKey<FormState>();
     List<Stock> stocks =
         Provider.of<Trigger>(context, listen: false).listSelectedStock;
-    stocks.removeWhere((element) => element.count == 0);
+    stocks.removeWhere((element) => element.count <= 0);
 
     log('message');
     totaling() {
-      _stockRealization[i].toalPrice =
-          (_stockRealization[i].sellPrice * _stockRealization[i].count) +
-              _stockRealization[i].servicePrice;
+      Stock tstock = stocks
+          .firstWhere((element) => element.name == _stockRealization[i].name);
+      if (_formKey.currentState!.validate()) {
+        _stockRealization[i].toalPrice =
+            (_stockRealization[i].sellPrice * _stockRealization[i].count) +
+                _stockRealization[i].servicePrice;
+      }
+      if (!_formKey.currentState!.validate()) {
+        _countValue[i].text = tstock.count.toString();
+        _stockRealization[i].count = int.parse(_countValue[i].text);
+      }
     }
 
     changePrice(Stock element) {
@@ -86,10 +94,9 @@ class _RealizationDocState extends State<RealizationDoc> {
         }
       }
       cariHarga.sort((a, b) => a.buyPrice.compareTo(b.buyPrice));
-      _priceValue[i].text = formatCurrency
-          .format(cariHarga.last.sellPrice )
-          .toString();
-      _stockRealization[i].sellPrice = cariHarga.last.sellPrice ;
+      _priceValue[i].text =
+          formatCurrency.format(cariHarga.last.sellPrice).toString();
+      _stockRealization[i].sellPrice = cariHarga.last.sellPrice;
     }
 
     changeName(
@@ -112,266 +119,287 @@ class _RealizationDocState extends State<RealizationDoc> {
 
     return StatefulBuilder(
       builder: (BuildContext context, StateSetter setState) => Container(
-          margin: EdgeInsets.only(left: 10),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Expanded(
-                  flex: 8,
-                  child: Transform.scale(
-                    scale: 0.8,
-                    alignment: Alignment.centerLeft,
-                    child: Container(
-                      child: DropDownField(
-                        itemsVisibleInDropdown: 1,
-                        textStyle: small,
-                        labelStyle: small,
-                        controller: _partValue[i],
-                        required: true,
-                        value: _stockRealization[i].partname,
-                        onValueChanged: (val) {
-                          if (stocks
-                              .map((e) => e.partname)
-                              .toList()
-                              .contains(val)) {
-                            Stock found = stocks.firstWhere((element) {
-                              return element.partname == val;
-                            });
-                            if (found.count < 1) {
-                              return;
+          margin: const EdgeInsets.only(left: 10),
+          child: Form(
+            key: _formKey,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Expanded(
+                    flex: 8,
+                    child: Transform.scale(
+                      scale: 0.8,
+                      alignment: Alignment.centerLeft,
+                      child: Container(
+                        child: DropDownField(
+                          enabled: _stockRealization[i].done ? false : true,
+                          itemsVisibleInDropdown: 1,
+                          textStyle: small,
+                          labelStyle: small,
+                          controller: _partValue[i],
+                          required: true,
+                          value: _stockRealization[i].partname,
+                          onValueChanged: (val) {
+                            if (stocks
+                                .map((e) => e.partname)
+                                .toList()
+                                .contains(val)) {
+                              Stock found = stocks.firstWhere((element) {
+                                return element.partname == val;
+                              });
+                              if (found.count < 1) {
+                                return;
+                              }
+                              changeName(
+                                val,
+                              );
+                              changePrice(found);
+                              totaling();
+
+                              setState(() {});
                             }
-                            changeName(
-                              val,
-                            );
-                            changePrice(found);
-                            totaling();
-
-                            setState(() {});
-                          }
-                        },
-                        items: stocks.map((e) => e.partname).toList(),
+                          },
+                          items: stocks.map((e) => e.partname).toList(),
+                        ),
                       ),
-                    ),
-                  )),
-              Expanded(
-                  flex: 8,
-                  child: Transform.scale(
-                    scale: 0.8,
-                    alignment: Alignment.centerLeft,
-                    child: Container(
-                      width: 100,
-                      child: DropDownField(
-                        textStyle: small,
-                        labelStyle: small,
-                        inputFormatters: [],
-                        controller: _nameValue[i],
-                        value: _stockRealization[i].name,
-                        onValueChanged: (val) {
-                          if (stocks
-                              .map((e) => e.name)
-                              .toList()
-                              .contains(val)) {
-                            Stock found = stocks.firstWhere((element) {
-                              return element.name == val;
-                            });
-                            if (found.count < 1) {
-                              return;
-                            }
-                            changePart(
-                              val,
-                            );
-                            changePrice(found);
-                            totaling();
-
-                            setState(() {});
-                          }
-                        },
-                        strict: true,
-                        items: stocks.map((e) => e.name).toList(),
-                      ),
-                    ),
-                  )),
-              Expanded(
-                  flex: 8,
-                  child: Transform.scale(
-                    scale: 0.8,
-                    alignment: Alignment.centerLeft,
-                    child: Container(
-                      child: TextFormField(
-                        initialValue: formatCurrency
-                            .format(_stockRealization[i].servicePrice),
-                        style: small,
-                        onChanged: (value) {
-                          if (_stockRealization.isNotEmpty &&
-                              value.isNotEmpty) {
-                            _stockRealization[i].servicePrice =
-                                NumberFormat.currency(
-                                        locale: 'id_ID', symbol: 'Rp ')
-                                    .parse(value)
-                                    .toDouble();
-                            totaling();
-
-                            setState(() {});
-                          }
-                        },
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly,
-                          CurrencyInputFormatter()
-                        ],
-                      ),
-                    ),
-                  )),
-              Expanded(
-                  flex: 8,
-                  child: Transform.scale(
-                    scale: 0.8,
-                    alignment: Alignment.centerLeft,
-                    child: Container(
-                      child: TextFormField(
-                        style: small,
-                        controller: _priceValue[i],
-                        onChanged: (value) {
-                          if (_stockRealization.isNotEmpty &&
-                              value.isNotEmpty) {
-                            _stockRealization[i].sellPrice = NumberFormat.currency(
-                                    locale: 'id_ID', symbol: 'Rp ')
-                                .parse(value)
-                                .toDouble();
-                            totaling();
-                            setState(() {});
-                          }
-                        },
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly,
-                          CurrencyInputFormatter()
-                        ],
-                      ),
-                    ),
-                  )),
-              Expanded(
-                  flex: 5,
-                  child: Transform.scale(
-                    scale: 0.8,
-                    alignment: Alignment.centerLeft,
-                    child: Container(
-                        child: TextFormField(
-                      style: small,
-                      onChanged: (value) {
-                        if (value.isNotEmpty) {
-                          _stockRealization[i].count = int.parse(value);
-
-                          totaling();
-                          setState(() {});
-                        }
-                      },
-                      initialValue: '1',
-                      inputFormatters: [
-                        FilteringTextInputFormatter.digitsOnly,
-                      ],
                     )),
-                  )),
-              Expanded(
-                flex: 8,
-                child: Padding(
-                  padding: EdgeInsets.only(top: 15),
-                  child: Transform.scale(
-                    scale: 0.8,
-                    alignment: Alignment.center,
-                    child: Text(
-                      formatCurrency.format(_stockRealization[i].toalPrice =
-                          (_stockRealization[i].sellPrice *
-                                  _stockRealization[i].count) +
-                              _stockRealization[i].servicePrice),
-                      style: TextStyle(fontSize: 12),
+                Expanded(
+                    flex: 8,
+                    child: Transform.scale(
+                      scale: 0.8,
+                      alignment: Alignment.centerLeft,
+                      child: SizedBox(
+                        width: 100,
+                        child: DropDownField(
+                          enabled: _stockRealization[i].done ? false : true,
+                          textStyle: small,
+                          labelStyle: small,
+                          inputFormatters: const [],
+                          controller: _nameValue[i],
+                          value: _stockRealization[i].name,
+                          onValueChanged: (val) {
+                            if (stocks
+                                .map((e) => e.name)
+                                .toList()
+                                .contains(val)) {
+                              Stock found = stocks.firstWhere((element) {
+                                return element.name == val;
+                              });
+                              if (found.count < 1) {
+                                return;
+                              }
+                              changePart(
+                                val,
+                              );
+                              changePrice(found);
+                              totaling();
+
+                              setState(() {});
+                            }
+                          },
+                          strict: true,
+                          items: stocks.map((e) => e.name).toList(),
+                        ),
+                      ),
+                    )),
+                Expanded(
+                    flex: 8,
+                    child: Transform.scale(
+                      scale: 0.8,
+                      alignment: Alignment.centerLeft,
+                      child: Container(
+                        child: TextFormField(
+                          readOnly: _stockRealization[i].done,
+                          initialValue: formatCurrency
+                              .format(_stockRealization[i].servicePrice),
+                          style: small,
+                          onChanged: (value) {
+                            if (_stockRealization.isNotEmpty &&
+                                value.isNotEmpty) {
+                              _stockRealization[i].servicePrice =
+                                  NumberFormat.currency(
+                                          locale: 'id_ID', symbol: 'Rp ')
+                                      .parse(value)
+                                      .toDouble();
+                              totaling();
+
+                              setState(() {});
+                            }
+                          },
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly,
+                            CurrencyInputFormatter()
+                          ],
+                        ),
+                      ),
+                    )),
+                Expanded(
+                    flex: 8,
+                    child: Transform.scale(
+                      scale: 0.8,
+                      alignment: Alignment.centerLeft,
+                      child: Container(
+                        child: TextFormField(
+                          readOnly: _stockRealization[i].done,
+                          style: small,
+                          controller: _priceValue[i],
+                          onChanged: (value) {
+                            if (_stockRealization.isNotEmpty &&
+                                value.isNotEmpty) {
+                              _stockRealization[i].sellPrice =
+                                  NumberFormat.currency(
+                                          locale: 'id_ID', symbol: 'Rp ')
+                                      .parse(value)
+                                      .toDouble();
+                              totaling();
+                              setState(() {});
+                            }
+                          },
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly,
+                            CurrencyInputFormatter()
+                          ],
+                        ),
+                      ),
+                    )),
+                Expanded(
+                    flex: 5,
+                    child: Transform.scale(
+                      scale: 0.8,
+                      alignment: Alignment.centerLeft,
+                      child: Container(
+                          child: TextFormField(
+                        readOnly: _stockRealization[i].done,
+                        style: small,
+                        validator: (value) {
+                          Stock tstock = stocks.firstWhere((element) =>
+                              element.name == _stockRealization[i].name);
+                          if (_stockRealization[i].count > tstock.count) {
+                            return tstock.count.toString();
+                          }
+                          return null;
+                        },
+                        onChanged: (value) {
+                          if (value.isNotEmpty) {
+                            _stockRealization[i].count = int.parse(value);
+
+                            totaling();
+                            setState(() {});
+                          }
+                        },
+                        initialValue: _countValue[i].text,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                        ],
+                      )),
+                    )),
+                Expanded(
+                  flex: 8,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 15),
+                    child: Transform.scale(
+                      scale: 0.8,
+                      alignment: Alignment.center,
+                      child: Text(
+                        formatCurrency.format(_stockRealization[i].toalPrice =
+                            (_stockRealization[i].sellPrice *
+                                    _stockRealization[i].count) +
+                                _stockRealization[i].servicePrice),
+                        style: const TextStyle(fontSize: 12),
+                      ),
                     ),
                   ),
                 ),
-              ),
-              Expanded(
-                flex: 5,
-                child: Padding(
-                    padding: EdgeInsets.only(top: 10),
-                    child: Transform.scale(
-                      scale: 0.6,
-                      child: ChoiceChip(
-                        shape: CircleBorder(),
-                        label: Icon(
-                          Icons.done,
-                          color: Colors.white,
-                        ),
-                        padding: EdgeInsets.all(0),
-                        selectedColor: Colors.green,
-                        selected: _stockRealization[i].done,
-                        onSelected: _stockRealization[i].done
-                            ? (v) {}
-                            : (v) {
-                                showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return dialog(
-                                        onClickAction: () {
-                                          Stock stock = stocks.firstWhere(
-                                              (element) =>
-                                                  element.name ==
-                                                  _stockRealization[i].name);
-                                          stock.count = stock.count -
-                                              _stockRealization[i].count;
+                Expanded(
+                  flex: 5,
+                  child: Padding(
+                      padding: const EdgeInsets.only(top: 10),
+                      child: Transform.scale(
+                        scale: 0.6,
+                        child: ChoiceChip(
+                          shape: const CircleBorder(),
+                          label: const Icon(
+                            Icons.done,
+                            color: Colors.white,
+                          ),
+                          padding: const EdgeInsets.all(0),
+                          selectedColor: Colors.green,
+                          selected: _stockRealization[i].done,
+                          onSelected: _stockRealization[i].done
+                              ? (v) {}
+                              : (v) {
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return dialog(
+                                          onClickAction: () {
+                                            Stock stock = stocks.firstWhere(
+                                                (element) =>
+                                                    element.name ==
+                                                    _stockRealization[i].name);
+                                            stock.count = stock.count -
+                                                _stockRealization[i].count;
 
-                                          List<DetailStock> element = [];
-                                          element.addAll(stock.items);
-                                          for (var i = 0;
-                                              i < element.length;
-                                              i++) {
-                                            if (!element[i]
-                                                .pihakId
-                                                .contains('SUP')) {
-                                              element.remove(element[i]);
+                                            List<DetailStock> element = [];
+                                            element.addAll(stock.items);
+                                            for (var i = 0;
+                                                i < element.length;
+                                                i++) {
+                                              if (!element[i]
+                                                  .pihakId
+                                                  .contains('SUP')) {
+                                                element.remove(element[i]);
+                                              }
                                             }
-                                          }
-                                          element.sort((a, b) =>
-                                              b.buyPrice.compareTo(a.buyPrice));
+                                            element.sort((a, b) => b.buyPrice
+                                                .compareTo(a.buyPrice));
 
-                                          stock.totalPrice = stock.totalPrice -
-                                              _stockRealization[i].count *
-                                                  element[0].buyPrice;
-                                          if (stock.totalPrice.isNegative) {
-                                            stock.totalPrice = 0;
-                                          }
-                                          stock.items.add(DetailStock(buyPrice:  element[0].buyPrice,
-                                              supplier:
-                                                  widget.customer.customerName,
-                                              date: DateTime.now()
-                                                  .toIso8601String(),
-                                              sellPrice: _stockRealization[i].sellPrice,
-                                              count: _stockRealization[i].count,
-                                              totalPrice: _stockRealization[i]
-                                                      .count *
-                                                  _stockRealization[i].sellPrice));
-                                          _stockRealization[i].done = true;
-                                          objectBox.insertStock(stock);
-                                        },
-                                        string:
-                                            'Stock ${_stockRealization[i].partname} akan dikurangi',
-                                        context: context);
-                                  },
-                                ).then((value) {
-                                  if (value == true) {
-                                    _stockRealization[i].done = true;
-                                    setState(() {});
-                                  }
-                                });
-                                ;
-                              },
-                      ),
-                    )),
-              )
-            ],
+                                            stock.totalPrice =
+                                                stock.totalPrice -
+                                                    _stockRealization[i].count *
+                                                        element[0].buyPrice;
+                                            if (stock.totalPrice.isNegative) {
+                                              stock.totalPrice = 0;
+                                            }
+                                            stock.items.add(DetailStock(
+                                                buyPrice: element[0].buyPrice,
+                                                supplier: widget
+                                                    .customer.customerName,
+                                                date: DateTime.now()
+                                                    .toIso8601String(),
+                                                sellPrice: _stockRealization[i]
+                                                    .sellPrice,
+                                                count:
+                                                    _stockRealization[i].count,
+                                                totalPrice:
+                                                    _stockRealization[i].count *
+                                                        _stockRealization[i]
+                                                            .sellPrice));
+                                            _stockRealization[i].done = true;
+                                            objectBox.insertStock(stock);
+                                          },
+                                          string:
+                                              '${_stockRealization[i].partname} akan dikurangi',
+                                          context: context);
+                                    },
+                                  ).then((value) {
+                                    if (value == true) {
+                                      _stockRealization[i].done = true;
+                                      setState(() {});
+                                    }
+                                  });
+                                },
+                        ),
+                      )),
+                )
+              ],
+            ),
           )),
     );
   }
 
-  TextEditingController dateinput = TextEditingController();
+
   late List<MpiItem> data;
   final formatCurrency =
       NumberFormat.currency(locale: "id_ID", decimalDigits: 0, symbol: 'Rp ');
@@ -379,7 +407,6 @@ class _RealizationDocState extends State<RealizationDoc> {
   void initState() {
     data = widget.customer.mpi.target!.items;
 
-    dateinput.text = widget.customer.realization.target!.dateOut;
     super.initState();
   }
 
@@ -392,9 +419,13 @@ class _RealizationDocState extends State<RealizationDoc> {
         _partValue.add(TextEditingController());
         _nameValue.add(TextEditingController());
         _priceValue.add(TextEditingController());
+        _countValue.add(TextEditingController());
+        _countValue[i].text = _stockRealization[i].count.toString();
         _partValue[i].text = _stockRealization[i].partname;
         _nameValue[i].text = _stockRealization[i].name;
-        _priceValue[i].text = formatCurrency.format(_stockRealization[i].sellPrice);
+
+        _priceValue[i].text =
+            formatCurrency.format(_stockRealization[i].sellPrice);
       }
     } else {}
 
@@ -418,13 +449,18 @@ class _RealizationDocState extends State<RealizationDoc> {
           ),
         ),
         child: Scaffold(
-            floatingActionButton: Row(children: [ Padding(
-            padding: const EdgeInsets.only(left: 100,),
-            child: FloatingActionButton(backgroundColor: Color.fromARGB(255, 79, 117, 134), child: const Icon(Icons.arrow_back),onPressed: (){
-              
-              Navigator.of(context).pop();
-            }),
-          ),
+            floatingActionButton: Row(children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: 100,
+                ),
+                child: FloatingActionButton(
+                    backgroundColor: const Color.fromARGB(255, 79, 117, 134),
+                    child: const Icon(Icons.arrow_back),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    }),
+              ),
               const Spacer(),
               Text(_stockRealization.length.toString()),
               Padding(
@@ -448,12 +484,13 @@ class _RealizationDocState extends State<RealizationDoc> {
 
 //service part
                         var listPartPrice = _stockRealization
-                            .map((element) => element.sellPrice)
+                            .map((element) => element.toalPrice)
                             .toList();
 
                         for (var element in listPartPrice) {
                           totalpartPrice = totalpartPrice + element;
                         }
+
                         List<MpiItem> listMpi = [];
                         listMpi.addAll(widget.customer.mpi.target!.items);
                         for (var i = 0; i < listMpi.length; i++) {
@@ -470,7 +507,7 @@ class _RealizationDocState extends State<RealizationDoc> {
                         asu.realization.target = Realization(
                             selesai:
                                 widget.customer.realization.target!.selesai,
-                            biyaya: totalService + totalpartPrice + mpiPrice,
+                            biyaya: totalpartPrice + mpiPrice,
                             dateOut:
                                 widget.customer.realization.target!.dateOut,
                             rlId: widget.customer.realization.target!.rlId);
@@ -481,7 +518,8 @@ class _RealizationDocState extends State<RealizationDoc> {
                                   desc: element.desc,
                                   done: element.done,
                                   name: element.name,
-                                  partname: element.partname,sellPrice:element.sellPrice ,
+                                  partname: element.partname,
+                                  sellPrice: element.sellPrice,
                                   price: element.sellPrice,
                                   servicePrice: element.servicePrice,
                                   toalPrice: element.toalPrice));
@@ -504,9 +542,8 @@ class _RealizationDocState extends State<RealizationDoc> {
                         asu.inv.target = Invoice(
                           invId: asu.inv.target!.invId,
                           invoiceDate: asu.inv.target!.invoiceDate,
-                          invoiceTotal:
-                              totalService + totalpartPrice + mpiPrice,
-                          partTotal: totalpartPrice,
+                          invoiceTotal: totalpartPrice + mpiPrice,
+                          partTotal: totalpartPrice-totalService,
                           serviceTotal: totalService + mpiPrice,
                           soDate: asu.inv.target!.soDate,
                         );
@@ -520,6 +557,7 @@ class _RealizationDocState extends State<RealizationDoc> {
                             .selectCustomer(asu, true);
                         objectBox.insertCustomer(asu);
                       })),
+            
               Padding(
                   padding: const EdgeInsets.all(5),
                   child: FloatingActionButton(
@@ -527,9 +565,10 @@ class _RealizationDocState extends State<RealizationDoc> {
                       backgroundColor: Colors.red.shade400,
                       child: const Icon(Icons.picture_as_pdf),
                       onPressed: () async {
-                        double totalpartPrice = 0;
+                           double totalpartPrice = 0;
                         double totalService = 0;
                         double mpiPrice = 0;
+
                         var listServicePrice = _stockRealization
                             .map((element) => element.servicePrice)
                             .toList();
@@ -540,15 +579,21 @@ class _RealizationDocState extends State<RealizationDoc> {
 
 //service part
                         var listPartPrice = _stockRealization
-                            .map((element) => element.sellPrice)
+                            .map((element) => element.toalPrice)
                             .toList();
 
                         for (var element in listPartPrice) {
                           totalpartPrice = totalpartPrice + element;
                         }
-                        var listMpiPrice = widget.customer.mpi.target!.items
-                            .map((element) => element.price)
-                            .toList();
+
+                        List<MpiItem> listMpi = [];
+                        listMpi.addAll(widget.customer.mpi.target!.items);
+                        for (var i = 0; i < listMpi.length; i++) {
+                          listMpi
+                              .removeWhere((element) => element.attention == 0);
+                        }
+                        var listMpiPrice =
+                            listMpi.map((element) => element.price).toList();
 
                         for (var element in listMpiPrice) {
                           mpiPrice = mpiPrice + element;
@@ -557,7 +602,7 @@ class _RealizationDocState extends State<RealizationDoc> {
                         asu.realization.target = Realization(
                             selesai:
                                 widget.customer.realization.target!.selesai,
-                            biyaya: totalService + totalpartPrice + mpiPrice,
+                            biyaya: totalpartPrice + mpiPrice,
                             dateOut:
                                 widget.customer.realization.target!.dateOut,
                             rlId: widget.customer.realization.target!.rlId);
@@ -569,6 +614,7 @@ class _RealizationDocState extends State<RealizationDoc> {
                                   done: element.done,
                                   name: element.name,
                                   partname: element.partname,
+                                  sellPrice: element.sellPrice,
                                   price: element.sellPrice,
                                   servicePrice: element.servicePrice,
                                   toalPrice: element.toalPrice));
@@ -591,12 +637,20 @@ class _RealizationDocState extends State<RealizationDoc> {
                         asu.inv.target = Invoice(
                           invId: asu.inv.target!.invId,
                           invoiceDate: asu.inv.target!.invoiceDate,
-                          invoiceTotal:
-                              totalService + totalpartPrice + mpiPrice,
-                          partTotal: totalpartPrice,
+                          invoiceTotal: totalpartPrice + mpiPrice,
+                          partTotal: totalpartPrice-totalService,
                           serviceTotal: totalService + mpiPrice,
                           soDate: asu.inv.target!.soDate,
                         );
+
+                        // asu.rcp.target = RincianPembayarran(
+                        //   rcpId: asu.rcp.target!.rcpId,
+                        //   saldo: totalprice + totalpartPrice + mpiPrice,
+                        // );
+
+                     
+                        
+
                         final bytes = await widgetsToImageController.capture();
                         await createSpk(
                             bytes!,
@@ -604,7 +658,8 @@ class _RealizationDocState extends State<RealizationDoc> {
                             context,
                             'Realisasi');
                         Provider.of<Trigger>(context, listen: false)
-                            .selectCustomer(widget.customer, true);
+                            .selectCustomer(asu, true);
+                        objectBox.insertCustomer(asu);
                       })),
               Container(
                 padding: const EdgeInsets.all(10.0),
@@ -612,9 +667,9 @@ class _RealizationDocState extends State<RealizationDoc> {
                     heroTag: null,
                     backgroundColor: Colors.green,
                     child: const Icon(Icons.print),
-                    onPressed: ()async {
-                        final bytes = await widgetsToImageController .capture();
-                printPdf(bytes!);
+                    onPressed: () async {
+                      final bytes = await widgetsToImageController.capture();
+                      printPdf(bytes!);
                     }),
               )
             ]),
@@ -622,7 +677,7 @@ class _RealizationDocState extends State<RealizationDoc> {
               return Center(
                   child: Container(
                       width: double.infinity,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                           image: DecorationImage(
                               image: AssetImage(
                                 'images/icon.jpg',
@@ -657,7 +712,7 @@ class _RealizationDocState extends State<RealizationDoc> {
                               ),
                               child: WidgetsToImage(
                                 controller: widgetsToImageController,
-                                child: Container(
+                                child: SizedBox(
                                   width: constraints.maxHeight / 1.4,
                                   height: constraints.maxHeight,
                                   child: Column(
@@ -684,8 +739,8 @@ class _RealizationDocState extends State<RealizationDoc> {
                                         padding: const EdgeInsets.only(
                                             left: 5, bottom: 5),
                                         child: Text(
-                                          '${widget.customer.realization.target!.rlId}',
-                                          style: TextStyle(
+                                          widget.customer.realization.target!.rlId,
+                                          style: const TextStyle(
                                               fontSize: 12,
                                               fontWeight: FontWeight.bold,
                                               fontStyle: FontStyle.italic),
@@ -697,10 +752,11 @@ class _RealizationDocState extends State<RealizationDoc> {
                                             height: 0,
                                             color: Colors.black,
                                           ),
-                                           widget.customer.mpi.target!.items.every(
-                                        (element) => element.attention == 0)
-                                    ? SizedBox()
-                                    : top2,
+                                          widget.customer.mpi.target!.items
+                                                  .every((element) =>
+                                                      element.attention == 0)
+                                              ? const SizedBox()
+                                              : top2,
                                           const Divider(
                                             height: 0,
                                             color: Colors.black,
@@ -709,7 +765,7 @@ class _RealizationDocState extends State<RealizationDoc> {
                                               .mapIndexed((i, element) =>
                                                   element.attention == 0
                                                       ? const Center()
-                                                      : Container(
+                                                      : SizedBox(
                                                           width: constraints
                                                                   .maxHeight /
                                                               1.4,
@@ -733,7 +789,7 @@ class _RealizationDocState extends State<RealizationDoc> {
                                                                             mainAxisAlignment:
                                                                                 MainAxisAlignment.start,
                                                                             children: [
-                                                                              Container(margin: EdgeInsets.only(left: 15), child: buildAttention(element.attention))
+                                                                              Container(margin: const EdgeInsets.only(left: 15), child: buildAttention(element.attention))
                                                                             ],
                                                                           )),
                                                                 ),
@@ -770,16 +826,16 @@ class _RealizationDocState extends State<RealizationDoc> {
                                                                     child:
                                                                         ChoiceChip(
                                                                       shape:
-                                                                          CircleBorder(),
+                                                                          const CircleBorder(),
                                                                       label:
-                                                                          Icon(
+                                                                          const Icon(
                                                                         Icons
                                                                             .done,
                                                                         color: Colors
                                                                             .white,
                                                                       ),
                                                                       padding:
-                                                                          EdgeInsets.all(
+                                                                          const EdgeInsets.all(
                                                                               0),
                                                                       selectedColor:
                                                                           Colors
@@ -845,6 +901,8 @@ class _RealizationDocState extends State<RealizationDoc> {
                                                                 jumlahOpsi - 1);
                                                         jumlahOpsi =
                                                             jumlahOpsi - 1;
+                                                        _countValue.removeAt(
+                                                            jumlahOpsi - 1);
                                                         _partValue.removeAt(
                                                             jumlahOpsi - 1);
                                                         _nameValue.removeAt(
@@ -877,6 +935,8 @@ class _RealizationDocState extends State<RealizationDoc> {
                                                         price: 0,
                                                         count: 1,
                                                       ));
+                                                      _countValue.add(
+                                                          TextEditingController());
                                                       _partValue.add(
                                                           TextEditingController());
                                                       _nameValue.add(
@@ -897,12 +957,12 @@ class _RealizationDocState extends State<RealizationDoc> {
                                         flex: 1,
                                         child: Column(
                                           children: [
-                                            Divider(
+                                            const Divider(
                                               color: Colors.black,
                                               height: 0,
                                             ),
                                             top3,
-                                            Divider(
+                                            const Divider(
                                               color: Colors.black,
                                               height: 0,
                                             ),
@@ -925,7 +985,7 @@ class _RealizationDocState extends State<RealizationDoc> {
       Expanded(
         flex: 8,
         child: Container(
-          margin: EdgeInsets.only(left: 10),
+          margin: const EdgeInsets.only(left: 10),
           child: const Text(
             "Partname",
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
@@ -935,7 +995,7 @@ class _RealizationDocState extends State<RealizationDoc> {
       Expanded(
         flex: 8,
         child: Container(
-          margin: EdgeInsets.only(left: 10),
+          margin: const EdgeInsets.only(left: 10),
           child: const Text(
             "Name",
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
@@ -945,7 +1005,7 @@ class _RealizationDocState extends State<RealizationDoc> {
       Expanded(
         flex: 8,
         child: Container(
-          margin: EdgeInsets.only(left: 10),
+          margin: const EdgeInsets.only(left: 10),
           child: const Text(
             "Service",
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
@@ -955,7 +1015,7 @@ class _RealizationDocState extends State<RealizationDoc> {
       Expanded(
         flex: 8,
         child: Container(
-          margin: EdgeInsets.only(left: 10),
+          margin: const EdgeInsets.only(left: 10),
           child: const Text(
             "Harga",
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
@@ -965,7 +1025,7 @@ class _RealizationDocState extends State<RealizationDoc> {
       Expanded(
         flex: 5,
         child: Container(
-          margin: EdgeInsets.only(left: 10),
+          margin: const EdgeInsets.only(left: 10),
           child: const Text(
             "Jumlah",
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
@@ -975,7 +1035,7 @@ class _RealizationDocState extends State<RealizationDoc> {
       Expanded(
         flex: 8,
         child: Container(
-          margin: EdgeInsets.only(left: 10),
+          margin: const EdgeInsets.only(left: 10),
           child: const Text(
             "Total",
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
@@ -985,7 +1045,7 @@ class _RealizationDocState extends State<RealizationDoc> {
       Expanded(
         flex: 5,
         child: Container(
-          margin: EdgeInsets.only(left: 10),
+          margin: const EdgeInsets.only(left: 10),
           child: const Text(
             "Done",
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
@@ -1000,7 +1060,7 @@ class _RealizationDocState extends State<RealizationDoc> {
       Expanded(
         flex: 20,
         child: Container(
-          margin: EdgeInsets.only(left: 10),
+          margin: const EdgeInsets.only(left: 10),
           child: const Text(
             "Est Selesai",
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
@@ -1056,15 +1116,17 @@ class _RealizationDocState extends State<RealizationDoc> {
     ],
   );
   Widget bottom() => Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
           Expanded(
             flex: 20,
             child: Container(
-              margin: EdgeInsets.only(left: 10),
+              margin: const EdgeInsets.only(left: 10),
               child: Text(
-                widget.customer.spk.target!.estimasiSelesai.toString(),
-                style: TextStyle(fontSize: 10),
+                
+               widget.customer.spk.target!.estimasiSelesai=='DD/MM/YYYY'?    'DD/MM/YYYY':DateFormat('dd/MM/yyyy').format( DateTime.parse(   widget.customer.spk.target!.estimasiSelesai),),
+                style: const TextStyle(fontSize: 10),
               ),
             ),
           ),
@@ -1074,7 +1136,7 @@ class _RealizationDocState extends State<RealizationDoc> {
               child: Text(
                 formatCurrendcy
                     .format(widget.customer.spk.target!.estimasiBiyaya),
-                style: TextStyle(fontSize: 10),
+                style: const TextStyle(fontSize: 10),
               ),
             ),
           ),
@@ -1085,10 +1147,14 @@ class _RealizationDocState extends State<RealizationDoc> {
               child: WebDatePicker(
                 small: true,
                 initialDate:
-                    DateTime.parse(widget.customer.realization.target!.selesai),
+                    widget.customer.realization.target!.selesai == 'DD/MM/YYYY'
+                        ? null
+                        : DateTime.parse(
+                            widget.customer.realization.target!.selesai),
                 // style: const TextStyle(fontSize: 5),
                 onChange: (v) {
                   if (v == null) {
+                   
                     return;
                   }
                   widget.customer.realization.target!.selesai =
@@ -1106,7 +1172,7 @@ class _RealizationDocState extends State<RealizationDoc> {
                 formatCurrendcy.format(
                   widget.customer.realization.target!.biyaya,
                 ),
-                style: TextStyle(fontSize: 10),
+                style: const TextStyle(fontSize: 10),
               ),
             ),
           ),
@@ -1114,8 +1180,9 @@ class _RealizationDocState extends State<RealizationDoc> {
             flex: 17,
             child: Container(
               child: Text(
-                widget.customer.spk.target!.date.toString(),
-                style: TextStyle(fontSize: 10),
+             widget.customer.spk.target!.date==
+                      'DD/MM/YYYY'?'DD/MM/YYYY':DateFormat('dd/MM/yyyy').format(DateTime.parse(widget.customer.spk.target!.date)) ,
+                style: const TextStyle(fontSize: 10),
               ),
             ),
           ),
@@ -1123,11 +1190,15 @@ class _RealizationDocState extends State<RealizationDoc> {
             flex: 17,
             child: WebDatePicker(
               small: true,
-              initialDate:
-                  DateTime.parse(widget.customer.realization.target!.dateOut),
+              initialDate: widget.customer.realization.target!.dateOut ==
+                      'DD/MM/YYYY'
+                  ? null
+                  : DateTime.parse(widget.customer.realization.target!.dateOut),
               // style: const TextStyle(fontSize: 5),
               onChange: (v) {
                 if (v == null) {
+               
+
                   return;
                 }
                 widget.customer.realization.target!.dateOut =
@@ -1144,23 +1215,23 @@ class _RealizationDocState extends State<RealizationDoc> {
       Expanded(
         flex: 6,
         child: Container(
-          margin: EdgeInsets.only(left: 15),
+          margin: const EdgeInsets.only(left: 15),
           child: const Text(
             "Inspection",
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
           ),
         ),
       ),
-      Expanded(
+      const Expanded(
         flex: 5,
-        child: const Text(
+        child: Text(
           "Service",
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
         ),
       ),
-      Expanded(
+      const Expanded(
         flex: 1,
-        child: const Text(
+        child: Text(
           "Done",
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
         ),

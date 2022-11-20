@@ -13,7 +13,6 @@ import 'package:provider/provider.dart';
 import '../../helper/currency.dart';
 import '../../models/stock.dart';
 import '../../provider/trigger.dart';
-import 'package:collection/collection.dart';
 
 class SupplierAdd extends StatefulWidget {
   const SupplierAdd({super.key});
@@ -44,7 +43,7 @@ class _SupplierAddState extends State<SupplierAdd> {
     List<Stock> stocks =
         Provider.of<Trigger>(context, listen: false).listSelectedStock;
     return Container(
-        margin: EdgeInsets.only(bottom: 10),
+        margin: const EdgeInsets.only(bottom: 10),
         child: StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) => Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -78,7 +77,7 @@ class _SupplierAddState extends State<SupplierAdd> {
                     SizedBox(
                       width: 200,
                       child: TextFormField(
-                        decoration: InputDecoration(hintText: 'Harga'),
+                        decoration: const InputDecoration(hintText: 'Harga'),
                         onChanged: (value) {
                           if (_updatedStock.isNotEmpty) {
                             _updatedDetailStock[i].buyPrice =
@@ -147,7 +146,8 @@ class _SupplierAddState extends State<SupplierAdd> {
                   showDialog(
                       context: context,
                       builder: (context) {
-                        return AlertDialog(
+                        return 
+                        AlertDialog(
                             actionsPadding:
                                 const EdgeInsets.only(right: 15, bottom: 15),
                             title: const Text("Tambah Pembelian"),
@@ -162,7 +162,7 @@ class _SupplierAddState extends State<SupplierAdd> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Container(
-                                        margin: EdgeInsets.only(bottom: 20),
+                                        margin: const EdgeInsets.only(bottom: 20),
                                         child: Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
@@ -200,7 +200,7 @@ class _SupplierAddState extends State<SupplierAdd> {
                                         margin:
                                             const EdgeInsets.only(bottom: 20),
                                         child: TextFormField(
-                                          decoration: InputDecoration(
+                                          decoration: const InputDecoration(
                                               hintText: 'Deskripsi'),
                                           onChanged: (val) {
                                             _desc = val;
@@ -262,6 +262,9 @@ class _SupplierAddState extends State<SupplierAdd> {
                             actions: <Widget>[
                               ElevatedButton(
                                 onPressed: () {
+                                  for (var i = 0; i < 1000; i++) {
+                                    
+                                
                                   bool duplicate = false;
                                   List<String> filterDuplicate = [];
                                   _updatedStock
@@ -383,11 +386,12 @@ class _SupplierAddState extends State<SupplierAdd> {
                                       objectBox.insertStock(_updatedStock[i]);
                                     }
 
-                                    objectBox.insertSupplier(tempSupplier);
+                                    objectBox.insertSupplier(tempSupplier);}
+                                      }
                                     Navigator.of(context).pop();
-                                  }
+                                  
                                 },
-                                child: const Text("Enter"),
+                                child: const Text("Beli"),
                               ),
                             ]);
                       }).then((value) {

@@ -29,7 +29,7 @@ class _SupplierEditState extends State<SupplierEdit> {
   final TextEditingController _controller = TextEditingController();
   int jumlahOpsi = 0;
 
-  List<Stock> _updatedStock = [
+  final List<Stock> _updatedStock = [
     // Stock(
     //     partname: 'partname',
     //     name: ' name',
@@ -37,7 +37,7 @@ class _SupplierEditState extends State<SupplierEdit> {
     //     count: 0,
     //     totalPrice: 0)
   ];
-  List<DetailStock> _updatedDetailStock = [
+  final List<DetailStock> _updatedDetailStock = [
     // DetailStock(supplier: '', date: '', price: 0, count: 1, totalPrice: 0,)
   ];
   @override
@@ -61,7 +61,7 @@ class _SupplierEditState extends State<SupplierEdit> {
     TextEditingController dpdController = TextEditingController();
     dpdController.text = _updatedStock[i].partname;
     return Container(
-        margin: EdgeInsets.only(bottom: 10),
+        margin: const EdgeInsets.only(bottom: 10),
         child: StatefulBuilder(builder: (context, StateSetter setState) {
           return Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -90,7 +90,7 @@ class _SupplierEditState extends State<SupplierEdit> {
               const Spacer(),
               SizedBox(
                 width: 200,
-                child: TextFormField(decoration: InputDecoration(hintText: 'Harga'),
+                child: TextFormField(decoration: const InputDecoration(hintText: 'Harga'),
                   initialValue: _updatedDetailStock[i].buyPrice.toString(),
                   onChanged: (value) {
                     if (_updatedStock.isNotEmpty) {
@@ -173,7 +173,7 @@ class _SupplierEditState extends State<SupplierEdit> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Container(
-                                        margin: EdgeInsets.only(bottom: 20),
+                                        margin: const EdgeInsets.only(bottom: 20),
                                         child: Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
@@ -209,7 +209,7 @@ class _SupplierEditState extends State<SupplierEdit> {
                                       Container(
                                         margin:
                                             const EdgeInsets.only(bottom: 20),
-                                        child: TextFormField(decoration: InputDecoration(hintText: 'Deskripsi'),
+                                        child: TextFormField(decoration: const InputDecoration(hintText: 'Deskripsi'),
                                           onChanged: (val) {
                                             _desc = val;
                                           },

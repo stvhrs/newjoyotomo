@@ -1,7 +1,3 @@
-import 'package:newJoyo/models/invoice.dart';
-import 'package:newJoyo/models/mpi.dart';
-import 'package:newJoyo/models/realization.dart';
-import 'package:newJoyo/models/spk.dart';
 import 'package:objectbox/objectbox.dart';
 
 @Entity()

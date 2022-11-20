@@ -1,7 +1,5 @@
-import 'package:newJoyo/models/realization.dart';
 import 'package:objectbox/objectbox.dart';
 
-import 'payment.dart';
 
 @Entity()
 class Invoice {

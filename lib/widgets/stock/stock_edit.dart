@@ -23,7 +23,7 @@ class StockEdit extends StatelessWidget {
                 children: [
                   Container(
                     decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 79, 117, 134),
+                        color: const Color.fromARGB(255, 79, 117, 134),
                         borderRadius: BorderRadius.circular(10)),
                     height: 400,
                     width: 570,
@@ -31,9 +31,9 @@ class StockEdit extends StatelessWidget {
                   AlertDialog(
                     actionsPadding:
                         const EdgeInsets.only(right: 15, bottom: 15),
-                    title: const Text("Insert Part Number"),
+                    title: const Text("Edit Part Number"),
                     content: IntrinsicHeight(
-                      child: Container(
+                      child: SizedBox(
                         width: 500,
                         child: Column(
                           children: [
@@ -133,7 +133,7 @@ class StockEdit extends StatelessWidget {
 
                           }
                         },
-                        child: const Text("Insert"),
+                        child: const Text("Edit   "),
                       ),
                     ],
                   ),

@@ -21,12 +21,12 @@ class AddPartName extends StatelessWidget {
               context: context,
               builder: (context) {
                 return Stack(alignment: Alignment.center,
-                  children: [Container(decoration: BoxDecoration( color: Color.fromARGB(255, 79, 117, 134),borderRadius: BorderRadius.circular(10)),height: 400,width:570,),
+                  children: [Container(decoration: BoxDecoration( color: const Color.fromARGB(255, 79, 117, 134),borderRadius: BorderRadius.circular(10)),height: 400,width:570,),
                     AlertDialog(
                       actionsPadding: const EdgeInsets.only(right: 15, bottom: 15),
                       title: const Text("Tambah Partnumber"),
                       content: IntrinsicHeight(
-                        child: Container(
+                        child: SizedBox(
                           width: 500,
                           child: Column(
                             children: [

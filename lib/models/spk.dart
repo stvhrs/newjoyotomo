@@ -46,7 +46,7 @@ class Spk {
      this.catatan='',
      this.namaMekanik='',
      this.estimasiBiyaya=0.0,
-     this.estimasiSelesai='0',
+  this.estimasiSelesai='DD/MM/YYYY',
      this.namaAdvisor='',
      this.namaInspeektor='',
   });

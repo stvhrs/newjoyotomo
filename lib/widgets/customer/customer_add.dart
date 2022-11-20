@@ -83,7 +83,9 @@ class _CustomerAddState extends State<CustomerAdd> {
                                   widget.csId.toString()));
 
                           customer.spk.target = Spk(
+                          
                             alamat: data.alamat,
+                           
                             customerName: data.namaPelanggan,
                             jtId: 'SPK/JT/000000'.replaceRange(
                                 13 - widget.csId.toString().length,
@@ -290,7 +292,8 @@ class _CustomerAddState extends State<CustomerAdd> {
                                   13 - widget.csId.toString().length,
                                   13,
                                   widget.csId.toString()),
-                              selesai: DateTime.now().toIso8601String(),dateOut:  DateTime.now().toIso8601String(),
+                              // selesai: DateTime.now().toIso8601String(),
+                              // dateOut:  DateTime.now().toIso8601String(),
                               biyaya: 0,
                               done: false);
                           customer.realization.target!.mpiItems !=
@@ -314,33 +317,29 @@ class _CustomerAddState extends State<CustomerAdd> {
                                     toalPrice: 1100)
                               ];
                           customer.inv.target = Invoice(
-                              invoiceDate: DateTime.now()
-                                 
-                                  .toIso8601String(),
-                              soDate: DateTime.now()
-                                 
-                                  .toIso8601String(),
-                              invId: 'INV/JT/000000'.replaceRange(
-                                  13 - widget.csId.toString().length,
-                                  13,
-                                  widget.csId.toString()),
-                             );
+                            invoiceDate: DateTime.now().toIso8601String(),
+                            soDate: DateTime.now().toIso8601String(),
+                            invId: 'INV/JT/000000'.replaceRange(
+                                13 - widget.csId.toString().length,
+                                13,
+                                widget.csId.toString()),
+                          );
                           customer.rcp.target = RincianPembayarran(
                               rcpId: 'RCP/JT/000000'.replaceRange(
                                   13 - widget.csId.toString().length,
                                   13,
                                   widget.csId.toString()));
                           customer.rcp.target!.payments.add(Payment(
-          date: DateTime.now().toIso8601String(),
-          keterangan: 'Grand Total',
-          saldo:1,
-          pay: 0));
+                              date: DateTime.now().toIso8601String(),
+                              keterangan: 'Grand Total',
+                              saldo: 1,
+                              pay: 0));
                           objectBox.insertCustomer(customer);
 
                           Navigator.of(context).pop();
                         }
                       },
-                      child: const Text("Insert"),
+                      child: const Text("Tambah"),
                     ),
                   ],
                 );

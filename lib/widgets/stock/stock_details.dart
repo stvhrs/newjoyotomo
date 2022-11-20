@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+import '../../helper/dialog.dart';
 import '../../models/stock.dart';
 
 class StockDetails extends StatefulWidget {
@@ -47,13 +48,25 @@ class _StockDetailsState extends State<StockDetails> {
                   style: const TextStyle(
                       fontSize: 40, fontWeight: FontWeight.bold),
                 ),
-                Spacer(),
+                const Spacer(),
                StockEdit(value.selectedStock),
                 IconButton(
-                    onPressed: () {
-                      Stock stock = Provider.of<Trigger>(context, listen: false)
+                    onPressed: () {    Stock stock = Provider.of<Trigger>(context, listen: false)
                           .selectedStock;
+                         showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return dialog(
+                                          onClickAction: () {
+                                         
                       objectBox.deleteStock(stock.id);
+                                          },
+                                          string:
+                                              'Stock ${stock.partname} Akan Dihapus Selamanya',
+                                          context: context);
+                                    },
+                                  )
+                    ;
                     },
                     icon: Icon(
                       Icons.delete,
@@ -69,8 +82,10 @@ class _StockDetailsState extends State<StockDetails> {
                   fontWeight: FontWeight.bold),
             ),
             Container(
-                padding: const EdgeInsets.all(8),
-                margin: const EdgeInsets.only(top: 10,bottom: 20),
+          
+              width: MediaQuery.of(context).size.width / 2.35,
+                  padding: const EdgeInsets.all(8),
+                  margin: const EdgeInsets.only(bottom: 40, top: 10),
                 decoration: BoxDecoration(
                     color: Colors.grey.shade300,
                     border: Border.all(),
@@ -78,9 +93,9 @@ class _StockDetailsState extends State<StockDetails> {
                 child: Text(value.selectedStock.desc)),
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Center(
+                const Center(
                   child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: EdgeInsets.all(8.0),
                     child: Text(
                       'Riwayat Stock',
                       style:
@@ -89,7 +104,7 @@ class _StockDetailsState extends State<StockDetails> {
                   ),
                 ),
                 (value.selectedStock.count > 0)
-                    ? IntrinsicWidth(child: const StockRemove())
+                    ? const IntrinsicWidth(child: StockRemove())
                     : const SizedBox(),
               ],
             ),
@@ -155,22 +170,22 @@ class _StockDetailsState extends State<StockDetails> {
                                     child: Text(
                                         DateFormat('dd/MM/yyyy')
                                             .format(DateTime.parse(e.date)),
-                                        style: TextStyle(fontSize: 11)),
+                                        style: const TextStyle(fontSize: 11)),
                                   ),
                                 ),
                                 DataCell(Center(
                                   child: Text(
                                     e.supplier,
-                                    style: TextStyle(fontSize: 11),
+                                    style: const TextStyle(fontSize: 11),
                                   ),
                                 )),
                                 DataCell(Center(
                                   child: Text(formatCurrency.format(e.buyPrice),
-                                      style: TextStyle(fontSize: 11)),
+                                      style: const TextStyle(fontSize: 11)),
                                 )),
                                 DataCell(Center(
                                   child: Text(formatCurrency.format(e.sellPrice),
-                                      style: TextStyle(fontSize: 11)),
+                                      style: const TextStyle(fontSize: 11)),
                                 )),
                                 DataCell(Center(
                                     child: Container(
@@ -183,7 +198,7 @@ class _StockDetailsState extends State<StockDetails> {
                                       borderRadius: BorderRadius.circular(10)),
                                   child: Text(
                                     (e.count.toString()),
-                                    style: TextStyle(fontSize: 11),
+                                    style: const TextStyle(fontSize: 11),
                                     // style: const TextStyle(color: Colors.white),
                                     textAlign: TextAlign.center,
                                   ),
@@ -191,7 +206,7 @@ class _StockDetailsState extends State<StockDetails> {
                                 DataCell(Center(
                                     child: Text(
                                         formatCurrency.format(e.totalPrice),
-                                        style: TextStyle(fontSize: 11)))),
+                                        style: TextStyle(fontSize: 11,color: e.pihakId.contains('SUP')?Colors.green: Colors.red, fontWeight: FontWeight.bold)))),
                               ]);
                         }).toList()),
             )),

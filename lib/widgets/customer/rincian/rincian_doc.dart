@@ -1,20 +1,14 @@
-import 'dart:developer';
 
-import 'dart:io';
 import 'package:intl/intl.dart';
-import 'package:newJoyo/helper/border.dart';
 import 'package:newJoyo/helper/border2.dart';
 import 'package:newJoyo/library/date_picker/src/web_date_picker.dart';
 import 'package:newJoyo/main.dart';
 import 'package:newJoyo/models/payment.dart';
 import 'package:newJoyo/models/rincian_pembayaran.dart';
-import 'package:newJoyo/models/stockService/stock_realization.dart';
 import 'package:newJoyo/widgets/kop.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:newJoyo/library/pdf/lib/pdf.dart';
 import 'package:newJoyo/library/pdf/lib/widgets.dart' as pw;
-import 'package:printing/printing.dart';
 import 'package:provider/provider.dart';
 import 'package:widgets_to_image/widgets_to_image.dart';
 
@@ -63,7 +57,7 @@ class _RincianDocState extends State<RincianDoc> {
       BuildContext context,
       StateSetter setState,
     ) {
-      totaling() {
+      totaling() {  
         if (i != 0) {
           payment.saldo = payments[i - 1].saldo - payment.pay;
           payments[i].saldo = payments[i - 1].saldo - payment.pay;
@@ -81,7 +75,7 @@ class _RincianDocState extends State<RincianDoc> {
       }
 
       return Container(
-          margin: EdgeInsets.only(
+          margin: const EdgeInsets.only(
             top: 5,
           ),
           child: Row(
@@ -92,7 +86,9 @@ class _RincianDocState extends State<RincianDoc> {
                   alignment: Alignment.centerLeft,
                   child: WebDatePicker(
                     small: true,
-                    initialDate: DateTime.parse(payment.date),
+                    initialDate: payment.date == 'DD/MM/YYYY'
+                        ? null
+                        : DateTime.parse(payment.date),
                     style: small,
                     onChange: (DateTime? value) {
                       if (value != null) {
@@ -133,7 +129,6 @@ class _RincianDocState extends State<RincianDoc> {
                           NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ')
                               .parse(v)
                               .toDouble();
-                      ;
                       totaling();
                       setState(() {});
                     },
@@ -155,18 +150,17 @@ class _RincianDocState extends State<RincianDoc> {
   Widget build(BuildContext context) {
     return Theme(
         data: ThemeData(
-          inputDecorationTheme: InputDecorationTheme(
-                              contentPadding:  EdgeInsets.all(0),
-                              hintStyle:  TextStyle(
-                                  color: Color.fromARGB(255, 251, 251, 251),
-                                  fontSize: 15,
-                                  height: 2),
-                               border: InputBorder.none,
-        focusedBorder: InputBorder.none,
-        enabledBorder: InputBorder.none,
-        errorBorder: InputBorder.none,
-        disabledBorder: InputBorder.none
-                            ),
+          inputDecorationTheme: const InputDecorationTheme(
+              contentPadding: EdgeInsets.all(0),
+              hintStyle: TextStyle(
+                  color: Color.fromARGB(255, 251, 251, 251),
+                  fontSize: 15,
+                  height: 2),
+              border: InputBorder.none,
+              focusedBorder: InputBorder.none,
+              enabledBorder: InputBorder.none,
+              errorBorder: InputBorder.none,
+              disabledBorder: InputBorder.none),
         ),
         child: Scaffold(
           floatingActionButton: Row(children: [
@@ -175,7 +169,7 @@ class _RincianDocState extends State<RincianDoc> {
                 left: 100,
               ),
               child: FloatingActionButton(
-                  backgroundColor: Color.fromARGB(255, 79, 117, 134),
+                  backgroundColor: const Color.fromARGB(255, 79, 117, 134),
                   child: const Icon(Icons.arrow_back),
                   onPressed: () {
                     Navigator.of(context).pop();
@@ -205,13 +199,14 @@ class _RincianDocState extends State<RincianDoc> {
                     child: const Icon(Icons.picture_as_pdf),
                     onPressed: () async {
                       ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Loading.....')));
+                          const SnackBar(content: Text('Loading.....')));
                       widget.customer.proses = 'Pembayaran';
                       showPrint = false;
                       setState(() {});
                       Customer cs = widget.customer;
                       cs.rcp.target!.payments.clear();
-                      cs.rcp.target = RincianPembayarran(rcpId: widget.customer.rcp.target!.rcpId);
+                      cs.rcp.target = RincianPembayarran(
+                          rcpId: widget.customer.rcp.target!.rcpId);
                       cs.rcp.target!.payments.addAll(payments);
 
                       final bytes = await controller.capture();
@@ -228,9 +223,9 @@ class _RincianDocState extends State<RincianDoc> {
                   heroTag: null,
                   backgroundColor: Colors.green,
                   child: const Icon(Icons.print),
-                  onPressed: () async{
-                      final bytes = await controller.capture();
-                printPdf(bytes!);
+                  onPressed: () async {
+                    final bytes = await controller.capture();
+                    printPdf(bytes!);
                   }),
             )
           ]),
@@ -241,7 +236,7 @@ class _RincianDocState extends State<RincianDoc> {
                   LayoutBuilder(builder: (context, BoxConstraints constraints) {
                 return Container(
                     width: double.infinity,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                         image: DecorationImage(
                             image: AssetImage(
                               'images/icon.jpg',
@@ -286,16 +281,16 @@ class _RincianDocState extends State<RincianDoc> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: const Kop(),
+                                          const Padding(
+                                            padding: EdgeInsets.all(8.0),
+                                            child: Kop(),
                                           ),
                                           Padding(
                                             padding: const EdgeInsets.only(
                                                 bottom: 5),
                                             child: Text(
-                                             'RCP/JT',
-                                              style: TextStyle(
+                                              widget.customer.rcp.target!.rcpId,
+                                              style: const TextStyle(
                                                   fontSize: 12,
                                                   fontWeight: FontWeight.bold,
                                                   fontStyle: FontStyle.italic),
@@ -322,32 +317,32 @@ class _RincianDocState extends State<RincianDoc> {
                                                             ),
                                                           ],
                                                         ),
-                                                        Divider(
+                                                        const Divider(
                                                           height: 2,
                                                           color: Colors.black,
                                                         ),
-                                                        // Padding(
-                                                        //   padding:
-                                                        //       const EdgeInsets
-                                                        //           .all(8.0),
-                                                        //   child: Text(
-                                                        //     textAlign:
-                                                        //         TextAlign.right,
-                                                        //     widget.customer
-                                                        //         .customerName,
-                                                        //     style: bold,
-                                                        //   ),
-                                                        // ),
-                                                        // Padding(
-                                                        //   padding:
-                                                        //       const EdgeInsets
-                                                        //           .all(8.0),
-                                                        //   child: Text(
-                                                        //     widget.customer
-                                                        //         .alamat,
-                                                        //     style: bold,
-                                                        //   ),
-                                                        // )
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(8.0),
+                                                          child: Text(
+                                                            textAlign:
+                                                                TextAlign.right,
+                                                            widget.customer
+                                                                .customerName,
+                                                            style: bold,
+                                                          ),
+                                                        ),
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(8.0),
+                                                          child: Text(
+                                                            widget.customer
+                                                                .alamat,
+                                                            style: bold,
+                                                          ),
+                                                        )
                                                       ],
                                                     ),
                                                   ),
@@ -370,7 +365,7 @@ class _RincianDocState extends State<RincianDoc> {
                                                             ),
                                                           ],
                                                         ),
-                                                        Divider(
+                                                        const Divider(
                                                           height: 2,
                                                           color: Colors.black,
                                                         ),
@@ -432,94 +427,94 @@ class _RincianDocState extends State<RincianDoc> {
                                                                     ),
                                                                   ),
                                                                 ]),
-                                                            // Column(
-                                                            //   crossAxisAlignment:
-                                                            //       CrossAxisAlignment
-                                                            //           .start,
-                                                            //   children: [
-                                                            //     Padding(
-                                                            //       padding: const EdgeInsets
-                                                            //               .only(
-                                                            //           left: 40,
-                                                            //           top: 3,
-                                                            //           bottom:
-                                                            //               3),
-                                                            //       child: Text(
-                                                            //         '${widget.customer.spk.target!.namaKendaraan} ',
-                                                            //         style:
-                                                            //             small,
-                                                            //       ),
-                                                            //     ),
-                                                            //     Padding(
-                                                            //       padding: const EdgeInsets
-                                                            //               .only(
-                                                            //           left: 40,
-                                                            //           top: 3,
-                                                            //           bottom:
-                                                            //               3),
-                                                            //       child: Text(
-                                                            //         widget
-                                                            //             .customer
-                                                            //             .spk
-                                                            //             .target!
-                                                            //             .noRangka,
-                                                            //         style:
-                                                            //             small,
-                                                            //       ),
-                                                            //     ),
-                                                            //     Padding(
-                                                            //         padding: const EdgeInsets
-                                                            //                 .only(
-                                                            //             left:
-                                                            //                 40,
-                                                            //             top: 3,
-                                                            //             bottom:
-                                                            //                 3),
-                                                            //         child: Text(
-                                                            //           '${widget.customer.spk.target!.tipeKendaraan}',
-                                                            //           style:
-                                                            //               small,
-                                                            //         )),
-                                                            //     Padding(
-                                                            //         padding: const EdgeInsets
-                                                            //                 .only(
-                                                            //             left:
-                                                            //                 40,
-                                                            //             top: 3,
-                                                            //             bottom:
-                                                            //                 3),
-                                                            //         child: Text(
-                                                            //           DateFormat(
-                                                            //                   'dd/MM/yyyy')
-                                                            //               .format(
-                                                            //             DateTime.parse(widget
-                                                            //                 .customer
-                                                            //                 .inv
-                                                            //                 .target!
-                                                            //                 .invoiceDate),
-                                                            //           ),
-                                                            //           style:
-                                                            //               small,
-                                                            //         )),
-                                                            //     Padding(
-                                                            //         padding: const EdgeInsets
-                                                            //                 .only(
-                                                            //             left:
-                                                            //                 40,
-                                                            //             top: 3,
-                                                            //             bottom:
-                                                            //                 3),
-                                                            //         child: Text(
-                                                            //           DateFormat('dd/MM/yyyy').format(DateTime.parse(widget
-                                                            //               .customer
-                                                            //               .inv
-                                                            //               .target!
-                                                            //               .soDate)),
-                                                            //           style:
-                                                            //               small,
-                                                            //         ))
-                                                            //   ],
-                                                            // )
+                                                            Column(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                Padding(
+                                                                  padding: const EdgeInsets
+                                                                          .only(
+                                                                      left: 40,
+                                                                      top: 3,
+                                                                      bottom:
+                                                                          3),
+                                                                  child: Text(
+                                                                    '${widget.customer.spk.target!.namaKendaraan} ',
+                                                                    style:
+                                                                        small,
+                                                                  ),
+                                                                ),
+                                                                Padding(
+                                                                  padding: const EdgeInsets
+                                                                          .only(
+                                                                      left: 40,
+                                                                      top: 3,
+                                                                      bottom:
+                                                                          3),
+                                                                  child: Text(
+                                                                    widget
+                                                                        .customer
+                                                                        .spk
+                                                                        .target!
+                                                                        .noRangka,
+                                                                    style:
+                                                                        small,
+                                                                  ),
+                                                                ),
+                                                                Padding(
+                                                                    padding: const EdgeInsets
+                                                                            .only(
+                                                                        left:
+                                                                            40,
+                                                                        top: 3,
+                                                                        bottom:
+                                                                            3),
+                                                                    child: Text(
+                                                                      widget.customer.spk.target!.tipeKendaraan,
+                                                                      style:
+                                                                          small,
+                                                                    )),
+                                                                Padding(
+                                                                    padding: const EdgeInsets
+                                                                            .only(
+                                                                        left:
+                                                                            40,
+                                                                        top: 3,
+                                                                        bottom:
+                                                                            3),
+                                                                    child: Text(
+                                                                      DateFormat(
+                                                                              'dd/MM/yyyy')
+                                                                          .format(
+                                                                        DateTime.parse(widget
+                                                                            .customer
+                                                                            .inv
+                                                                            .target!
+                                                                            .invoiceDate),
+                                                                      ),
+                                                                      style:
+                                                                          small,
+                                                                    )),
+                                                                Padding(
+                                                                    padding: const EdgeInsets
+                                                                            .only(
+                                                                        left:
+                                                                            40,
+                                                                        top: 3,
+                                                                        bottom:
+                                                                            3),
+                                                                    child: Text(
+                                                                      DateFormat('dd/MM/yyyy').format(DateTime.parse(widget
+                                                                          .customer
+                                                                          .inv
+                                                                          .target!
+                                                                          .soDate)),
+                                                                      style:
+                                                                          small,
+                                                                    ))
+                                                              ],
+                                                            )
                                                           ],
                                                         )
                                                       ],
@@ -534,93 +529,88 @@ class _RincianDocState extends State<RincianDoc> {
                                             child: Column(
                                               children: [
                                                 top(),
-                                                Divider(
+                                                const Divider(
                                                   height: 2,
                                                   color: Colors.black,
                                                 ),
-                                                // ...List.generate(
-                                                //     jumlahOpsi,
-                                                //     (index) => _buildRincian(
-                                                //         index,
-                                                //         context,
-                                                //         payments[index])),
-                                                SizedBox(height: 200,),
-                                                Divider(
+                                                ...List.generate(
+                                                    jumlahOpsi,
+                                                    (index) => _buildRincian(
+                                                        index,
+                                                        context,
+                                                        payments[index])),
+                                                const Divider(
                                                   height: 2,
                                                   color: Colors.black,
                                                 ),
-                                                // showPrint
-                                                //     ? Row(
-                                                //         children: [
-                                                //           IconButton(
-                                                //               color: Colors.red,
-                                                //               onPressed: () {
-                                                //                 setState(() {
-                                                //                   if (jumlahOpsi >
-                                                //                           1 &&
-                                                //                       jumlahOpsi ==
-                                                //                           payments
-                                                //                               .length) {
-                                                //                     payments.removeAt(
-                                                //                         jumlahOpsi -
-                                                //                             1);
-                                                //                     jumlahOpsi =
-                                                //                         jumlahOpsi -
-                                                //                             1;
-                                                //                   }
-                                                //                 });
-                                                //               },
-                                                //               icon: const Icon(Icons
-                                                //                   .remove_circle)),
-                                                //           IconButton(
-                                                //               color:
-                                                //                   Colors.green,
-                                                //               onPressed: () {
-                                                //                 print('asu');
-                                                //                 setState(() {
-                                                //                   payments.add(Payment(
-                                                //                       date: DateTime
-                                                //                               .now()
-                                                //                           .toIso8601String(),
-                                                //                       keterangan:
-                                                //                           'Keterangan',
-                                                //                       saldo: widget
-                                                //                           .customer
-                                                //                           .realization
-                                                //                           .target!
-                                                //                           .biyaya,
-                                                //                       pay: 0));
-                                                //                   jumlahOpsi =
-                                                //                       jumlahOpsi +
-                                                //                           1;
-                                                //                 });
+                                                showPrint
+                                                    ? Row(
+                                                        children: [
+                                                          IconButton(
+                                                              color: Colors.red,
+                                                              onPressed: () {
+                                                                setState(() {
+                                                                  if (jumlahOpsi >
+                                                                          1 &&
+                                                                      jumlahOpsi ==
+                                                                          payments
+                                                                              .length) {
+                                                                    payments.removeAt(
+                                                                        jumlahOpsi -
+                                                                            1);
+                                                                    jumlahOpsi =
+                                                                        jumlahOpsi -
+                                                                            1;
+                                                                  }
+                                                                });
+                                                              },
+                                                              icon: const Icon(Icons
+                                                                  .remove_circle)),
+                                                          IconButton(
+                                                              color:
+                                                                  Colors.green,
+                                                              onPressed: () {
+                                                                print('asu');
+                                                                setState(() {
+                                                                  payments.add(Payment(
+                                                                      date: DateTime
+                                                                              .now()
+                                                                          .toIso8601String(),
+                                                                      keterangan:
+                                                                          'Keterangan',
+                                                                      saldo: widget
+                                                                          .customer
+                                                                          .realization
+                                                                          .target!
+                                                                          .biyaya,
+                                                                      pay: 0));
+                                                                  jumlahOpsi =
+                                                                      jumlahOpsi +
+                                                                          1;
+                                                                });
 
-                                                //                 setState(() {});
-                                                //               },
-                                                //               icon: const Icon(Icons
-                                                //                   .add_circle)),
-                                                //         ],
-                                                //       )
-                                                //     : SizedBox(),
-                                                // (payments.last.saldo < 1)
-                                                //     ? Text(
-                                                //         'LUNAS',
-                                                //         style: TextStyle(
-                                                //           color: Colors.green,
-                                                //           fontWeight:
-                                                //               FontWeight.bold,
-                                                //           fontSize: 30,
-                                                //         ),
-                                                //       )
-                                                //     : Text(
-                                                //         'BELUM LUNAS',
-                                                //         style: TextStyle(
-                                                //           color: Colors.red,
-                                                //           fontWeight:
-                                                //               FontWeight.bold,
-                                                //           fontSize: 30,
-                                                //         ),
-                                                //       )
+                                                                setState(() {});
+                                                              },
+                                                              icon: const Icon(Icons
+                                                                  .add_circle)),
+                                                        ],
+                                                      )
+                                                    : const SizedBox(),
+                                                (payments.last.saldo < 1)
+                                                    ? Padding(
+                                                      padding: const EdgeInsets.all(8.0),
+                                                      child: Image.asset(
+                                                          'images/lunas.png',scale: 3,),
+                                                    )
+                                                    : const Text(
+                                                        'BELUM LUNAS',
+                                                        style: TextStyle(
+                                                          color: Colors.red,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 30,
+                                                        ),
+                                                      )
                                               ],
                                             ),
                                           ),
@@ -636,28 +626,28 @@ class _RincianDocState extends State<RincianDoc> {
   Widget top() => Padding(
         padding: const EdgeInsets.only(top: 5),
         child: Row(
-          children: [
+          children: const [
             Expanded(
-              child: const Text(
+              child: Text(
                 "Tanggal",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
               ),
             ),
             Expanded(
               flex: 2,
-              child: const Text(
+              child: Text(
                 "Keterangan",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
               ),
             ),
             Expanded(
-              child: const Text(
+              child: Text(
                 "Jumlah Bayar",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
               ),
             ),
             Expanded(
-              child: const Text(
+              child: Text(
                 textAlign: TextAlign.right,
                 "Saldo",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),

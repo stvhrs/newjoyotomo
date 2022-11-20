@@ -48,11 +48,11 @@ class _CustomerDetailsState extends State<CustomerDetails> {
   final formatCurrendcy =
       NumberFormat.currency(locale: "id_ID", decimalDigits: 0, symbol: 'Rp ');
   TextStyle idStyle =
-      TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic);
+      const TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic);
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(boxShadow: <BoxShadow>[
+      decoration: BoxDecoration(boxShadow: const <BoxShadow>[
         BoxShadow(
           color: Colors.grey,
           blurRadius: 4,
@@ -60,8 +60,8 @@ class _CustomerDetailsState extends State<CustomerDetails> {
           offset: Offset(2, 2),
         ),
       ], color: Colors.white, borderRadius: BorderRadius.circular(10)),
-      padding: EdgeInsets.only(top: 8, bottom: 8, left: 15, right: 15),
-      margin: EdgeInsets.only(top: 15, bottom: 15, left: 15, right: 15),
+      padding: const EdgeInsets.only(top: 8, bottom: 8, left: 15, right: 15),
+      margin: const EdgeInsets.only(top: 15, bottom: 15, left: 15, right: 15),
       child: Consumer<Trigger>(builder: (context, value, cshild) {
         return IntrinsicWidth(
           child: Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
@@ -200,7 +200,7 @@ class _CustomerDetailsState extends State<CustomerDetails> {
                                                 .replaceAll('/', '-');
                                             return await generateCalendar(
                                               value.selectedCustomer,
-                                              'D:\\SPK\\${year}-${month}\\${id}.pdf',
+                                              'D:\\SPK\\$year-$month\\$id.pdf',
                                             );
                                           }))))),
                     ),
@@ -287,7 +287,7 @@ class _CustomerDetailsState extends State<CustomerDetails> {
                                               .replaceAll('/', '-');
                                           return await generateCalendar(
                                             value.selectedCustomer,
-                                            'D:\\MPI\\${year}-${month}\\${id}.pdf',
+                                            'D:\\MPI\\$year-$month\\$id.pdf',
                                           );
                                         })),
                               ),
@@ -375,7 +375,7 @@ class _CustomerDetailsState extends State<CustomerDetails> {
                                                 .replaceAll('/', '-');
                                             return await generateCalendar(
                                               value.selectedCustomer,
-                                              'D:\\Realisasi\\${year}-${month}\\${id}.pdf',
+                                              'D:\\Realisasi\\$year-$month\\$id.pdf',
                                             );
                                           }))))),
                     ),
@@ -478,7 +478,7 @@ class _CustomerDetailsState extends State<CustomerDetails> {
                                                   .replaceAll('/', '-');
                                               return await generateCalendar(
                                                 value.selectedCustomer,
-                                                'D:\\Invoice\\${year}-${month}\\${id}.pdf',
+                                                'D:\\Invoice\\$year-$month\\$id.pdf',
                                               );
                                             }))),
                               ))),
@@ -582,7 +582,7 @@ class _CustomerDetailsState extends State<CustomerDetails> {
                                                   .replaceAll('/', '-');
                                               return await generateCalendar(
                                                 value.selectedCustomer,
-                                                'D:\\Rincian Pembayaran\\${year}-${month}\\${id}.pdf',
+                                                'D:\\Rincian Pembayaran\\$year-$month\\$id.pdf',
                                               );
                                             }))),
                               ))),
@@ -590,8 +590,8 @@ class _CustomerDetailsState extends State<CustomerDetails> {
                   ],
                 ),
               ],
-            ),Spacer(),
-            Container(margin: EdgeInsets.only(bottom: 30),
+            ),const Spacer(),
+            Container(margin: const EdgeInsets.only(bottom: 30),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -600,34 +600,34 @@ class _CustomerDetailsState extends State<CustomerDetails> {
                       onPressed: () async {
                         printKosongan('images/SPK.pdf');
                       },
-                      icon: Icon(Icons.print),
-                      label: Text('SPK Kosong')),
+                      icon: const Icon(Icons.print),
+                      label: const Text('SPK Kosong')),
 
                   ElevatedButton.icon(
                       onPressed: () async {
                         printKosongan('images/MPI.pdf');
                       },
-                      icon: Icon(Icons.print),
-                      label: Text('MPI Kosong')),
+                      icon: const Icon(Icons.print),
+                      label: const Text('MPI Kosong')),
 
                   ElevatedButton.icon(
                       onPressed: () async {
                         printKosongan('images/Realisasi.pdf');
                       },
-                      icon: Icon(Icons.print),
-                      label: Text('Realisasi Kosong')),
+                      icon: const Icon(Icons.print),
+                      label: const Text('Realisasi Kosong')),
                   ElevatedButton.icon(
                       onPressed: () async {
                         printKosongan('images/Invoice.pdf');
                       },
-                      icon: Icon(Icons.print),
-                      label: Text('Invoice Kosong')),
+                      icon: const Icon(Icons.print),
+                      label: const Text('Invoice Kosong')),
                   ElevatedButton.icon(
                       onPressed: () async {
                         printKosongan('images/Rincian.pdf');
                       },
-                      icon: Icon(Icons.print),
-                      label: Text('Rincian Kosong'))
+                      icon: const Icon(Icons.print),
+                      label: const Text('Rincian Kosong'))
                 ],
               ),
             )

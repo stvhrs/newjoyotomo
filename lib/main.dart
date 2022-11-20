@@ -52,7 +52,7 @@ class MyApp extends StatelessWidget {
         //        border: InputBorder.none,
         // focusedBorder: InputBorder.none,
         // enabledBorder: InputBorder.none,
-        // errorBorder: InputBorder.none,
+        // errorBorder: InputBorder.none, 
         // disabledBorder: InputBorder.none,
               contentPadding:
                   const EdgeInsets.only(left: 10, top: 10, bottom: 10),

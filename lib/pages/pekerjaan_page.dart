@@ -10,7 +10,6 @@ import 'package:newJoyo/widgets/customer/customer_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../main.dart';
-import 'dart:collection';
 import 'package:collection/collection.dart';
 
 class CustomerPage extends StatefulWidget {
@@ -38,29 +37,30 @@ class _CustomerPageState extends State<CustomerPage> {
   Route _createRoute(Customer c) {
     return PageRouteBuilder(
       pageBuilder: (context, animation, secondaryAnimation) =>
-          CustomerDetails(),
+          const CustomerDetails(),
       transitionDuration: Duration.zero,
       reverseTransitionDuration: Duration.zero,
     );
   }
- getColorProses(String p){
-if(p=='SPK'){
-  return Colors.orange;
-}
-if(p=='MPI'){
-  return Colors.grey;
-}
-if(p=='Invoice'){
-  return Colors.green;
-}
-if(p=='Realisasi'){
-  return Colors.blue;
-}
-if(p=='Pembayaran'){
-  return Colors.green.shade700;
-}
 
- }
+  getColorProses(String p) {
+    if (p == 'SPK') {
+      return Colors.orange;
+    }
+    if (p == 'MPI') {
+      return Colors.grey;
+    }
+    if (p == 'Invoice') {
+      return Colors.green;
+    }
+    if (p == 'Realisasi') {
+      return Colors.blue;
+    }
+    if (p == 'Pembayaran') {
+      return Colors.green.shade700;
+    }
+  }
+
   final formatCurrency =
       NumberFormat.currency(locale: "id_ID", decimalDigits: 0, symbol: 'Rp ');
   @override
@@ -105,7 +105,7 @@ if(p=='Pembayaran'){
                     return Center(
                       child: Container(
                         decoration: BoxDecoration(
-                            boxShadow: <BoxShadow>[
+                            boxShadow: const <BoxShadow>[
                               BoxShadow(
                                 color: Colors.grey,
                                 blurRadius: 4,
@@ -115,9 +115,9 @@ if(p=='Pembayaran'){
                             ],
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(10)),
-                        padding: EdgeInsets.only(
+                        padding: const EdgeInsets.only(
                             top: 8, bottom: 8, left: 15, right: 15),
-                        margin: EdgeInsets.only(
+                        margin: const EdgeInsets.only(
                             top: 15, bottom: 15, left: 15, right: 15),
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -174,13 +174,14 @@ if(p=='Pembayaran'){
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
-                                  children: [
+                                  children: const [
                                     Expanded(flex: 11, child: Text('Faktur')),
                                     Expanded(flex: 11, child: Text('Nama')),
                                     Expanded(
                                         flex: 11, child: Text('Kendaraan')),
                                     Expanded(flex: 11, child: Text('Proses')),
-                                    Expanded(flex: 11, child: Text('Saldo')),
+                                    Expanded(flex: 9, child: Text('Tagihan')),
+                                    Expanded(flex: 9, child: Text('Saldo')),
                                     Expanded(flex: 5, child: Text('Lunas')),
                                   ],
                                 ),
@@ -223,48 +224,86 @@ if(p=='Pembayaran'){
                                                     .namaKendaraan)),
                                             Expanded(
                                                 flex: 11,
-                                                child: Container( margin: EdgeInsets.only(
-                                                        right: 100), decoration: BoxDecoration(
-                                                        color: getColorProses(e.proses),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(5)),child: Text(textAlign: TextAlign.center,e.proses,style: TextStyle(color: Colors.white),))),
-                                            Expanded(
-                                                flex: 11,
-                                                child: Text( e.rcp.target!.payments.last
-                                                                      .saldo  ==
-                                                                    1?'--':
-                                                    formatCurrency.format(
-                                                       e.rcp.target!.payments.last
-                                                                      .saldo),style: TextStyle(fontWeight: FontWeight.bold),)),
-                                            Expanded(
-                                                flex: 5,
-                                                child: IntrinsicWidth(
-                                                  child: Container(
-                                                    margin: EdgeInsets.only(
-                                                        right: 30),
+                                                child: Container(padding: const EdgeInsets.all(3),
+                                                    margin: const EdgeInsets.only(
+                                                        right: 90),
                                                     decoration: BoxDecoration(
-                                                        color:e.rcp.target!.payments.last
-                                                                      .saldo ==
-                                                                    0
-                                                                ? Colors.green
-                                                                    .shade400
-                                                                : Colors.red
-                                                                    .shade400
-                                                             ,
+                                                        color: getColorProses(
+                                                            e.proses),
                                                         borderRadius:
                                                             BorderRadius
                                                                 .circular(5)),
                                                     child: Text(
                                                       textAlign:
                                                           TextAlign.center,
-                                                      e.rcp.target!.payments.last
-                                                                      .saldo ==
-                                                                  0
-                                                              ? 'Lunas'
-                                                              : 'Belum'
-                                                         ,
-                                                      style: TextStyle(
+                                                      e.proses,
+                                                      style: const TextStyle(
+                                                          color: Colors.white),
+                                                    ))),
+                                            Expanded(
+                                                flex: 9,
+                                                child: Text(
+                                                  e.rcp.target!.payments.first
+                                                              .saldo ==
+                                                          1
+                                                      ? '_____'
+                                                      : formatCurrency.format(e
+                                                          .rcp
+                                                          .target!
+                                                          .payments
+                                                          .first
+                                                          .saldo),
+                                                  style: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                )),
+                                            Expanded(
+                                                flex: 9,
+                                                child: Text(
+                                                  e.rcp.target!.payments.last
+                                                              .saldo ==
+                                                          1
+                                                      ? '_____'
+                                                      : formatCurrency.format(e
+                                                          .rcp
+                                                          .target!
+                                                          .payments
+                                                          .last
+                                                          .saldo),
+                                                  style: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                )),
+                                            Expanded(
+                                                flex: 5,
+                                                child: IntrinsicWidth(
+                                                  child: Container(padding: const EdgeInsets.all(3),
+                                                    margin: const EdgeInsets.only(
+                                                        right: 30),
+                                                    decoration: BoxDecoration(
+                                                        color: e
+                                                                    .rcp
+                                                                    .target!
+                                                                    .payments
+                                                                    .last
+                                                                    .saldo ==
+                                                                0
+                                                            ? Colors
+                                                                .green.shade400
+                                                            : Colors
+                                                                .red.shade400,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(5)),
+                                                    child: Text(
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      e.rcp.target!.payments
+                                                                  .last.saldo ==
+                                                              0
+                                                          ? 'Lunas'
+                                                          : 'Belum',
+                                                      style: const TextStyle(
                                                           color: Colors.white),
                                                     ),
                                                   ),

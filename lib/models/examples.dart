@@ -1,19 +1,14 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'dart:typed_data';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:newJoyo/models/customer.dart';
 import 'package:flutter/services.dart';
-import 'package:newJoyo/models/spk.dart';
 import 'package:newJoyo/library/pdf/lib/pdf.dart';
 
 import 'package:newJoyo/library/pdf/lib/widgets.dart' as pw;
-import 'package:newJoyo/widgets/customer/spk/spk_doc.dart';
 import 'package:printing/printing.dart';
-import 'package:widgets_to_image/widgets_to_image.dart';
 
 void printKosongan(String name) async {
   final pdf = await rootBundle.load(name);
@@ -78,7 +73,7 @@ createSpk(Uint8List uint8list, String fileName, BuildContext context,
 
   final pw.MemoryImage memoryImage = pw.MemoryImage(uint8list);
   document2.addPage(pw.Page(
-      margin: pw.EdgeInsets.all(20),
+      margin: const pw.EdgeInsets.all(20),
       pageFormat: PdfPageFormat.a4,
       build: (pw.Context context) {
         return pw.Align(

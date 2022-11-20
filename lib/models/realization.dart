@@ -17,7 +17,7 @@ class Realization {
   Realization({
     this.id = 0,
     required this.rlId,
-    this.dateOut='',
+    this.dateOut='DD/MM/YYYY',
      this.selesai='DD/MM/YYYY',
      this.biyaya=0,
     this.done=false,

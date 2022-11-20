@@ -1,9 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:newJoyo/models/pelanggan.dart';
-import 'package:newJoyo/models/supplier.dart';
 import 'package:newJoyo/widgets/Pelanggan/tambah_Pelanggan.dart';
 import 'package:newJoyo/widgets/pelanggan/edit_pelanggan.dart';
 
@@ -32,8 +28,8 @@ class _DaftarPelangganState extends State<DaftarPelanggan> {
   Widget build(BuildContext context) {
     return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
       Container(
-          padding: EdgeInsets.only(left: 25, right: 25, top: 15),
-          decoration: BoxDecoration(boxShadow: <BoxShadow>[
+          padding: const EdgeInsets.only(left: 25, right: 25, top: 15),
+          decoration: BoxDecoration(boxShadow: const <BoxShadow>[
             BoxShadow(
               color: Colors.grey,
               blurRadius: 4,
@@ -44,7 +40,7 @@ class _DaftarPelangganState extends State<DaftarPelanggan> {
           width: MediaQuery.of(context).size.width * 0.7,
           child: Column(
             children: [
-              Text(
+              const Text(
                 'Daftar Pelanggan',
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
@@ -90,10 +86,10 @@ class _DaftarPelangganState extends State<DaftarPelanggan> {
               Container(
                 color: Colors.grey.shade300,
                 padding:
-                    EdgeInsets.only(top: 8, bottom: 8, left: 15, right: 15),
+                    const EdgeInsets.only(top: 8, bottom: 8, left: 15, right: 15),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
+                  children: const [
                     Expanded(flex: 11, child: Text('Nama')),
                     Expanded(flex: 11, child: Text('Alamat')),
                     Expanded(flex: 11, child: Text('Nomor Hp')),
@@ -130,7 +126,7 @@ class _DaftarPelangganState extends State<DaftarPelanggan> {
                           color: index.isEven
                               ? const Color.fromARGB(255, 193, 216, 226)
                               : Colors.transparent,
-                          padding: EdgeInsets.only(left: 15, right: 0),
+                          padding: const EdgeInsets.only(left: 15, right: 0),
                           child: Row(
                             children: [
                               Expanded(
@@ -156,7 +152,7 @@ class _DaftarPelangganState extends State<DaftarPelanggan> {
                                           size: 16,
                                           color: Colors.red.shade700,
                                         )),
-                                    Spacer(),
+                                    const Spacer(),
                                   ],
                                 ),
                               )
