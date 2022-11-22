@@ -291,7 +291,7 @@ class _SupplierEditState extends State<SupplierEdit> {
                                   _supplier = _controller.text;
 
                                   widget.supplier.date =
-                                    _date.toIso8601String();
+                                      _date.toIso8601String();
                                   widget.supplier.desc = _desc;
                                   widget.supplier.supplier = _supplier;
 

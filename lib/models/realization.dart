@@ -14,6 +14,7 @@ class Realization {
   final stockItems=ToMany<StockRalization>();
   bool done;
 
+
   Realization({
     this.id = 0,
     required this.rlId,
@@ -21,5 +22,6 @@ class Realization {
      this.selesai='DD/MM/YYYY',
      this.biyaya=0,
     this.done=false,
+
   });
 }

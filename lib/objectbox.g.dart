@@ -36,7 +36,7 @@ final _entities = <ModelEntity>[
   ModelEntity(
       id: const IdUid(1, 8039437475238809495),
       name: 'Customer',
-      lastPropertyId: const IdUid(13, 1449318229780625188),
+      lastPropertyId: const IdUid(14, 3939579564692191489),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
@@ -815,7 +815,7 @@ ModelDefinition getObjectBoxModel() {
       lastSequenceId: const IdUid(0, 0),
       retiredEntityUids: const [],
       retiredIndexUids: const [],
-      retiredPropertyUids: const [3209655501032753516],
+      retiredPropertyUids: const [3209655501032753516, 3939579564692191489],
       retiredRelationUids: const [],
       modelVersion: 5,
       modelVersionParserMinimum: 5,
@@ -844,7 +844,7 @@ ModelDefinition getObjectBoxModel() {
           final alamatOffset = fbb.writeString(object.alamat);
           final prosesOffset = fbb.writeString(object.proses);
           final dateTimeOffset = fbb.writeString(object.dateTime);
-          fbb.startTable(14);
+          fbb.startTable(15);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, csIdOffset);
           fbb.addOffset(2, customerNameOffset);

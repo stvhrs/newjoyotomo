@@ -918,9 +918,7 @@ class _RealizationDocState extends State<RealizationDoc> {
                                                     if (jumlahOpsi ==
                                                         _stockRealization
                                                             .length) {
-                                                      print(jumlahOpsi ==
-                                                          _stockRealization
-                                                              .length);
+                                                   
 
                                                       jumlahOpsi =
                                                           jumlahOpsi + 1;
