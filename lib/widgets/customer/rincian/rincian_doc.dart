@@ -231,389 +231,391 @@ class _RincianDocState extends State<RincianDoc> {
           ]),
           body: Hero(
             tag: 4,
-            child: Center(
-              child:
-                  LayoutBuilder(builder: (context, BoxConstraints constraints) {
-                return Container(
-                    width: double.infinity,
-                    decoration: const BoxDecoration(
-                        image: DecorationImage(
-                            image: AssetImage(
-                              'images/icon.jpg',
-                            ),
-                            opacity: 0.3,
-                            repeat: ImageRepeat.repeat,
-                            scale: 20)),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Container(
-                              height: MediaQuery.of(context).size.height,
-                              width:
-                                  MediaQuery.of(context).size.height / 1.4142,
-                              padding: const EdgeInsets.all(20),
-                              margin:
-                                  const EdgeInsets.only(top: 20, bottom: 10),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(10),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: const Color.fromARGB(255, 78, 77, 77)
-                                        .withOpacity(0.5),
-                                    spreadRadius: 5,
-                                    blurRadius: 7,
-                                    offset: const Offset(
-                                        0, 3), // changes position of shadow
-                                  ),
-                                ],
+            child:  InteractiveViewer(
+              child: Center(
+                child:
+                    LayoutBuilder(builder: (context, BoxConstraints constraints) {
+                  return Container(
+                      width: double.infinity,
+                      decoration: const BoxDecoration(
+                          image: DecorationImage(
+                              image: AssetImage(
+                                'images/icon.jpg',
                               ),
-                              child: WidgetsToImage(
-                                controller: controller,
-                                child: Container(
-                                    alignment: Alignment.center,
-                                    //  padding: const EdgeInsets.all(20),
-
-                                    width: constraints.maxHeight / 1.4,
-                                    height: constraints.maxHeight,
-                                    child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          const Padding(
-                                            padding: EdgeInsets.all(8.0),
-                                            child: Kop(),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                bottom: 5),
-                                            child: Text(
-                                              widget.customer.rcp.target!.rcpId,
-                                              style: const TextStyle(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontStyle: FontStyle.italic),
+                              opacity: 0.3,
+                              repeat: ImageRepeat.repeat,
+                              scale: 20)),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                                height: MediaQuery.of(context).size.height,
+                                width:
+                                    MediaQuery.of(context).size.height / 1.4142,
+                                padding: const EdgeInsets.all(20),
+                                margin:
+                                    const EdgeInsets.only(top: 20, bottom: 10),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: const Color.fromARGB(255, 78, 77, 77)
+                                          .withOpacity(0.5),
+                                      spreadRadius: 5,
+                                      blurRadius: 7,
+                                      offset: const Offset(
+                                          0, 3), // changes position of shadow
+                                    ),
+                                  ],
+                                ),
+                                child: WidgetsToImage(
+                                  controller: controller,
+                                  child: Container(
+                                      alignment: Alignment.center,
+                                      //  padding: const EdgeInsets.all(20),
+            
+                                      width: constraints.maxHeight / 1.4,
+                                      height: constraints.maxHeight,
+                                      child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            const Padding(
+                                              padding: EdgeInsets.all(8.0),
+                                              child: Kop(),
                                             ),
-                                          ),
-                                          Expanded(
-                                            child: Row(
-                                              children: [
-                                                Expanded(
-                                                  child: Kotak2(
-                                                    child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          children: [
-                                                            Text(
-                                                              'CUSTOMER',
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  bottom: 5),
+                                              child: Text(
+                                                widget.customer.rcp.target!.rcpId,
+                                                style: const TextStyle(
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontStyle: FontStyle.italic),
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child: Row(
+                                                children: [
+                                                  Expanded(
+                                                    child: Kotak2(
+                                                      child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              Text(
+                                                                'CUSTOMER',
+                                                                style: bold,
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          const Divider(
+                                                            height: 2,
+                                                            color: Colors.black,
+                                                          ),
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(8.0),
+                                                            child: Text(
+                                                              textAlign:
+                                                                  TextAlign.right,
+                                                              widget.customer
+                                                                  .customerName,
                                                               style: bold,
                                                             ),
-                                                          ],
-                                                        ),
-                                                        const Divider(
-                                                          height: 2,
-                                                          color: Colors.black,
-                                                        ),
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(8.0),
-                                                          child: Text(
-                                                            textAlign:
-                                                                TextAlign.right,
-                                                            widget.customer
-                                                                .customerName,
-                                                            style: bold,
                                                           ),
-                                                        ),
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(8.0),
-                                                          child: Text(
-                                                            widget.customer
-                                                                .alamat,
-                                                            style: bold,
-                                                          ),
-                                                        )
-                                                      ],
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(8.0),
+                                                            child: Text(
+                                                              widget.customer
+                                                                  .alamat,
+                                                              style: bold,
+                                                            ),
+                                                          )
+                                                        ],
+                                                      ),
                                                     ),
                                                   ),
-                                                ),
-                                                Expanded(
-                                                  child: Kotak2(
-                                                    child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .stretch,
-                                                      children: [
-                                                        Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          children: [
-                                                            Text(
-                                                              'CAR DETAILS',
-                                                              style: bold,
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        const Divider(
-                                                          height: 2,
-                                                          color: Colors.black,
-                                                        ),
-                                                        Row(
-                                                          children: [
-                                                            Column(
+                                                  Expanded(
+                                                    child: Kotak2(
+                                                      child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .stretch,
+                                                        children: [
+                                                          Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              Text(
+                                                                'CAR DETAILS',
+                                                                style: bold,
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          const Divider(
+                                                            height: 2,
+                                                            color: Colors.black,
+                                                          ),
+                                                          Row(
+                                                            children: [
+                                                              Column(
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .start,
+                                                                  children: [
+                                                                    Padding(
+                                                                        padding:
+                                                                            const EdgeInsets.all(
+                                                                                3),
+                                                                        child:
+                                                                            Text(
+                                                                          'Kendaraan:',
+                                                                          style:
+                                                                              small,
+                                                                        )),
+                                                                    Padding(
+                                                                      padding:
+                                                                          const EdgeInsets
+                                                                              .all(3),
+                                                                      child: Text(
+                                                                        'Nomor Rangka:',
+                                                                        style:
+                                                                            small,
+                                                                      ),
+                                                                    ),
+                                                                    Padding(
+                                                                        padding:
+                                                                            const EdgeInsets.all(
+                                                                                3),
+                                                                        child:
+                                                                            Text(
+                                                                          'Tipe:',
+                                                                          style:
+                                                                              small,
+                                                                        )),
+                                                                    Padding(
+                                                                      padding:
+                                                                          const EdgeInsets
+                                                                              .all(3),
+                                                                      child: Text(
+                                                                        'Tanggal Invoice: ',
+                                                                        style:
+                                                                            small,
+                                                                      ),
+                                                                    ),
+                                                                    Padding(
+                                                                      padding:
+                                                                          const EdgeInsets
+                                                                              .all(3),
+                                                                      child: Text(
+                                                                        'Tanggal Garansi: ',
+                                                                        style:
+                                                                            small,
+                                                                      ),
+                                                                    ),
+                                                                  ]),
+                                                              Column(
                                                                 crossAxisAlignment:
                                                                     CrossAxisAlignment
                                                                         .start,
                                                                 children: [
                                                                   Padding(
-                                                                      padding:
-                                                                          const EdgeInsets.all(
-                                                                              3),
-                                                                      child:
-                                                                          Text(
-                                                                        'Kendaraan:',
-                                                                        style:
-                                                                            small,
-                                                                      )),
-                                                                  Padding(
-                                                                    padding:
-                                                                        const EdgeInsets
-                                                                            .all(3),
-                                                                    child: Text(
-                                                                      'Nomor Rangka:',
-                                                                      style:
-                                                                          small,
-                                                                    ),
-                                                                  ),
-                                                                  Padding(
-                                                                      padding:
-                                                                          const EdgeInsets.all(
-                                                                              3),
-                                                                      child:
-                                                                          Text(
-                                                                        'Tipe:',
-                                                                        style:
-                                                                            small,
-                                                                      )),
-                                                                  Padding(
-                                                                    padding:
-                                                                        const EdgeInsets
-                                                                            .all(3),
-                                                                    child: Text(
-                                                                      'Tanggal Invoice: ',
-                                                                      style:
-                                                                          small,
-                                                                    ),
-                                                                  ),
-                                                                  Padding(
-                                                                    padding:
-                                                                        const EdgeInsets
-                                                                            .all(3),
-                                                                    child: Text(
-                                                                      'Tanggal Garansi: ',
-                                                                      style:
-                                                                          small,
-                                                                    ),
-                                                                  ),
-                                                                ]),
-                                                            Column(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              children: [
-                                                                Padding(
-                                                                  padding: const EdgeInsets
-                                                                          .only(
-                                                                      left: 40,
-                                                                      top: 3,
-                                                                      bottom:
-                                                                          3),
-                                                                  child: Text(
-                                                                    '${widget.customer.spk.target!.namaKendaraan} ',
-                                                                    style:
-                                                                        small,
-                                                                  ),
-                                                                ),
-                                                                Padding(
-                                                                  padding: const EdgeInsets
-                                                                          .only(
-                                                                      left: 40,
-                                                                      top: 3,
-                                                                      bottom:
-                                                                          3),
-                                                                  child: Text(
-                                                                    widget
-                                                                        .customer
-                                                                        .spk
-                                                                        .target!
-                                                                        .noRangka,
-                                                                    style:
-                                                                        small,
-                                                                  ),
-                                                                ),
-                                                                Padding(
                                                                     padding: const EdgeInsets
                                                                             .only(
-                                                                        left:
-                                                                            40,
+                                                                        left: 40,
                                                                         top: 3,
                                                                         bottom:
                                                                             3),
                                                                     child: Text(
-                                                                      widget.customer.spk.target!.tipeKendaraan,
+                                                                      '${widget.customer.spk.target!.namaKendaraan} ',
                                                                       style:
                                                                           small,
-                                                                    )),
-                                                                Padding(
+                                                                    ),
+                                                                  ),
+                                                                  Padding(
                                                                     padding: const EdgeInsets
                                                                             .only(
-                                                                        left:
-                                                                            40,
+                                                                        left: 40,
                                                                         top: 3,
                                                                         bottom:
                                                                             3),
                                                                     child: Text(
-                                                                      DateFormat(
-                                                                              'dd/MM/yyyy')
-                                                                          .format(
-                                                                        DateTime.parse(widget
+                                                                      widget
+                                                                          .customer
+                                                                          .spk
+                                                                          .target!
+                                                                          .noRangka,
+                                                                      style:
+                                                                          small,
+                                                                    ),
+                                                                  ),
+                                                                  Padding(
+                                                                      padding: const EdgeInsets
+                                                                              .only(
+                                                                          left:
+                                                                              40,
+                                                                          top: 3,
+                                                                          bottom:
+                                                                              3),
+                                                                      child: Text(
+                                                                        widget.customer.spk.target!.tipeKendaraan,
+                                                                        style:
+                                                                            small,
+                                                                      )),
+                                                                  Padding(
+                                                                      padding: const EdgeInsets
+                                                                              .only(
+                                                                          left:
+                                                                              40,
+                                                                          top: 3,
+                                                                          bottom:
+                                                                              3),
+                                                                      child: Text(
+                                                                        DateFormat(
+                                                                                'dd/MM/yyyy')
+                                                                            .format(
+                                                                          DateTime.parse(widget
+                                                                              .customer
+                                                                              .inv
+                                                                              .target!
+                                                                              .invoiceDate),
+                                                                        ),
+                                                                        style:
+                                                                            small,
+                                                                      )),
+                                                                  Padding(
+                                                                      padding: const EdgeInsets
+                                                                              .only(
+                                                                          left:
+                                                                              40,
+                                                                          top: 3,
+                                                                          bottom:
+                                                                              3),
+                                                                      child: Text(
+                                                                        DateFormat('dd/MM/yyyy').format(DateTime.parse(widget
                                                                             .customer
                                                                             .inv
                                                                             .target!
-                                                                            .invoiceDate),
-                                                                      ),
-                                                                      style:
-                                                                          small,
-                                                                    )),
-                                                                Padding(
-                                                                    padding: const EdgeInsets
-                                                                            .only(
-                                                                        left:
-                                                                            40,
-                                                                        top: 3,
-                                                                        bottom:
-                                                                            3),
-                                                                    child: Text(
-                                                                      DateFormat('dd/MM/yyyy').format(DateTime.parse(widget
-                                                                          .customer
-                                                                          .inv
-                                                                          .target!
-                                                                          .soDate)),
-                                                                      style:
-                                                                          small,
-                                                                    ))
-                                                              ],
-                                                            )
-                                                          ],
-                                                        )
-                                                      ],
+                                                                            .soDate)),
+                                                                        style:
+                                                                            small,
+                                                                      ))
+                                                                ],
+                                                              )
+                                                            ],
+                                                          )
+                                                        ],
+                                                      ),
                                                     ),
                                                   ),
-                                                ),
-                                              ],
+                                                ],
+                                              ),
                                             ),
-                                          ),
-                                          Expanded(
-                                            flex: 3,
-                                            child: Column(
-                                              children: [
-                                                top(),
-                                                const Divider(
-                                                  height: 2,
-                                                  color: Colors.black,
-                                                ),
-                                                ...List.generate(
-                                                    jumlahOpsi,
-                                                    (index) => _buildRincian(
-                                                        index,
-                                                        context,
-                                                        payments[index])),
-                                                const Divider(
-                                                  height: 2,
-                                                  color: Colors.black,
-                                                ),
-                                                showPrint
-                                                    ? Row(
-                                                        children: [
-                                                          IconButton(
-                                                              color: Colors.red,
-                                                              onPressed: () {
-                                                                setState(() {
-                                                                  if (jumlahOpsi >
-                                                                          1 &&
-                                                                      jumlahOpsi ==
-                                                                          payments
-                                                                              .length) {
-                                                                    payments.removeAt(
-                                                                        jumlahOpsi -
-                                                                            1);
+                                            Expanded(
+                                              flex: 3,
+                                              child: Column(
+                                                children: [
+                                                  top(),
+                                                  const Divider(
+                                                    height: 2,
+                                                    color: Colors.black,
+                                                  ),
+                                                  ...List.generate(
+                                                      jumlahOpsi,
+                                                      (index) => _buildRincian(
+                                                          index,
+                                                          context,
+                                                          payments[index])),
+                                                  const Divider(
+                                                    height: 2,
+                                                    color: Colors.black,
+                                                  ),
+                                                  showPrint
+                                                      ? Row(
+                                                          children: [
+                                                            IconButton(
+                                                                color: Colors.red,
+                                                                onPressed: () {
+                                                                  setState(() {
+                                                                    if (jumlahOpsi >
+                                                                            1 &&
+                                                                        jumlahOpsi ==
+                                                                            payments
+                                                                                .length) {
+                                                                      payments.removeAt(
+                                                                          jumlahOpsi -
+                                                                              1);
+                                                                      jumlahOpsi =
+                                                                          jumlahOpsi -
+                                                                              1;
+                                                                    }
+                                                                  });
+                                                                },
+                                                                icon: const Icon(Icons
+                                                                    .remove_circle)),
+                                                            IconButton(
+                                                                color:
+                                                                    Colors.green,
+                                                                onPressed: () {
+                                                                  print('asu');
+                                                                  setState(() {
+                                                                    payments.add(Payment(
+                                                                        date: DateTime
+                                                                                .now()
+                                                                            .toIso8601String(),
+                                                                        keterangan:
+                                                                            'Keterangan',
+                                                                        saldo: payments[jumlahOpsi-1].saldo,
+                                                                        pay: 0));
                                                                     jumlahOpsi =
-                                                                        jumlahOpsi -
+                                                                        jumlahOpsi +
                                                                             1;
-                                                                  }
-                                                                });
-                                                              },
-                                                              icon: const Icon(Icons
-                                                                  .remove_circle)),
-                                                          IconButton(
-                                                              color:
-                                                                  Colors.green,
-                                                              onPressed: () {
-                                                                print('asu');
-                                                                setState(() {
-                                                                  payments.add(Payment(
-                                                                      date: DateTime
-                                                                              .now()
-                                                                          .toIso8601String(),
-                                                                      keterangan:
-                                                                          'Keterangan',
-                                                                      saldo: payments[jumlahOpsi-1].saldo,
-                                                                      pay: 0));
-                                                                  jumlahOpsi =
-                                                                      jumlahOpsi +
-                                                                          1;
-                                                                });
-
-                                                                setState(() {});
-                                                              },
-                                                              icon: const Icon(Icons
-                                                                  .add_circle)),
-                                                        ],
+                                                                  });
+            
+                                                                  setState(() {});
+                                                                },
+                                                                icon: const Icon(Icons
+                                                                    .add_circle)),
+                                                          ],
+                                                        )
+                                                      : const SizedBox(),
+                                                  (payments.last.saldo < 1)
+                                                      ? Padding(
+                                                        padding: const EdgeInsets.all(8.0),
+                                                        child: Image.asset(
+                                                            'images/lunas.png',scale: 3,),
                                                       )
-                                                    : const SizedBox(),
-                                                (payments.last.saldo < 1)
-                                                    ? Padding(
-                                                      padding: const EdgeInsets.all(8.0),
-                                                      child: Image.asset(
-                                                          'images/lunas.png',scale: 3,),
-                                                    )
-                                                    : const Text(
-                                                        'BELUM LUNAS',
-                                                        style: TextStyle(
-                                                          color: Colors.red,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 30,
-                                                        ),
-                                                      )
-                                              ],
+                                                      : const Text(
+                                                          'BELUM LUNAS',
+                                                          style: TextStyle(
+                                                            color: Colors.red,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontSize: 30,
+                                                          ),
+                                                        )
+                                                ],
+                                              ),
                                             ),
-                                          ),
-                                        ])),
-                              ))
-                        ]));
-              }),
+                                          ])),
+                                ))
+                          ]));
+                }),
+              ),
             ),
           ),
         ));

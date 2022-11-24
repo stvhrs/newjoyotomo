@@ -71,11 +71,7 @@ class _InvoiceDocState extends State<InvoiceDoc> {
                     flex: 32,
                     child: Text(stocks.name, style: small),
                   ),
-                  Expanded(
-                    flex: 32,
-                    child: Text(formatCurrendcy.format(stocks.servicePrice),
-                        style: small),
-                  ),
+                
                   Expanded(
                     flex: 30,
                     child: Text(formatCurrendcy.format(stocks.price),
@@ -190,477 +186,492 @@ class _InvoiceDocState extends State<InvoiceDoc> {
       ]),
       body: Hero(
         tag: 4,
-        child: Center(
-          child: LayoutBuilder(builder: (context, BoxConstraints constraints) {
-            return Container(
-                width: double.infinity,
-                decoration: const BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage(
-                          'images/icon.jpg',
-                        ),
-                        opacity: 0.3,
-                        repeat: ImageRepeat.repeat,
-                        scale: 20)),
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Container(
-                        height: MediaQuery.of(context).size.height,
-                        width: MediaQuery.of(context).size.height / 1.4142,
-                        padding: const EdgeInsets.all(20),
-                        margin: const EdgeInsets.only(top: 20, bottom: 10),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10),
-                          boxShadow: [
-                            BoxShadow(
-                              color: const Color.fromARGB(255, 78, 77, 77)
-                                  .withOpacity(0.5),
-                              spreadRadius: 5,
-                              blurRadius: 7,
-                              offset: const Offset(
-                                  0, 3), // changes position of shadow
-                            ),
-                          ],
-                        ),
-                        child: WidgetsToImage(
-                          controller: _widgetsToImageController,
-                          child: Container(
-                            alignment: Alignment.center,
-                            //  padding: const EdgeInsets.all(20),
-
-                            width: constraints.maxHeight / 1.4,
-                            height: constraints.maxHeight,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Padding(
-                                  padding: EdgeInsets.all(8.0),
-                                  child: Kop(),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 5),
-                                  child: Text(
-                                    widget.customer.inv.target!.invId,
-                                    style: const TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold,
-                                        fontStyle: FontStyle.italic),
+        child:  InteractiveViewer(
+          child: Center(
+            child: LayoutBuilder(builder: (context, BoxConstraints constraints) {
+              return Container(
+                  width: double.infinity,
+                  decoration: const BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage(
+                            'images/icon.jpg',
+                          ),
+                          opacity: 0.3,
+                          repeat: ImageRepeat.repeat,
+                          scale: 20)),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          height: MediaQuery.of(context).size.height,
+                          width: MediaQuery.of(context).size.height / 1.4142,
+                          padding: const EdgeInsets.all(20),
+                         
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: [
+                              BoxShadow(
+                                color: const Color.fromARGB(255, 78, 77, 77)
+                                    .withOpacity(0.5),
+                                spreadRadius: 5,
+                                blurRadius: 7,
+                                offset: const Offset(
+                                    0, 3), // changes position of shadow
+                              ),
+                            ],
+                          ),
+                          child: WidgetsToImage(
+                            controller: _widgetsToImageController,
+                            child: Container(
+                              alignment: Alignment.center,
+                              //  padding: const EdgeInsets.all(20),
+        
+                              width: constraints.maxHeight / 1.4,
+                              height: constraints.maxHeight,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Padding(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: Kop(),
                                   ),
-                                ),
-                                Expanded(
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        child: Kotak2(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
+                                  Padding(
+                                    padding: const EdgeInsets.only(bottom: 5),
+                                    child: Text(
+                                      widget.customer.inv.target!.invId,
+                                      style: const TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold,
+                                          fontStyle: FontStyle.italic),
+                                    ),
+                                  ),
+                                  Flexible(
+                                    child: Row(
+                                        children: [
+                                          Expanded(
+                                            child: Kotak2(
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
                                                 children: [
-                                                  Text(
-                                                    'CUSTOMER',
-                                                    style: bold,
-                                                  ),
-                                                ],
-                                              ),
-                                              const Divider(
-                                                height: 2,
-                                                color: Colors.black,
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Text(
-                                                  textAlign: TextAlign.right,
-                                                  widget.customer.customerName,
-                                                  style: bold,
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Text(
-                                                  widget.customer.alamat,
-                                                  style: bold,
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      Expanded(
-                                        child: Kotak2(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.stretch,
-                                            children: [
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Text(
-                                                    'CAR DETAILS',
-                                                    style: bold,
-                                                  ),
-                                                ],
-                                              ),
-                                              const Divider(
-                                                height: 2,
-                                                color: Colors.black,
-                                              ),
-                                              Row(
-                                                children: [
-                                                  Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(3),
-                                                            child: Text(
-                                                              'Kendaraan:',
-                                                              style: small,
-                                                            )),
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(3),
-                                                          child: Text(
-                                                            'Nomor Rangka:',
-                                                            style: small,
-                                                          ),
-                                                        ),
-                                                        Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(3),
-                                                            child: Text(
-                                                              'Tipe:',
-                                                              style: small,
-                                                            )),
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(3),
-                                                          child: Text(
-                                                            'Tanggal Invoice: ',
-                                                            style: small,
-                                                          ),
-                                                        ),
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(3),
-                                                          child: Text(
-                                                            'Tanggal Garansi: ',
-                                                            style: small,
-                                                          ),
-                                                        ),
-                                                      ]),
-                                                  Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.center,
                                                     children: [
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .only(
-                                                                left: 40,
-                                                                top: 3,
-                                                                bottom: 3),
-                                                        child: Text(
-                                                          '${widget.customer.spk.target!.namaKendaraan} ',
-                                                          style: small,
-                                                        ),
+                                                      Text(
+                                                        'CUSTOMER',
+                                                        style: bold,
                                                       ),
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .only(
-                                                                left: 40,
-                                                                top: 3,
-                                                                bottom: 3),
-                                                        child: Text(
-                                                          widget.customer.spk
-                                                              .target!.noRangka,
-                                                          style: small,
-                                                        ),
+                                                    ],
+                                                  ),
+                                                  const Divider(
+                                                    height: 2,
+                                                    color: Colors.black,
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(8.0),
+                                                    child: Text(
+                                                      textAlign: TextAlign.right,
+                                                      widget.customer.customerName,
+                                                      style: bold,
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(8.0),
+                                                    child: Text(
+                                                      widget.customer.alamat,
+                                                      style: bold,
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: Kotak2(
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.stretch,
+                                                children: [
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.center,
+                                                    children: [
+                                                      Text(
+                                                        'CAR DETAILS',
+                                                        style: bold,
                                                       ),
-                                                      Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .only(
-                                                                  left: 40,
-                                                                  top: 3,
-                                                                  bottom: 3),
-                                                          child: Text(
-                                                            widget.customer.spk.target!.tipeKendaraan,
-                                                            style: small,
-                                                          )),
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .only(
-                                                                left: 40,
-                                                                top: 3,
-                                                                bottom: 3),
-                                                        child: WebDatePicker(
-                                                            dateformat:
-                                                                'dd/MM/yyy',
-                                                            initialDate: DateTime
-                                                                .parse(widget
-                                                                    .customer
-                                                                    .inv
-                                                                    .target!
-                                                                    .invoiceDate),
-                                                            small: true,
-                                                            onChange: (v) {
-                                                              if (v == null) {
-                                                                return;
-                                                              }
-                                                              widget
-                                                                      .customer
-                                                                      .inv
-                                                                      .target!
-                                                                      .invoiceDate =
-                                                                  v.toIso8601String();
-                                                            }),
-                                                      ),
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .only(
-                                                                left: 40,
-                                                                top: 3,
-                                                                bottom: 3),
-                                                        child: WebDatePicker(
-                                                            dateformat:
-                                                                'dd/MM/yyy',
-                                                            initialDate: DateTime
-                                                                .parse(widget
-                                                                    .customer
-                                                                    .inv
-                                                                    .target!
-                                                                    .soDate),
-                                                            small: true,
-                                                            onChange: (v) {
-                                                              if (v == null) {
-                                                                return;
-                                                              }
-                                                              widget
-                                                                      .customer
-                                                                      .inv
-                                                                      .target!
-                                                                      .soDate =
-                                                                  v.toIso8601String();
-                                                            }),
+                                                    ],
+                                                  ),
+                                                  const Divider(
+                                                    height: 2,
+                                                    color: Colors.black,
+                                                  ),
+                                                  Row(
+                                                    children: [
+                                                      Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .all(3),
+                                                                child: Text(
+                                                                  'Kendaraan:',
+                                                                  style: small,
+                                                                )),
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(3),
+                                                              child: Text(
+                                                                'Nomor Rangka:',
+                                                                style: small,
+                                                              ),
+                                                            ),
+                                                            Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .all(3),
+                                                                child: Text(
+                                                                  'Tipe:',
+                                                                  style: small,
+                                                                )),
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(3),
+                                                              child: Text(
+                                                                'Tanggal Invoice: ',
+                                                                style: small,
+                                                              ),
+                                                            ),
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(3),
+                                                              child: Text(
+                                                                'Tanggal Garansi: ',
+                                                                style: small,
+                                                              ),
+                                                            ),
+                                                          ]),
+                                                      Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    left: 40,
+                                                                    top: 3,
+                                                                    bottom: 3),
+                                                            child: Text(
+                                                              '${widget.customer.spk.target!.namaKendaraan} ',
+                                                              style: small,
+                                                            ),
+                                                          ),
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    left: 40,
+                                                                    top: 3,
+                                                                    bottom: 3),
+                                                            child: Text(
+                                                              widget.customer.spk
+                                                                  .target!.noRangka,
+                                                              style: small,
+                                                            ),
+                                                          ),
+                                                          Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                          .only(
+                                                                      left: 40,
+                                                                      top: 3,
+                                                                      bottom: 3),
+                                                              child: Text(
+                                                                widget.customer.spk.target!.tipeKendaraan,
+                                                                style: small,
+                                                              )),
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    left: 40,
+                                                                    top: 3,
+                                                                    bottom: 3),
+                                                            child: WebDatePicker(
+                                                                dateformat:
+                                                                    'dd/MM/yyy',
+                                                                initialDate: DateTime
+                                                                    .parse(widget
+                                                                        .customer
+                                                                        .inv
+                                                                        .target!
+                                                                        .invoiceDate),
+                                                                small: true,
+                                                                onChange: (v) {
+                                                                  if (v == null) {
+                                                                    return;
+                                                                  }
+                                                                  widget
+                                                                          .customer
+                                                                          .inv
+                                                                          .target!
+                                                                          .invoiceDate =
+                                                                      v.toIso8601String();
+                                                                }),
+                                                          ),
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    left: 40,
+                                                                    top: 3,
+                                                                    bottom: 3),
+                                                            child: WebDatePicker(
+                                                                dateformat:
+                                                                    'dd/MM/yyy',
+                                                                initialDate: DateTime
+                                                                    .parse(widget
+                                                                        .customer
+                                                                        .inv
+                                                                        .target!
+                                                                        .soDate),
+                                                                small: true,
+                                                                onChange: (v) {
+                                                                  if (v == null) {
+                                                                    return;
+                                                                  }
+                                                                  widget
+                                                                          .customer
+                                                                          .inv
+                                                                          .target!
+                                                                          .soDate =
+                                                                      v.toIso8601String();
+                                                                }),
+                                                          )
+                                                        ],
                                                       )
                                                     ],
                                                   )
                                                 ],
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                  child: Column(children: [
-                                    const Divider(
-                                      height: 0,
-                                      color: Colors.black,
-                                    ),
-                                    top2,
-                                    const Divider(
-                                      height: 0,
-                                      color: Colors.black,
-                                    ),
-                                    ...widget.customer.mpi.target!.items
-                                        .mapIndexed((i, element) => element
-                                                    .attention ==
-                                                0
-                                            ? const Center()
-                                            : SizedBox(
-                                                width:
-                                                    constraints.maxHeight / 1.4,
-                                                child: IntrinsicHeight(
-                                                  child: Row(
-                                                    mainAxisSize:
-                                                        MainAxisSize.min,
-                                                    children: [
-                                                      Transform.scale(
-                                                          alignment: Alignment
-                                                              .centerLeft,
-                                                          scale: 0.5,
-                                                          child: Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .start,
-                                                            children: [
-                                                              Container(
-                                                                  child: buildAttention(
-                                                                      element
-                                                                          .attention))
-                                                            ],
-                                                          )),
-                                                      Expanded(
-                                                        flex: 6,
-                                                        child: Text(
-                                                          element.name,
-                                                          maxLines: 2,
-                                                          textAlign:
-                                                              TextAlign.left,
-                                                          style: small,
-                                                        ),
-                                                      ),
-                                                      Expanded(
-                                                          flex: 5,
-                                                          child: Text(
-                                                            formatCurrendcy
-                                                                .format(element
-                                                                    .price),
-                                                            style: small,
-                                                          )),
-                                                      Expanded(
-                                                          flex: 5,
-                                                          child: Text(
-                                                            textAlign:
-                                                                TextAlign.right,
-                                                            element.remark,
-                                                            style: small,
-                                                          ))
-                                                    ],
-                                                  ),
-                                                )))
-                                        .toList(),
-                                    const Divider(
-                                      height: 0,
-                                      color: Colors.black,
-                                    ),
-                                  ]),
-                                ),
-                                Expanded(
-                                  flex: 2,
-                                  child: Container(
-                                    margin: const EdgeInsets.only(top: 20),
-                                    child: Column(
-                                      children: [
-                                        top(),
-                                        const Divider(
-                                          height: 2,
-                                          color: Colors.black,
-                                        ),
-                                        ...List.generate(
-                                            widget.customer.realization.target!
-                                                .stockItems.length,
-                                            (index) => _buildPartName(
-                                                index,
-                                                context,
-                                                widget
-                                                    .customer
-                                                    .realization
-                                                    .target!
-                                                    .stockItems[index])),
-                                        const Divider(
-                                          height: 2,
-                                          color: Colors.black,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  margin: const EdgeInsets.only(bottom: 30),
-                                  child: Column(
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
-                                        children: [
-                                          Container(
-                                            margin: const EdgeInsets.only(
-                                                top: 5, right: 40),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.end,
-                                              children: [
-                                                Text(
-                                                  'Service Total',
-                                                  style: bold,
-                                                ),
-                                                Text(
-                                                  'Part Total',
-                                                  style: bold,
-                                                ),
-                                                Text(
-                                                  'Sub Total',
-                                                  style: bold,
-                                                ),
-                                              ],
+                                              ),
                                             ),
                                           ),
-                                          Column(
+                                        ],
+                                      
+                                    ),
+                                  ),
+                               
+                               
+                                Flexible(flex: 3,
+                                  child: Column(children: [
+                                        const Divider(
+                                          height: 0,
+                                          color: Colors.black,
+                                        ),
+                                        top2,
+                                        const Divider(
+                                          height: 0,
+                                          color: Colors.black,
+                                        ),
+                                        ...widget.customer.mpi.target!.items
+                                            .mapIndexed((i, element) => element
+                                                        .attention ==
+                                                    0
+                                                ? const Center()
+                                                : SizedBox(
+                                                    width:
+                                                        constraints.maxHeight / 1.4,
+                                                    child: IntrinsicHeight(
+                                                      child: Row(
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
+                                                        children: [
+                                                          Transform.scale(
+                                                              alignment: Alignment
+                                                                  .centerLeft,
+                                                              scale: 0.5,
+                                                              child: Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  Container(
+                                                                      child: buildAttention(
+                                                                          element
+                                                                              .attention))
+                                                                ],
+                                                              )),
+                                                          Expanded(
+                                                            flex: 6,
+                                                            child: Text(
+                                                              element.name,
+                                                              maxLines: 2,
+                                                              textAlign:
+                                                                  TextAlign.left,
+                                                              style: small,
+                                                            ),
+                                                          ),
+                                                          Expanded(
+                                                              flex: 5,
+                                                              child: Text(
+                                                                formatCurrendcy
+                                                                    .format(element
+                                                                        .price),
+                                                                style: small,
+                                                              )),
+                                                          Expanded(
+                                                              flex: 5,
+                                                              child: Text(
+                                                                textAlign:
+                                                                    TextAlign.right,
+                                                                element.remark,
+                                                                style: small,
+                                                              ))
+                                                        ],
+                                                      ),
+                                                    )))
+                                            .toList(),
+                                        const Divider(
+                                          height: 0,
+                                          color: Colors.black,
+                                        ),
+                                         Container(
+                                        margin: const EdgeInsets.only(top: 20),
+                                        child: Column(
+                                          children: [
+                                            top,
+                                            const Divider(
+                                              height: 2,
+                                              color: Colors.black,
+                                            ),
+                                            ...List.generate(
+                                                widget.customer.realization.target!
+                                                    .stockItems.length,
+                                                (index) => _buildPartName(
+                                                    index,
+                                                    context,
+                                                    widget
+                                                        .customer
+                                                        .realization
+                                                        .target!
+                                                        .stockItems[index])),  const Divider(
+                                        
+                                          color: Colors.black,
+                                        ),
+                                           
+                                          ],
+                                        ),
+                                      ),
+                                                             
+                                  Column(
+                                      children: [
+                                        top3, 
+                                         const Divider(
+                                              height: 2,
+                                              color: Colors.black,
+                                            ),
+                                      ],
+                                    ),
+                                      ]),
+                                ),
+                                  
+                                  
+         Container(
+                                      margin: const EdgeInsets.only(bottom: 30),
+                                      child: Column(
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.end,
                                             children: [
-                                              Text(
-                                                formatCurrendcy.format(widget
-                                                    .customer
-                                                    .inv
-                                                    .target!
-                                                    .serviceTotal),
-                                                style: bold,
+                                              Container(
+                                                margin: const EdgeInsets.only(
+                                                    top: 5, right: 40),
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.end,
+                                                  children: [
+                                                    Text(
+                                                      'Service Total',
+                                                      style: bold,
+                                                    ),
+                                                    Text(
+                                                      'Part Total',
+                                                      style: bold,
+                                                    ),
+                                                    Text(
+                                                      'Sub Total',
+                                                      style: bold,
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
-                                              Text(
-                                                  formatCurrendcy.format(
-                                                    widget.customer.inv.target!
-                                                        .partTotal,
-                                                  ),
-                                                  style: bold),
-                                              Text(
-                                                formatCurrendcy.format(widget
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.end,
+                                                children: [
+                                                  Text(
+                                                    formatCurrendcy.format(widget
                                                         .customer
                                                         .inv
                                                         .target!
-                                                        .partTotal +
-                                                    widget.customer.inv.target!
                                                         .serviceTotal),
-                                                style: bold,
+                                                    style: bold,
+                                                  ),
+                                                  Text(
+                                                      formatCurrendcy.format(
+                                                        widget.customer.inv.target!
+                                                            .partTotal,
+                                                      ),
+                                                      style: bold),
+                                                  Text(
+                                                    formatCurrendcy.format(widget
+                                                            .customer
+                                                            .inv
+                                                            .target!
+                                                            .partTotal +
+                                                        widget.customer.inv.target!
+                                                            .serviceTotal),
+                                                    style: bold,
+                                                  ),
+                                                ],
                                               ),
                                             ],
                                           ),
                                         ],
                                       ),
-                                    ],
-                                  ),
-                                ),
-                              ],
+                                    ),
+                                  
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      )
-                    ]));
-          }),
+                        )
+                      ]));
+            }),
+          ),
         ),
       ),
     );
   }
 
   Widget top2 = Container(
-    margin: const EdgeInsets.only(top: 20),
+    margin: const EdgeInsets.only(top: 5),
     child: Row(
       children: [
         Expanded(
@@ -691,7 +702,8 @@ class _InvoiceDocState extends State<InvoiceDoc> {
       ],
     ),
   );
-  Widget top() => Padding(
+  
+  Widget top= Padding(
         padding: const EdgeInsets.only(top: 5),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -710,13 +722,7 @@ class _InvoiceDocState extends State<InvoiceDoc> {
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
               ),
             ),
-            Expanded(
-              flex: 8,
-              child: Text(
-                "Service",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
-              ),
-            ),
+          
             Expanded(
               flex: 8,
               child: Text(
@@ -737,5 +743,50 @@ class _InvoiceDocState extends State<InvoiceDoc> {
             ),
           ],
         ),
+      );
+      Widget top3 = Container(margin: EdgeInsets.only(top: 10),
+        child: Row(
+    mainAxisAlignment: MainAxisAlignment.spaceAround,
+    children: [
+        Expanded(
+          flex: 3,
+          child: Container(
+           
+            child: const Text(
+              "Repair Partname",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+            ),
+          ),
+        ),
+        Expanded(
+          flex: 2,
+          child: Container(
+            child: const Text(
+              "Harga Repair",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+            ),
+          ),
+        ),
+        Expanded(
+          flex: 2,
+          child: Container(
+            child: const Text(
+              "Harga Service",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+            ),
+          ),
+        ),
+        Expanded(
+          flex: 2,
+          child: Container(
+            child: const Text(
+              textAlign: TextAlign.center,
+              "Remark",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+            ),
+          ),
+        ),
+    ],
+  ),
       );
 }

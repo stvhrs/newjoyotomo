@@ -280,7 +280,7 @@ class _MonthlyPagaeState extends State<MonthlyPagae> {
                       double totalSalod = 0;
                       for (var element in data.values.toList()[section]) {
                         totalAmount =
-                            totalAmount + element.realization.target!.biyaya;
+                            totalAmount + (element.rcp.target!.payments.first.saldo==1?0:element.rcp.target!.payments.first.saldo);
                         totalSalod = totalSalod +
                             (element.rcp.target!.payments.last.saldo == 1
                                 ? 0
@@ -327,7 +327,7 @@ class _MonthlyPagaeState extends State<MonthlyPagae> {
                                   child: Text(textAlign: TextAlign.right,
                                     formatCurrency
                                         .format(totalSalod)
-                                        .toString(),
+                                    ,
                                     style:
                                         const TextStyle(fontWeight: FontWeight.bold),
                                   )),

@@ -1,4 +1,5 @@
 import 'package:newJoyo/models/mpi/mpiItem.dart';
+import 'package:newJoyo/models/stockService/service_realization.dart';
 import 'package:newJoyo/models/stockService/stock_realization.dart';
 import 'package:objectbox/objectbox.dart';
 
@@ -12,6 +13,7 @@ class Realization {
   String dateOut;
   final mpiItems=ToMany<MpiItem>();
   final stockItems=ToMany<StockRalization>();
+  final serviceItems=ToMany<ServiceRealization>();
   bool done;
 
 

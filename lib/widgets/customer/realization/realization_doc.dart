@@ -11,6 +11,7 @@ import 'package:newJoyo/models/invoice.dart';
 import 'package:newJoyo/models/mpi.dart';
 import 'package:newJoyo/models/realization.dart';
 
+
 import 'package:newJoyo/models/stockService/stock_realization.dart';
 import 'package:provider/provider.dart';
 import 'package:widgets_to_image/widgets_to_image.dart';
@@ -20,6 +21,7 @@ import '../../../models/customer.dart';
 import '../../../models/examples.dart';
 import '../../../models/mpi/mpiItem.dart';
 import '../../../models/stock.dart';
+import '../../../models/stockService/service_realization.dart';
 import '../../../provider/trigger.dart';
 import 'package:newJoyo/library/date_picker/web_date_picker.dart';
 import 'package:collection/collection.dart';
@@ -53,10 +55,12 @@ class _RealizationDocState extends State<RealizationDoc> {
   }
 
   TextStyle small = const TextStyle(fontSize: 12);
+
+  TextStyle small2 = const TextStyle(fontSize: 10);
   final formatCurrendcy =
       NumberFormat.currency(locale: "id_ID", decimalDigits: 0, symbol: 'Rp ');
-  int jumlahOpsi = 1;
-
+  int jumlahOpsiPart = 1;
+  int jumlahOpsiService = 1;
   final List<TextEditingController> _partValue = [TextEditingController()];
   final List<TextEditingController> _nameValue = [TextEditingController()];
   final List<TextEditingController> _countValue = [TextEditingController()];
@@ -64,6 +68,72 @@ class _RealizationDocState extends State<RealizationDoc> {
   WidgetsToImageController widgetsToImageController =
       WidgetsToImageController();
   List<StockRalization> _stockRealization = [StockRalization()];
+  List<ServiceRealization> _serviceRealization = [ServiceRealization()];
+
+  _buildService(int i, BuildContext context) {
+    return StatefulBuilder(
+        builder: (BuildContext context, StateSetter setState) => Container(
+            margin: const EdgeInsets.only( top: 1),
+            child: Row(
+              children: [
+                Expanded(
+                  flex: 4,
+                  child: TextFormField(
+                    style: small2,
+                    onChanged: (v){
+                      _serviceRealization[i].partName=v;
+                    },
+                    initialValue: _serviceRealization[i].partName,
+                  ),
+                ),
+                Expanded(
+                    flex: 4,
+                    child: TextFormField(
+                      style: small2,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                        CurrencyInputFormatter()
+                      ],  onChanged: (value) {
+                        _serviceRealization[i].repairPrice =
+                            NumberFormat.currency(
+                                    locale: 'id_ID', symbol: 'Rp ')
+                                .parse(value)
+                                .toDouble();
+                      },
+                      initialValue: formatCurrency
+                          .format(_serviceRealization[i].repairPrice),
+                    )),
+                Expanded(
+                    flex: 4,
+                    child: TextFormField(
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                        CurrencyInputFormatter()
+                      ],
+                      style: small2,
+                      onChanged: (value) {
+                        _serviceRealization[i].servicePrice =
+                            NumberFormat.currency(
+                                    locale: 'id_ID', symbol: 'Rp ')
+                                .parse(value)
+                                .toDouble();
+                      },
+                      initialValue: formatCurrency
+                          .format(_serviceRealization[i].servicePrice),
+                    )),
+                Expanded(
+                    flex: 4,
+                    child: TextFormField( onChanged: (v){
+                      _serviceRealization[i].remark=v;
+                    },
+                      textAlign: TextAlign.left,
+                      style: small2,
+                      initialValue: _serviceRealization[i].remark,
+                    ))
+              ],
+            )));
+  }
+
   Widget _buildPartName(int i, BuildContext context) {
     final _formKey = GlobalKey<FormState>();
     List<Stock> stocks =
@@ -76,8 +146,7 @@ class _RealizationDocState extends State<RealizationDoc> {
           .firstWhere((element) => element.name == _stockRealization[i].name);
       if (_formKey.currentState!.validate()) {
         _stockRealization[i].toalPrice =
-            (_stockRealization[i].sellPrice * _stockRealization[i].count) +
-                _stockRealization[i].servicePrice;
+            (_stockRealization[i].sellPrice * _stockRealization[i].count);
       }
       if (!_formKey.currentState!.validate()) {
         _countValue[i].text = tstock.count.toString();
@@ -127,7 +196,7 @@ class _RealizationDocState extends State<RealizationDoc> {
               mainAxisSize: MainAxisSize.max,
               children: [
                 Expanded(
-                    flex: 8,
+                    flex: 12,
                     child: Transform.scale(
                       scale: 0.8,
                       alignment: Alignment.centerLeft,
@@ -165,7 +234,7 @@ class _RealizationDocState extends State<RealizationDoc> {
                       ),
                     )),
                 Expanded(
-                    flex: 8,
+                    flex: 12,
                     child: Transform.scale(
                       scale: 0.8,
                       alignment: Alignment.centerLeft,
@@ -200,37 +269,6 @@ class _RealizationDocState extends State<RealizationDoc> {
                           },
                           strict: true,
                           items: stocks.map((e) => e.name).toList(),
-                        ),
-                      ),
-                    )),
-                Expanded(
-                    flex: 8,
-                    child: Transform.scale(
-                      scale: 0.8,
-                      alignment: Alignment.centerLeft,
-                      child: Container(
-                        child: TextFormField(
-                          readOnly: _stockRealization[i].done,
-                          initialValue: formatCurrency
-                              .format(_stockRealization[i].servicePrice),
-                          style: small,
-                          onChanged: (value) {
-                            if (_stockRealization.isNotEmpty &&
-                                value.isNotEmpty) {
-                              _stockRealization[i].servicePrice =
-                                  NumberFormat.currency(
-                                          locale: 'id_ID', symbol: 'Rp ')
-                                      .parse(value)
-                                      .toDouble();
-                              totaling();
-
-                              setState(() {});
-                            }
-                          },
-                          inputFormatters: [
-                            FilteringTextInputFormatter.digitsOnly,
-                            CurrencyInputFormatter()
-                          ],
                         ),
                       ),
                     )),
@@ -304,8 +342,7 @@ class _RealizationDocState extends State<RealizationDoc> {
                       child: Text(
                         formatCurrency.format(_stockRealization[i].toalPrice =
                             (_stockRealization[i].sellPrice *
-                                    _stockRealization[i].count) +
-                                _stockRealization[i].servicePrice),
+                                _stockRealization[i].count)),
                         style: const TextStyle(fontSize: 12),
                       ),
                     ),
@@ -399,7 +436,6 @@ class _RealizationDocState extends State<RealizationDoc> {
     );
   }
 
-
   late List<MpiItem> data;
   final formatCurrency =
       NumberFormat.currency(locale: "id_ID", decimalDigits: 0, symbol: 'Rp ');
@@ -414,7 +450,9 @@ class _RealizationDocState extends State<RealizationDoc> {
   Widget build(BuildContext context) {
     if (widget.customer.realization.target!.stockItems.isNotEmpty) {
       _stockRealization = widget.customer.realization.target!.stockItems;
-      jumlahOpsi = widget.customer.realization.target!.stockItems.length;
+       _serviceRealization = widget.customer.realization.target!.serviceItems;
+      jumlahOpsiPart = widget.customer.realization.target!.stockItems.length;
+       jumlahOpsiService = widget.customer.realization.target!.serviceItems.length;
       for (var i = 0; i < _stockRealization.length; i++) {
         _partValue.add(TextEditingController());
         _nameValue.add(TextEditingController());
@@ -433,7 +471,7 @@ class _RealizationDocState extends State<RealizationDoc> {
     return Theme(
         data: ThemeData(
           inputDecorationTheme: InputDecorationTheme(
-            contentPadding: const EdgeInsets.only(left: 10, top: 10, bottom: 2),
+            contentPadding: const EdgeInsets.only(left: 10, bottom: 2),
             hintStyle: const TextStyle(
                 color: Color.fromARGB(255, 251, 251, 251),
                 fontSize: 15,
@@ -471,18 +509,10 @@ class _RealizationDocState extends State<RealizationDoc> {
                       child: const Icon(Icons.save_as_rounded),
                       onPressed: () {
                         double totalpartPrice = 0;
-                        double totalService = 0;
-                        double mpiPrice = 0;
 
-                        var listServicePrice = _stockRealization
-                            .map((element) => element.servicePrice)
-                            .toList();
+                        double servicePrice = 0;
 
-                        for (var element in listServicePrice) {
-                          totalService = totalService + element;
-                        }
 
-//service part
                         var listPartPrice = _stockRealization
                             .map((element) => element.toalPrice)
                             .toList();
@@ -497,17 +527,21 @@ class _RealizationDocState extends State<RealizationDoc> {
                           listMpi
                               .removeWhere((element) => element.attention == 0);
                         }
-                        var listMpiPrice =
+                        var listservicePrice =
                             listMpi.map((element) => element.price).toList();
 
-                        for (var element in listMpiPrice) {
-                          mpiPrice = mpiPrice + element;
+                        for (var element in listservicePrice) {
+                          servicePrice = servicePrice + element;
+                        }
+                        for (var element in _serviceRealization) {
+                          servicePrice=servicePrice+element.repairPrice+element.servicePrice;
+                          
                         }
                         Customer asu = widget.customer;
                         asu.realization.target = Realization(
                             selesai:
                                 widget.customer.realization.target!.selesai,
-                            biyaya: totalpartPrice + mpiPrice,
+                            biyaya: totalpartPrice + servicePrice,
                             dateOut:
                                 widget.customer.realization.target!.dateOut,
                             rlId: widget.customer.realization.target!.rlId);
@@ -521,9 +555,18 @@ class _RealizationDocState extends State<RealizationDoc> {
                                   partname: element.partname,
                                   sellPrice: element.sellPrice,
                                   price: element.sellPrice,
-                                  servicePrice: element.servicePrice,
                                   toalPrice: element.toalPrice));
                         }
+                         for (var element in _serviceRealization) {
+                           asu.realization.target!.serviceItems.add(
+                              ServiceRealization(
+                                 remark: element.remark,
+                                   done: element.done,
+                                  partName: element.partName,
+                                   repairPrice: element.repairPrice,
+                                   servicePrice: element.servicePrice,
+                              ));
+                         }
                         asu.mpi.target =
                             Mpi(mpiId: widget.customer.mpi.target!.mpiId);
                         for (var element in data) {
@@ -535,29 +578,22 @@ class _RealizationDocState extends State<RealizationDoc> {
                               price: element.price,
                               remark: element.remark));
                         }
-                        //servcie eottal
 
                         asu.proses = 'Realisasi';
 
                         asu.inv.target = Invoice(
                           invId: asu.inv.target!.invId,
                           invoiceDate: asu.inv.target!.invoiceDate,
-                          invoiceTotal: totalpartPrice + mpiPrice,
-                          partTotal: totalpartPrice-totalService,
-                          serviceTotal: totalService + mpiPrice,
+                          invoiceTotal: totalpartPrice + servicePrice,
+                          partTotal: totalpartPrice,
+                          serviceTotal: servicePrice,
                           soDate: asu.inv.target!.soDate,
                         );
-
-                        // asu.rcp.target = RincianPembayarran(
-                        //   rcpId: asu.rcp.target!.rcpId,
-                        //   saldo: totalprice + totalpartPrice + mpiPrice,
-                        // );
 
                         Provider.of<Trigger>(context, listen: false)
                             .selectCustomer(asu, true);
                         objectBox.insertCustomer(asu);
                       })),
-            
               Padding(
                   padding: const EdgeInsets.all(5),
                   child: FloatingActionButton(
@@ -565,101 +601,12 @@ class _RealizationDocState extends State<RealizationDoc> {
                       backgroundColor: Colors.red.shade400,
                       child: const Icon(Icons.picture_as_pdf),
                       onPressed: () async {
-                           double totalpartPrice = 0;
-                        double totalService = 0;
-                        double mpiPrice = 0;
-
-                        var listServicePrice = _stockRealization
-                            .map((element) => element.servicePrice)
-                            .toList();
-
-                        for (var element in listServicePrice) {
-                          totalService = totalService + element;
-                        }
-
-//service part
-                        var listPartPrice = _stockRealization
-                            .map((element) => element.toalPrice)
-                            .toList();
-
-                        for (var element in listPartPrice) {
-                          totalpartPrice = totalpartPrice + element;
-                        }
-
-                        List<MpiItem> listMpi = [];
-                        listMpi.addAll(widget.customer.mpi.target!.items);
-                        for (var i = 0; i < listMpi.length; i++) {
-                          listMpi
-                              .removeWhere((element) => element.attention == 0);
-                        }
-                        var listMpiPrice =
-                            listMpi.map((element) => element.price).toList();
-
-                        for (var element in listMpiPrice) {
-                          mpiPrice = mpiPrice + element;
-                        }
-                        Customer asu = widget.customer;
-                        asu.realization.target = Realization(
-                            selesai:
-                                widget.customer.realization.target!.selesai,
-                            biyaya: totalpartPrice + mpiPrice,
-                            dateOut:
-                                widget.customer.realization.target!.dateOut,
-                            rlId: widget.customer.realization.target!.rlId);
-                        for (var element in _stockRealization) {
-                          asu.realization.target!.stockItems.add(
-                              StockRalization(
-                                  count: element.count,
-                                  desc: element.desc,
-                                  done: element.done,
-                                  name: element.name,
-                                  partname: element.partname,
-                                  sellPrice: element.sellPrice,
-                                  price: element.sellPrice,
-                                  servicePrice: element.servicePrice,
-                                  toalPrice: element.toalPrice));
-                        }
-                        asu.mpi.target =
-                            Mpi(mpiId: widget.customer.mpi.target!.mpiId);
-                        for (var element in data) {
-                          asu.mpi.target!.items.add(MpiItem(
-                              category: element.category,
-                              name: element.name,
-                              done: element.done,
-                              attention: element.attention,
-                              price: element.price,
-                              remark: element.remark));
-                        }
-                        //servcie eottal
-
-                        asu.proses = 'Realisasi';
-
-                        asu.inv.target = Invoice(
-                          invId: asu.inv.target!.invId,
-                          invoiceDate: asu.inv.target!.invoiceDate,
-                          invoiceTotal: totalpartPrice + mpiPrice,
-                          partTotal: totalpartPrice-totalService,
-                          serviceTotal: totalService + mpiPrice,
-                          soDate: asu.inv.target!.soDate,
-                        );
-
-                        // asu.rcp.target = RincianPembayarran(
-                        //   rcpId: asu.rcp.target!.rcpId,
-                        //   saldo: totalprice + totalpartPrice + mpiPrice,
-                        // );
-
-                     
-                        
-
                         final bytes = await widgetsToImageController.capture();
                         await createSpk(
                             bytes!,
                             widget.customer.realization.target!.rlId,
                             context,
                             'Realisasi');
-                        Provider.of<Trigger>(context, listen: false)
-                            .selectCustomer(asu, true);
-                        objectBox.insertCustomer(asu);
                       })),
               Container(
                 padding: const EdgeInsets.all(10.0),
@@ -673,315 +620,381 @@ class _RealizationDocState extends State<RealizationDoc> {
                     }),
               )
             ]),
-            body: LayoutBuilder(builder: (context, BoxConstraints constraints) {
-              return Center(
-                  child: Container(
-                      width: double.infinity,
-                      decoration: const BoxDecoration(
-                          image: DecorationImage(
-                              image: AssetImage(
-                                'images/icon.jpg',
-                              ),
-                              opacity: 0.3,
-                              repeat: ImageRepeat.repeat,
-                              scale: 20)),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Container(
-                              height: MediaQuery.of(context).size.height,
-                              width:
-                                  MediaQuery.of(context).size.height / 1.4202,
-                              padding: const EdgeInsets.all(10),
-                              margin:
-                                  const EdgeInsets.only(top: 20, bottom: 10),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(10),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: const Color.fromARGB(255, 78, 77, 77)
-                                        .withOpacity(0.5),
-                                    spreadRadius: 5,
-                                    blurRadius: 7,
-                                    offset: const Offset(
-                                        0, 3), // changes position of shadow
-                                  ),
-                                ],
-                              ),
-                              child: WidgetsToImage(
-                                controller: widgetsToImageController,
-                                child: SizedBox(
-                                  width: constraints.maxHeight / 1.4,
-                                  height: constraints.maxHeight,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Center(
-                                          child: InkWell(
-                                            onTap: () {
-                                              Navigator.of(context).pop();
-                                            },
-                                            child: const Text(
-                                              "REALISASI",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 17),
+            body: InteractiveViewer(
+              child:
+                  LayoutBuilder(builder: (context, BoxConstraints constraints) {
+                return Center(
+                    child: Container(
+                        width: double.infinity,
+                        decoration: const BoxDecoration(
+                            image: DecorationImage(
+                                image: AssetImage(
+                                  'images/icon.jpg',
+                                ),
+                                opacity: 0.3,
+                                repeat: ImageRepeat.repeat,
+                                scale: 20)),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                height: MediaQuery.of(context).size.height,
+                                width:
+                                    MediaQuery.of(context).size.height / 1.4202,
+                                padding: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color:
+                                          const Color.fromARGB(255, 78, 77, 77)
+                                              .withOpacity(0.5),
+                                      spreadRadius: 5,
+                                      blurRadius: 7,
+                                      offset: const Offset(
+                                          0, 3),  
+                                    ),
+                                  ],
+                                ),
+                                child: WidgetsToImage(
+                                  controller: widgetsToImageController,
+                                  child: SizedBox(
+                                    width: constraints.maxHeight / 1.4,
+                                    height: constraints.maxHeight,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Center(
+                                            child: InkWell(
+                                              onTap: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: const Text(
+                                                "REALISASI",
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 17),
+                                              ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 5, bottom: 5),
-                                        child: Text(
-                                          widget.customer.realization.target!.rlId,
-                                          style: const TextStyle(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.bold,
-                                              fontStyle: FontStyle.italic),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 5, bottom: 5),
+                                          child: Text(
+                                            widget.customer.realization.target!
+                                                .rlId,
+                                            style: const TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.bold,
+                                                fontStyle: FontStyle.italic),
+                                          ),
                                         ),
-                                      ),
-                                      Column(
-                                        children: [
-                                          const Divider(
-                                            height: 0,
-                                            color: Colors.black,
-                                          ),
-                                          widget.customer.mpi.target!.items
-                                                  .every((element) =>
-                                                      element.attention == 0)
-                                              ? const SizedBox()
-                                              : top2,
-                                          const Divider(
-                                            height: 0,
-                                            color: Colors.black,
-                                          ),
-                                          ...widget.customer.mpi.target!.items
-                                              .mapIndexed((i, element) =>
-                                                  element.attention == 0
-                                                      ? const Center()
-                                                      : SizedBox(
-                                                          width: constraints
-                                                                  .maxHeight /
-                                                              1.4,
-                                                          child:
-                                                              IntrinsicHeight(
-                                                            child: Row(
-                                                              mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .min,
-                                                              children: [
-                                                                Expanded(
-                                                                  flex: 1,
-                                                                  child: Transform
-                                                                      .scale(
-                                                                          alignment: Alignment
-                                                                              .centerLeft,
-                                                                          scale:
-                                                                              0.6,
-                                                                          child:
-                                                                              Row(
-                                                                            mainAxisAlignment:
-                                                                                MainAxisAlignment.start,
-                                                                            children: [
-                                                                              Container(margin: const EdgeInsets.only(left: 15), child: buildAttention(element.attention))
-                                                                            ],
-                                                                          )),
-                                                                ),
-                                                                Expanded(
-                                                                  flex: 4,
-                                                                  child: Text(
-                                                                    element
-                                                                        .name,
-                                                                    maxLines: 2,
-                                                                    textAlign:
-                                                                        TextAlign
-                                                                            .left,
-                                                                    style: const TextStyle(
-                                                                        fontSize:
-                                                                            11),
-                                                                  ),
-                                                                ),
-                                                                Expanded(
-                                                                    flex: 4,
-                                                                    child: Text(
-                                                                        formatCurrency.format(element
-                                                                            .price),
-                                                                        style:
-                                                                            const TextStyle(
-                                                                          fontSize:
-                                                                              11,
-                                                                        ))),
-                                                                Expanded(
-                                                                  flex: 1,
-                                                                  child:
-                                                                      Transform
-                                                                          .scale(
-                                                                    scale: 0.6,
-                                                                    child:
-                                                                        ChoiceChip(
-                                                                      shape:
-                                                                          const CircleBorder(),
-                                                                      label:
-                                                                          const Icon(
-                                                                        Icons
-                                                                            .done,
-                                                                        color: Colors
-                                                                            .white,
-                                                                      ),
-                                                                      padding:
-                                                                          const EdgeInsets.all(
-                                                                              0),
-                                                                      selectedColor:
-                                                                          Colors
-                                                                              .green,
-                                                                      selected:
-                                                                          element
-                                                                              .done,
-                                                                      onSelected:
-                                                                          (v) {
-                                                                        element.done =
-                                                                            !element.done;
-
-                                                                        widget
-                                                                            .customer
-                                                                            .mpi
-                                                                            .target!
-                                                                            .items[i]
-                                                                            .done = element.done;
-                                                                        setState(
-                                                                            () {});
-                                                                      },
-                                                                    ),
-                                                                  ),
-                                                                )
-                                                              ],
-                                                            ),
-                                                          )))
-                                              .toList(),
-                                        ],
-                                      ),
-                                      Column(
-                                        children: [
-                                          const Divider(
-                                            height: 0,
-                                            color: Colors.black,
-                                          ),
-                                          top,
-                                          const Divider(
-                                            height: 0,
-                                            color: Colors.black,
-                                          ),
-                                          ...List.generate(
-                                              jumlahOpsi,
-                                              (index) => _buildPartName(
-                                                  index, context)),
-                                          Row(
-                                            children: [
-                                              IconButton(
-                                                  color: Colors.red,
-                                                  onPressed: () {
-                                                    setState(() {
-                                                      if (_stockRealization[
-                                                              jumlahOpsi - 1]
-                                                          .done) {
-                                                        return;
-                                                      }
-                                                      if (jumlahOpsi > 1 &&
-                                                          jumlahOpsi ==
-                                                              _stockRealization
-                                                                  .length) {
-                                                        _stockRealization
-                                                            .removeAt(
-                                                                jumlahOpsi - 1);
-                                                        jumlahOpsi =
-                                                            jumlahOpsi - 1;
-                                                        _countValue.removeAt(
-                                                            jumlahOpsi - 1);
-                                                        _partValue.removeAt(
-                                                            jumlahOpsi - 1);
-                                                        _nameValue.removeAt(
-                                                            jumlahOpsi - 1);
-                                                      }
-                                                    });
-                                                  },
-                                                  icon: const Icon(
-                                                      Icons.remove_circle)),
-                                              IconButton(
-                                                  color: Colors.green,
-                                                  onPressed: () {
-                                                    if (jumlahOpsi ==
-                                                        _stockRealization
-                                                            .length) {
-                                                   
-
-                                                      jumlahOpsi =
-                                                          jumlahOpsi + 1;
-                                                      _stockRealization
-                                                          .add(StockRalization(
-                                                        desc: '',
-                                                        name: '',
-                                                        partname: '',
-                                                        servicePrice: 0.0,
-                                                        toalPrice: 0.0,
-                                                        done: false,
-                                                        price: 0,
-                                                        count: 1,
-                                                      ));
-                                                      _countValue.add(
-                                                          TextEditingController());
-                                                      _partValue.add(
-                                                          TextEditingController());
-                                                      _nameValue.add(
-                                                          TextEditingController());
-                                                      _priceValue.add(
-                                                          TextEditingController());
-
-                                                      setState(() {});
-                                                    }
-                                                  },
-                                                  icon: const Icon(
-                                                      Icons.add_circle)),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                      Expanded(
-                                        flex: 1,
-                                        child: Column(
+                                        Column(
                                           children: [
                                             const Divider(
-                                              color: Colors.black,
                                               height: 0,
+                                              color: Colors.black,
                                             ),
-                                            top3,
+                                            widget.customer.mpi.target!.items
+                                                    .every((element) =>
+                                                        element.attention == 0)
+                                                ? const SizedBox()
+                                                : top4,
                                             const Divider(
-                                              color: Colors.black,
                                               height: 0,
+                                              color: Colors.black,
                                             ),
-                                            bottom()
+                                            ...widget.customer.mpi.target!.items
+                                                .mapIndexed((i, element) =>
+                                                    element.attention == 0
+                                                        ? const Center()
+                                                        : SizedBox(
+                                                            width: constraints
+                                                                    .maxHeight /
+                                                                1.4,
+                                                            child:
+                                                                IntrinsicHeight(
+                                                              child: Row(
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .min,
+                                                                children: [
+                                                                  Expanded(
+                                                                    flex: 1,
+                                                                    child: Transform.scale(
+                                                                        alignment: Alignment.centerLeft,
+                                                                        scale: 0.6,
+                                                                        child: Row(
+                                                                          mainAxisAlignment:
+                                                                              MainAxisAlignment.start,
+                                                                          children: [
+                                                                            Container(
+                                                                                margin: const EdgeInsets.only(left: 15),
+                                                                                child: buildAttention(element.attention))
+                                                                          ],
+                                                                        )),
+                                                                  ),
+                                                                  Expanded(
+                                                                    flex: 4,
+                                                                    child: Text(
+                                                                      element
+                                                                          .name,
+                                                                      maxLines:
+                                                                          2,
+                                                                      textAlign:
+                                                                          TextAlign
+                                                                              .left,
+                                                                      style: const TextStyle(
+                                                                          fontSize:
+                                                                              11),
+                                                                    ),
+                                                                  ),
+                                                                  Expanded(
+                                                                      flex: 4,
+                                                                      child: Text(
+                                                                          formatCurrency.format(element
+                                                                              .price),
+                                                                          style:
+                                                                              const TextStyle(
+                                                                            fontSize:
+                                                                                11,
+                                                                          ))),
+                                                                  Expanded(
+                                                                    flex: 1,
+                                                                    child: Transform
+                                                                        .scale(
+                                                                      scale:
+                                                                          0.6,
+                                                                      child:
+                                                                          ChoiceChip(
+                                                                        shape:
+                                                                            const CircleBorder(),
+                                                                        label:
+                                                                            const Icon(
+                                                                          Icons
+                                                                              .done,
+                                                                          color:
+                                                                              Colors.white,
+                                                                        ),
+                                                                        padding:
+                                                                            const EdgeInsets.all(0),
+                                                                        selectedColor:
+                                                                            Colors.green,
+                                                                        selected:
+                                                                            element.done,
+                                                                        onSelected:
+                                                                            (v) {
+                                                                          element.done =
+                                                                              !element.done;
+
+                                                                          widget
+                                                                              .customer
+                                                                              .mpi
+                                                                              .target!
+                                                                              .items[i]
+                                                                              .done = element.done;
+                                                                          setState(
+                                                                              () {});
+                                                                        },
+                                                                      ),
+                                                                    ),
+                                                                  )
+                                                                ],
+                                                              ),
+                                                            )))
+                                                .toList(),
                                           ],
                                         ),
-                                      ),
-                                    ],
+                                        Column(
+                                          children: [
+                                            const Divider(
+                                              height: 0,
+                                              color: Colors.black,
+                                            ),
+                                            top,
+                                            const Divider(
+                                              height: 0,
+                                              color: Colors.black,
+                                            ),
+                                            ...List.generate(
+                                                jumlahOpsiPart,
+                                                (index) => _buildPartName(
+                                                    index, context)),
+                                            Transform.scale(
+                                                scale: 0.7,
+                                                alignment: Alignment.centerLeft,
+                                                child: Row(
+                                                  children: [
+                                                    IconButton(
+                                                        color: Colors.red,
+                                                        onPressed: () {
+                                                          setState(() {
+                                                            if (_stockRealization[
+                                                                    jumlahOpsiPart -
+                                                                        1]
+                                                                .done) {
+                                                              return;
+                                                            }
+                                                            if (jumlahOpsiPart >
+                                                                    1 &&
+                                                                jumlahOpsiPart ==
+                                                                    _stockRealization
+                                                                        .length) {
+                                                              _stockRealization
+                                                                  .removeAt(
+                                                                      jumlahOpsiPart -
+                                                                          1);
+                                                              jumlahOpsiPart =
+                                                                  jumlahOpsiPart -
+                                                                      1;
+                                                              _countValue.removeAt(
+                                                                  jumlahOpsiPart -
+                                                                      1);
+                                                              _partValue.removeAt(
+                                                                  jumlahOpsiPart -
+                                                                      1);
+                                                              _nameValue.removeAt(
+                                                                  jumlahOpsiPart -
+                                                                      1);
+                                                            }
+                                                          });
+                                                        },
+                                                        icon: const Icon(Icons
+                                                            .remove_circle)),
+                                                    IconButton(
+                                                        color: Colors.green,
+                                                        onPressed: () {
+                                                          if (jumlahOpsiPart ==
+                                                              _stockRealization
+                                                                  .length) {
+                                                            jumlahOpsiPart =
+                                                                jumlahOpsiPart +
+                                                                    1;
+                                                            _stockRealization.add(
+                                                                StockRalization(
+                                                              desc: '',
+                                                              name: '',
+                                                              partname: '',
+                                                              toalPrice: 0.0,
+                                                              done: false,
+                                                              price: 0,
+                                                              count: 1,
+                                                            ));
+                                                            _countValue.add(
+                                                                TextEditingController());
+                                                            _partValue.add(
+                                                                TextEditingController());
+                                                            _nameValue.add(
+                                                                TextEditingController());
+                                                            _priceValue.add(
+                                                                TextEditingController());
+
+                                                            setState(() {});
+                                                          }
+                                                        },
+                                                        icon: const Icon(
+                                                            Icons.add_circle)),
+                                                  ],
+                                                )),
+                                            const Divider(
+                                              height: 0,
+                                              color: Colors.black,
+                                            ),
+                                            top2,
+                                            const Divider(
+                                              height: 0,
+                                              color: Colors.black,
+                                            ),
+                                            ...List.generate(
+                                                jumlahOpsiService,
+                                                (index) => _buildService(
+                                                    index, context)),
+                                            Transform.scale(
+                                              scale: 0.7,
+                                              alignment: Alignment.centerLeft,
+                                              child: Row(
+                                                children: [
+                                                  IconButton(
+                                                      color: Colors.red,
+                                                      onPressed: () {
+                                                        setState(() {
+                                                          if (jumlahOpsiService >
+                                                                  1 &&
+                                                              jumlahOpsiService ==
+                                                                  _serviceRealization
+                                                                      .length) {
+                                                            _serviceRealization
+                                                                .removeAt(
+                                                                    jumlahOpsiService -
+                                                                        1);
+                                                            jumlahOpsiService =
+                                                                jumlahOpsiService -
+                                                                    1;
+                                                          }
+                                                        });
+                                                      },
+                                                      icon: const Icon(
+                                                          Icons.remove_circle)),
+                                                  IconButton(
+                                                      color: Colors.green,
+                                                      onPressed: () {
+                                                        if (jumlahOpsiService ==
+                                                            _serviceRealization
+                                                                .length) {
+                                                          jumlahOpsiService =
+                                                              jumlahOpsiService +
+                                                                  1;
+                                                          _serviceRealization.add(
+                                                              ServiceRealization());
+
+                                                          setState(() {});
+                                                        }
+                                                      },
+                                                      icon: const Icon(
+                                                          Icons.add_circle)),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Expanded(
+                                          flex: 1,
+                                          child: Column(
+                                            children: [
+                                              const Divider(
+                                                color: Colors.black,
+                                                height: 0,
+                                              ),
+                                              top3,
+                                              const Divider(
+                                                color: Colors.black,
+                                                height: 0,
+                                              ),
+                                              bottom()
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
-                            )
-                          ])));
-            })));
+                              )
+                            ])));
+              }),
+            )));
   }
 
   Widget top = Row(
     mainAxisAlignment: MainAxisAlignment.spaceAround,
     children: [
       Expanded(
-        flex: 8,
+        flex: 12,
         child: Container(
           margin: const EdgeInsets.only(left: 10),
           child: const Text(
@@ -991,21 +1004,11 @@ class _RealizationDocState extends State<RealizationDoc> {
         ),
       ),
       Expanded(
-        flex: 8,
+        flex: 12,
         child: Container(
           margin: const EdgeInsets.only(left: 10),
           child: const Text(
             "Name",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
-          ),
-        ),
-      ),
-      Expanded(
-        flex: 8,
-        child: Container(
-          margin: const EdgeInsets.only(left: 10),
-          child: const Text(
-            "Service",
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
           ),
         ),
@@ -1052,6 +1055,51 @@ class _RealizationDocState extends State<RealizationDoc> {
       ),
     ],
   );
+  Widget top2 = Row(
+    mainAxisAlignment: MainAxisAlignment.spaceAround,
+    children: [
+      Expanded(
+        flex: 2,
+        child: Container(
+          margin: const EdgeInsets.only(left: 10),
+          child: const Text(
+            "Repair Partname",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+          ),
+        ),
+      ),
+      Expanded(
+        flex: 2,
+        child: Container(
+         margin: const EdgeInsets.only(left: 10),
+          child: const Text(
+            "Harga Repair",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+          ),
+        ),
+      ),
+      Expanded(
+        flex: 2,
+        child: Container(
+      margin: const EdgeInsets.only(left: 10),
+          child: const Text(
+            "Harga Service",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+          ),
+        ),
+      ),
+      Expanded(
+        flex: 2,
+        child: Container( margin: const EdgeInsets.only(left: 10),
+          child: const Text(
+          
+            "Remark",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+          ),
+        ),
+      ),
+    ],
+  );
 
   Widget top3 = Row(
     children: [
@@ -1069,7 +1117,7 @@ class _RealizationDocState extends State<RealizationDoc> {
         flex: 20,
         child: Container(
           child: const Text(
-            "Est Biyaya",
+            "Est Biaya",
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
           ),
         ),
@@ -1087,7 +1135,7 @@ class _RealizationDocState extends State<RealizationDoc> {
         flex: 20,
         child: Container(
           child: const Text(
-            "Rls Biyaya",
+            "Rls Biaya",
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
           ),
         ),
@@ -1113,102 +1161,107 @@ class _RealizationDocState extends State<RealizationDoc> {
       ),
     ],
   );
-  Widget bottom() => Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Expanded(
-            flex: 20,
-            child: Container(
-              margin: const EdgeInsets.only(left: 10),
-              child: Text(
-                
-               widget.customer.spk.target!.estimasiSelesai=='DD/MM/YYYY'?    'DD/MM/YYYY':DateFormat('dd/MM/yyyy').format( DateTime.parse(   widget.customer.spk.target!.estimasiSelesai),),
-                style: const TextStyle(fontSize: 10),
+  Widget bottom() => Container(margin: EdgeInsets.only(top: 10),
+    child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Expanded(
+              flex: 20,
+              child: Container(
+                margin: const EdgeInsets.only(left: 10),
+                child: Text(
+                  widget.customer.spk.target!.estimasiSelesai == 'DD/MM/YYYY'
+                      ? 'DD/MM/YYYY'
+                      : DateFormat('dd/MM/yyyy').format(
+                          DateTime.parse(
+                              widget.customer.spk.target!.estimasiSelesai),
+                        ),
+                  style: const TextStyle(fontSize: 10),
+                ),
               ),
             ),
-          ),
-          Expanded(
-            flex: 20,
-            child: Container(
-              child: Text(
-                formatCurrendcy
-                    .format(widget.customer.spk.target!.estimasiBiyaya),
-                style: const TextStyle(fontSize: 10),
+            Expanded(
+              flex: 20,
+              child: Container(
+                child: Text(
+                  formatCurrendcy
+                      .format(widget.customer.spk.target!.estimasiBiyaya),
+                  style: const TextStyle(fontSize: 10),
+                ),
               ),
             ),
-          ),
-          Expanded(
-            flex: 20,
-            child: Align(
-              alignment: Alignment.centerLeft,
+            Expanded(
+              flex: 20,
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: WebDatePicker(
+                  small: true,
+                  initialDate:
+                      widget.customer.realization.target!.selesai == 'DD/MM/YYYY'
+                          ? null
+                          : DateTime.parse(
+                              widget.customer.realization.target!.selesai),
+                   style: const TextStyle(fontSize: 5),
+                  onChange: (v) {
+                    if (v == null) {
+                      return;
+                    }
+                    widget.customer.realization.target!.selesai =
+                        v.toIso8601String();
+                  },
+                  inputDecoration: inputNone('Tanggal'),
+                  dateformat: 'dd/MM/yyy',
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 20,
+              child: Container(
+                child: Text(
+                  formatCurrendcy.format(
+                    widget.customer.realization.target!.biyaya,
+                  ),
+                  style: const TextStyle(fontSize: 10),
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 17,
+              child: Container(
+                child: Text(
+                  widget.customer.spk.target!.date == 'DD/MM/YYYY'
+                      ? 'DD/MM/YYYY'
+                      : DateFormat('dd/MM/yyyy').format(
+                          DateTime.parse(widget.customer.spk.target!.date)),
+                  style: const TextStyle(fontSize: 10),
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 17,
               child: WebDatePicker(
                 small: true,
-                initialDate:
-                    widget.customer.realization.target!.selesai == 'DD/MM/YYYY'
-                        ? null
-                        : DateTime.parse(
-                            widget.customer.realization.target!.selesai),
-                // style: const TextStyle(fontSize: 5),
+                initialDate: widget.customer.realization.target!.dateOut ==
+                        'DD/MM/YYYY'
+                    ? null
+                    : DateTime.parse(widget.customer.realization.target!.dateOut),
+                 style: const TextStyle(fontSize: 5),
                 onChange: (v) {
                   if (v == null) {
-                   
                     return;
                   }
-                  widget.customer.realization.target!.selesai =
+                  widget.customer.realization.target!.dateOut =
                       v.toIso8601String();
                 },
                 inputDecoration: inputNone('Tanggal'),
                 dateformat: 'dd/MM/yyy',
               ),
-            ),
-          ),
-          Expanded(
-            flex: 20,
-            child: Container(
-              child: Text(
-                formatCurrendcy.format(
-                  widget.customer.realization.target!.biyaya,
-                ),
-                style: const TextStyle(fontSize: 10),
-              ),
-            ),
-          ),
-          Expanded(
-            flex: 17,
-            child: Container(
-              child: Text(
-             widget.customer.spk.target!.date==
-                      'DD/MM/YYYY'?'DD/MM/YYYY':DateFormat('dd/MM/yyyy').format(DateTime.parse(widget.customer.spk.target!.date)) ,
-                style: const TextStyle(fontSize: 10),
-              ),
-            ),
-          ),
-          Expanded(
-            flex: 17,
-            child: WebDatePicker(
-              small: true,
-              initialDate: widget.customer.realization.target!.dateOut ==
-                      'DD/MM/YYYY'
-                  ? null
-                  : DateTime.parse(widget.customer.realization.target!.dateOut),
-              // style: const TextStyle(fontSize: 5),
-              onChange: (v) {
-                if (v == null) {
-               
-
-                  return;
-                }
-                widget.customer.realization.target!.dateOut =
-                    v.toIso8601String();
-              },
-              inputDecoration: inputNone('Tanggal'),
-              dateformat: 'dd/MM/yyy',
-            ),
-          )
-        ],
-      );
-  Widget top2 = Row(
+            )
+          ],
+        ),
+  );
+  Widget top4 = Row(
     children: [
       Expanded(
         flex: 6,

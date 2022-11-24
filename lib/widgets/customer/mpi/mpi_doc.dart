@@ -120,7 +120,8 @@ class _MpiDocState extends State<MpiDoc> {
           )
         ]),
         body: LayoutBuilder(builder: (context, BoxConstraints constraints) {
-          return Center(
+          return  InteractiveViewer(
+                                  child: Center(
               child: Container(
                   width: double.infinity,
                   decoration: const BoxDecoration(
@@ -160,8 +161,7 @@ class _MpiDocState extends State<MpiDoc> {
                               decoration: BoxDecoration(border: Border.all()),
                               width: constraints.maxHeight / 1.4,
                               height: constraints.maxHeight,
-                              child: InteractiveViewer(
-                                  child: Column(
+                              child:Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Center(
@@ -540,8 +540,8 @@ class _MpiDocState extends State<MpiDoc> {
                               )),
                             ),
                           ),
-                        )
-                      ])));
+                        ])
+                      )));
         }));
   }
 }

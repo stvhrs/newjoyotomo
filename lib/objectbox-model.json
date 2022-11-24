@@ -442,6 +442,11 @@
           "id": "3:2811611457061444237",
           "name": "stockItems",
           "targetId": "14:1836238050978758724"
+        },
+        {
+          "id": "10:5431027578203721052",
+          "name": "serviceItems",
+          "targetId": "17:3153935359911123261"
         }
       ]
     },
@@ -689,11 +694,6 @@
           "type": 8
         },
         {
-          "id": "8:7391092456291512568",
-          "name": "servicePrice",
-          "type": 8
-        },
-        {
           "id": "9:7713625955562194883",
           "name": "toalPrice",
           "type": 8
@@ -770,20 +770,71 @@
           "targetId": "3:4625775930867920763"
         }
       ]
+    },
+    {
+      "id": "17:3153935359911123261",
+      "lastPropertyId": "6:5245646829584495136",
+      "name": "ServiceRealization",
+      "properties": [
+        {
+          "id": "1:5350555529882272262",
+          "name": "id",
+          "type": 6,
+          "flags": 129
+        },
+        {
+          "id": "2:4019217367541532562",
+          "name": "remark",
+          "type": 9
+        },
+        {
+          "id": "3:7996295915640468758",
+          "name": "partName",
+          "type": 9
+        },
+        {
+          "id": "4:5619796106082217828",
+          "name": "servicePrice",
+          "type": 8
+        },
+        {
+          "id": "5:1900231505574403775",
+          "name": "repairPrice",
+          "type": 8
+        },
+        {
+          "id": "6:5245646829584495136",
+          "name": "done",
+          "type": 1
+        }
+      ],
+      "relations": []
     }
   ],
-  "lastEntityId": "15:6098909903408490769",
+  "lastEntityId": "17:3153935359911123261",
   "lastIndexId": "6:6026186748257595411",
-  "lastRelationId": "8:8767648696213699788",
+  "lastRelationId": "10:5431027578203721052",
   "lastSequenceId": "0:0",
   "modelVersion": 5,
   "modelVersionParserMinimum": 5,
-  "retiredEntityUids": [],
+  "retiredEntityUids": [
+    7829393205425549682
+  ],
   "retiredIndexUids": [],
   "retiredPropertyUids": [
     3209655501032753516,
-    3939579564692191489
+    3939579564692191489,
+    7391092456291512568,
+    3688865171492003585,
+    4283525710687559442,
+    2656980789531392216,
+    9045038818753496047,
+    5916202855869315726,
+    4135440900053279347,
+    5822953836671041313
   ],
-  "retiredRelationUids": [],
+  "retiredRelationUids": [
+    2294961851954870861
+  ],
   "version": 1
 }

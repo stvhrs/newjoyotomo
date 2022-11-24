@@ -27,6 +27,7 @@ import 'models/realization.dart';
 import 'models/rincian_pembayaran.dart';
 import 'models/spk.dart';
 import 'models/stock.dart';
+import 'models/stockService/service_realization.dart';
 import 'models/stockService/stock_realization.dart';
 import 'models/supplier.dart';
 
@@ -464,7 +465,11 @@ final _entities = <ModelEntity>[
         ModelRelation(
             id: const IdUid(3, 2811611457061444237),
             name: 'stockItems',
-            targetId: const IdUid(14, 1836238050978758724))
+            targetId: const IdUid(14, 1836238050978758724)),
+        ModelRelation(
+            id: const IdUid(10, 5431027578203721052),
+            name: 'serviceItems',
+            targetId: const IdUid(17, 3153935359911123261))
       ],
       backlinks: <ModelBacklink>[]),
   ModelEntity(
@@ -708,11 +713,6 @@ final _entities = <ModelEntity>[
             type: 8,
             flags: 0),
         ModelProperty(
-            id: const IdUid(8, 7391092456291512568),
-            name: 'servicePrice',
-            type: 8,
-            flags: 0),
-        ModelProperty(
             id: const IdUid(9, 7713625955562194883),
             name: 'toalPrice',
             type: 8,
@@ -786,6 +786,45 @@ final _entities = <ModelEntity>[
             name: 'detailStockItems',
             targetId: const IdUid(3, 4625775930867920763))
       ],
+      backlinks: <ModelBacklink>[]),
+  ModelEntity(
+      id: const IdUid(17, 3153935359911123261),
+      name: 'ServiceRealization',
+      lastPropertyId: const IdUid(6, 5245646829584495136),
+      flags: 0,
+      properties: <ModelProperty>[
+        ModelProperty(
+            id: const IdUid(1, 5350555529882272262),
+            name: 'id',
+            type: 6,
+            flags: 129),
+        ModelProperty(
+            id: const IdUid(2, 4019217367541532562),
+            name: 'remark',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(3, 7996295915640468758),
+            name: 'partName',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(4, 5619796106082217828),
+            name: 'servicePrice',
+            type: 8,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(5, 1900231505574403775),
+            name: 'repairPrice',
+            type: 8,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(6, 5245646829584495136),
+            name: 'done',
+            type: 1,
+            flags: 0)
+      ],
+      relations: <ModelRelation>[],
       backlinks: <ModelBacklink>[])
 ];
 
@@ -809,14 +848,25 @@ Future<Store> openStore(
 ModelDefinition getObjectBoxModel() {
   final model = ModelInfo(
       entities: _entities,
-      lastEntityId: const IdUid(15, 6098909903408490769),
+      lastEntityId: const IdUid(17, 3153935359911123261),
       lastIndexId: const IdUid(6, 6026186748257595411),
-      lastRelationId: const IdUid(8, 8767648696213699788),
+      lastRelationId: const IdUid(10, 5431027578203721052),
       lastSequenceId: const IdUid(0, 0),
-      retiredEntityUids: const [],
+      retiredEntityUids: const [7829393205425549682],
       retiredIndexUids: const [],
-      retiredPropertyUids: const [3209655501032753516, 3939579564692191489],
-      retiredRelationUids: const [],
+      retiredPropertyUids: const [
+        3209655501032753516,
+        3939579564692191489,
+        7391092456291512568,
+        3688865171492003585,
+        4283525710687559442,
+        2656980789531392216,
+        9045038818753496047,
+        5916202855869315726,
+        4135440900053279347,
+        5822953836671041313
+      ],
+      retiredRelationUids: const [2294961851954870861],
       modelVersion: 5,
       modelVersionParserMinimum: 5,
       version: 1);
@@ -1217,7 +1267,8 @@ ModelDefinition getObjectBoxModel() {
         toOneRelations: (Realization object) => [],
         toManyRelations: (Realization object) => {
               RelInfo<Realization>.toMany(2, object.id): object.mpiItems,
-              RelInfo<Realization>.toMany(3, object.id): object.stockItems
+              RelInfo<Realization>.toMany(3, object.id): object.stockItems,
+              RelInfo<Realization>.toMany(10, object.id): object.serviceItems
             },
         getId: (Realization object) => object.id,
         setId: (Realization object, int id) {
@@ -1262,6 +1313,11 @@ ModelDefinition getObjectBoxModel() {
               object.stockItems,
               store,
               RelInfo<Realization>.toMany(3, object.id),
+              store.box<Realization>());
+          InternalToManyAccess.setRelInfo(
+              object.serviceItems,
+              store,
+              RelInfo<Realization>.toMany(10, object.id),
               store.box<Realization>());
           return object;
         }),
@@ -1457,7 +1513,6 @@ ModelDefinition getObjectBoxModel() {
           fbb.addInt64(4, object.realization.targetId);
           fbb.addInt64(5, object.count);
           fbb.addFloat64(6, object.price);
-          fbb.addFloat64(7, object.servicePrice);
           fbb.addFloat64(8, object.toalPrice);
           fbb.addBool(9, object.done);
           fbb.addFloat64(10, object.sellPrice);
@@ -1482,8 +1537,6 @@ ModelDefinition getObjectBoxModel() {
                   const fb.Int64Reader().vTableGet(buffer, rootOffset, 14, 0),
               sellPrice:
                   const fb.Float64Reader().vTableGet(buffer, rootOffset, 24, 0),
-              servicePrice:
-                  const fb.Float64Reader().vTableGet(buffer, rootOffset, 18, 0),
               toalPrice:
                   const fb.Float64Reader().vTableGet(buffer, rootOffset, 20, 0),
               done: const fb.BoolReader()
@@ -1545,6 +1598,46 @@ ModelDefinition getObjectBoxModel() {
               RelInfo<Supplier>.toMany(7, object.id), store.box<Supplier>());
           InternalToManyAccess.setRelInfo(object.detailStockItems, store,
               RelInfo<Supplier>.toMany(8, object.id), store.box<Supplier>());
+          return object;
+        }),
+    ServiceRealization: EntityDefinition<ServiceRealization>(
+        model: _entities[15],
+        toOneRelations: (ServiceRealization object) => [],
+        toManyRelations: (ServiceRealization object) => {},
+        getId: (ServiceRealization object) => object.id,
+        setId: (ServiceRealization object, int id) {
+          object.id = id;
+        },
+        objectToFB: (ServiceRealization object, fb.Builder fbb) {
+          final remarkOffset = fbb.writeString(object.remark);
+          final partNameOffset = fbb.writeString(object.partName);
+          fbb.startTable(7);
+          fbb.addInt64(0, object.id);
+          fbb.addOffset(1, remarkOffset);
+          fbb.addOffset(2, partNameOffset);
+          fbb.addFloat64(3, object.servicePrice);
+          fbb.addFloat64(4, object.repairPrice);
+          fbb.addBool(5, object.done);
+          fbb.finish(fbb.endTable());
+          return object.id;
+        },
+        objectFromFB: (Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+
+          final object = ServiceRealization(
+              id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
+              remark: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 6, ''),
+              partName: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 8, ''),
+              repairPrice:
+                  const fb.Float64Reader().vTableGet(buffer, rootOffset, 12, 0),
+              servicePrice:
+                  const fb.Float64Reader().vTableGet(buffer, rootOffset, 10, 0),
+              done: const fb.BoolReader()
+                  .vTableGet(buffer, rootOffset, 14, false));
+
           return object;
         })
   };
@@ -1832,6 +1925,11 @@ class Realization_ {
   /// see [Realization.stockItems]
   static final stockItems = QueryRelationToMany<Realization, StockRalization>(
       _entities[9].relations[1]);
+
+  /// see [Realization.serviceItems]
+  static final serviceItems =
+      QueryRelationToMany<Realization, ServiceRealization>(
+          _entities[9].relations[2]);
 }
 
 /// [RincianPembayarran] entity fields to define ObjectBox queries.
@@ -1996,21 +2094,17 @@ class StockRalization_ {
   static final price =
       QueryDoubleProperty<StockRalization>(_entities[13].properties[6]);
 
-  /// see [StockRalization.servicePrice]
-  static final servicePrice =
-      QueryDoubleProperty<StockRalization>(_entities[13].properties[7]);
-
   /// see [StockRalization.toalPrice]
   static final toalPrice =
-      QueryDoubleProperty<StockRalization>(_entities[13].properties[8]);
+      QueryDoubleProperty<StockRalization>(_entities[13].properties[7]);
 
   /// see [StockRalization.done]
   static final done =
-      QueryBooleanProperty<StockRalization>(_entities[13].properties[9]);
+      QueryBooleanProperty<StockRalization>(_entities[13].properties[8]);
 
   /// see [StockRalization.sellPrice]
   static final sellPrice =
-      QueryDoubleProperty<StockRalization>(_entities[13].properties[10]);
+      QueryDoubleProperty<StockRalization>(_entities[13].properties[9]);
 }
 
 /// [Supplier] entity fields to define ObjectBox queries.
@@ -2053,4 +2147,31 @@ class Supplier_ {
   /// see [Supplier.detailStockItems]
   static final detailStockItems =
       QueryRelationToMany<Supplier, DetailStock>(_entities[14].relations[2]);
+}
+
+/// [ServiceRealization] entity fields to define ObjectBox queries.
+class ServiceRealization_ {
+  /// see [ServiceRealization.id]
+  static final id =
+      QueryIntegerProperty<ServiceRealization>(_entities[15].properties[0]);
+
+  /// see [ServiceRealization.remark]
+  static final remark =
+      QueryStringProperty<ServiceRealization>(_entities[15].properties[1]);
+
+  /// see [ServiceRealization.partName]
+  static final partName =
+      QueryStringProperty<ServiceRealization>(_entities[15].properties[2]);
+
+  /// see [ServiceRealization.servicePrice]
+  static final servicePrice =
+      QueryDoubleProperty<ServiceRealization>(_entities[15].properties[3]);
+
+  /// see [ServiceRealization.repairPrice]
+  static final repairPrice =
+      QueryDoubleProperty<ServiceRealization>(_entities[15].properties[4]);
+
+  /// see [ServiceRealization.done]
+  static final done =
+      QueryBooleanProperty<ServiceRealization>(_entities[15].properties[5]);
 }

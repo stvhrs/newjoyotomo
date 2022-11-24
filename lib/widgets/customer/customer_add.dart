@@ -5,6 +5,7 @@ import 'package:newJoyo/models/pelanggan.dart';
 import 'package:newJoyo/models/realization.dart';
 import 'package:newJoyo/models/rincian_pembayaran.dart';
 import 'package:newJoyo/models/spk.dart';
+import 'package:newJoyo/models/stockService/service_realization.dart';
 import 'package:newJoyo/models/stockService/stock_realization.dart';
 import 'package:flutter/material.dart';
 import 'package:newJoyo/provider/trigger.dart';
@@ -294,7 +295,9 @@ class _CustomerAddState extends State<CustomerAdd> {
                               // dateOut:  DateTime.now().toIso8601String(),
                               biyaya: 0,
                               done: false);
-                          customer.realization.target!.mpiItems !=
+                    // customer.realization.target!.stockItems.add(StockRalization());
+                    //  customer.realization.target!.serviceItems.add(ServiceRealization());
+                    customer.realization.target!.mpiItems !=
                               [
                                 MpiItem(
                                     category: 'UNDER VEHICLE',
@@ -311,7 +314,7 @@ class _CustomerAddState extends State<CustomerAdd> {
                                     desc: ' desc',
                                     price: 1000,
                                     count: 3,
-                                    servicePrice: 100,
+                                   
                                     toalPrice: 1100)
                               ];
                           customer.inv.target = Invoice(

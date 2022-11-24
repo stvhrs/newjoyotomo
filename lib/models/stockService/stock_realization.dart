@@ -12,7 +12,7 @@ class StockRalization {
   ToOne<Stock> realization = ToOne<Stock>();
   int count;
   double price;
-  double servicePrice;
+ 
   double toalPrice;
   double sellPrice;
  bool done;
@@ -24,7 +24,7 @@ class StockRalization {
     this.price=0.0,
     this.count=1,
    this.sellPrice=0,
-    this.servicePrice=0.0,
+   
     this.toalPrice=0.0,
     this.done=false
  
