@@ -59,7 +59,7 @@ class _InvoiceDocState extends State<InvoiceDoc> {
         StateSetter setState,
       ) =>
           Container(
-              margin: const EdgeInsets.only(top: 5, bottom: 5, left: 5),
+              margin: const EdgeInsets.only(top: 5, bottom: 5, ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -106,7 +106,39 @@ class _InvoiceDocState extends State<InvoiceDoc> {
 
     super.initState();
   }
-
+_buildService(int i, BuildContext context) {
+    return Container(
+            margin: const EdgeInsets.only( top: 10),
+            child: Row(
+              children: [
+                Expanded(
+                  flex: 4,
+                  child: Text(
+                   widget.customer.realization.target!.serviceItems[i].partName,style: small,
+                  ),
+                ),
+                Expanded(
+                    flex: 4,
+                    child: Text(
+                    
+                    formatCurrendcy.format( widget.customer.realization.target!.serviceItems[i].repairPrice) ,style: small,
+                          
+                      
+                     
+                    )),
+                Expanded(
+                    flex: 4,
+                    child: Text(
+                     
+                       formatCurrendcy.format(widget.customer.realization.target!.serviceItems[i].servicePrice),style: small, )),
+                Expanded(
+                    flex: 4,
+                    child: Text(textAlign: TextAlign.right,
+                      widget.customer.realization.target!.serviceItems[i].remark,style: small,
+                   ))
+              ],
+            ));
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -583,6 +615,7 @@ class _InvoiceDocState extends State<InvoiceDoc> {
                                               height: 2,
                                               color: Colors.black,
                                             ),
+                                            ...List.generate(widget.customer.realization.target!.serviceItems.length, (index) => _buildService(index, context))
                                       ],
                                     ),
                                       ]),
@@ -746,10 +779,10 @@ class _InvoiceDocState extends State<InvoiceDoc> {
       );
       Widget top3 = Container(margin: EdgeInsets.only(top: 10),
         child: Row(
-    mainAxisAlignment: MainAxisAlignment.spaceAround,
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
         Expanded(
-          flex: 3,
+          flex: 4,
           child: Container(
            
             child: const Text(
@@ -759,7 +792,7 @@ class _InvoiceDocState extends State<InvoiceDoc> {
           ),
         ),
         Expanded(
-          flex: 2,
+          flex: 4,
           child: Container(
             child: const Text(
               "Harga Repair",
@@ -768,7 +801,7 @@ class _InvoiceDocState extends State<InvoiceDoc> {
           ),
         ),
         Expanded(
-          flex: 2,
+          flex: 4,
           child: Container(
             child: const Text(
               "Harga Service",
@@ -777,10 +810,10 @@ class _InvoiceDocState extends State<InvoiceDoc> {
           ),
         ),
         Expanded(
-          flex: 2,
+          flex: 4,
           child: Container(
             child: const Text(
-              textAlign: TextAlign.center,
+              textAlign: TextAlign.right,
               "Remark",
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
             ),
