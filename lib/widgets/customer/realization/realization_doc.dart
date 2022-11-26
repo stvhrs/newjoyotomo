@@ -11,7 +11,6 @@ import 'package:newJoyo/models/invoice.dart';
 import 'package:newJoyo/models/mpi.dart';
 import 'package:newJoyo/models/realization.dart';
 
-
 import 'package:newJoyo/models/stockService/stock_realization.dart';
 import 'package:provider/provider.dart';
 import 'package:widgets_to_image/widgets_to_image.dart';
@@ -35,6 +34,32 @@ class RealizationDoc extends StatefulWidget {
 }
 
 class _RealizationDocState extends State<RealizationDoc> {
+  TransformationController t = TransformationController();
+  @override
+  @override
+  void initState() {
+    super.initState();
+    data = widget.customer.mpi.target!.items;
+    t.value = Matrix4(
+      2.1,
+      0,
+      0,
+      0,
+      0,
+      2.1,
+      0,
+      0,
+      0,
+      0,
+      2.1,
+      0,
+      -640,
+      0,
+      0,
+      1,
+    );
+  }
+
   Widget buildAttention(int i) {
     if (i == 1) {
       return const Icon(
@@ -73,15 +98,15 @@ class _RealizationDocState extends State<RealizationDoc> {
   _buildService(int i, BuildContext context) {
     return StatefulBuilder(
         builder: (BuildContext context, StateSetter setState) => Container(
-            margin: const EdgeInsets.only( top: 1),
+            margin: const EdgeInsets.only(top: 1),
             child: Row(
               children: [
                 Expanded(
                   flex: 4,
                   child: TextFormField(
                     style: small2,
-                    onChanged: (v){
-                      _serviceRealization[i].partName=v;
+                    onChanged: (v) {
+                      _serviceRealization[i].partName = v;
                     },
                     initialValue: _serviceRealization[i].partName,
                   ),
@@ -93,7 +118,8 @@ class _RealizationDocState extends State<RealizationDoc> {
                       inputFormatters: [
                         FilteringTextInputFormatter.digitsOnly,
                         CurrencyInputFormatter()
-                      ],  onChanged: (value) {
+                      ],
+                      onChanged: (value) {
                         _serviceRealization[i].repairPrice =
                             NumberFormat.currency(
                                     locale: 'id_ID', symbol: 'Rp ')
@@ -123,9 +149,10 @@ class _RealizationDocState extends State<RealizationDoc> {
                     )),
                 Expanded(
                     flex: 4,
-                    child: TextFormField( onChanged: (v){
-                      _serviceRealization[i].remark=v;
-                    },
+                    child: TextFormField(
+                      onChanged: (v) {
+                        _serviceRealization[i].remark = v;
+                      },
                       textAlign: TextAlign.left,
                       style: small2,
                       initialValue: _serviceRealization[i].remark,
@@ -440,19 +467,14 @@ class _RealizationDocState extends State<RealizationDoc> {
   final formatCurrency =
       NumberFormat.currency(locale: "id_ID", decimalDigits: 0, symbol: 'Rp ');
   @override
-  void initState() {
-    data = widget.customer.mpi.target!.items;
-
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     if (widget.customer.realization.target!.stockItems.isNotEmpty) {
       _stockRealization = widget.customer.realization.target!.stockItems;
-       _serviceRealization = widget.customer.realization.target!.serviceItems;
+      _serviceRealization = widget.customer.realization.target!.serviceItems;
       jumlahOpsiPart = widget.customer.realization.target!.stockItems.length;
-       jumlahOpsiService = widget.customer.realization.target!.serviceItems.length;
+      jumlahOpsiService =
+          widget.customer.realization.target!.serviceItems.length;
       for (var i = 0; i < _stockRealization.length; i++) {
         _partValue.add(TextEditingController());
         _nameValue.add(TextEditingController());
@@ -512,7 +534,6 @@ class _RealizationDocState extends State<RealizationDoc> {
 
                         double servicePrice = 0;
 
-
                         var listPartPrice = _stockRealization
                             .map((element) => element.toalPrice)
                             .toList();
@@ -534,8 +555,9 @@ class _RealizationDocState extends State<RealizationDoc> {
                           servicePrice = servicePrice + element;
                         }
                         for (var element in _serviceRealization) {
-                          servicePrice=servicePrice+element.repairPrice+element.servicePrice;
-                          
+                          servicePrice = servicePrice +
+                              element.repairPrice +
+                              element.servicePrice;
                         }
                         Customer asu = widget.customer;
                         asu.realization.target = Realization(
@@ -557,16 +579,16 @@ class _RealizationDocState extends State<RealizationDoc> {
                                   price: element.sellPrice,
                                   toalPrice: element.toalPrice));
                         }
-                         for (var element in _serviceRealization) {
-                           asu.realization.target!.serviceItems.add(
-                              ServiceRealization(
-                                 remark: element.remark,
-                                   done: element.done,
-                                  partName: element.partName,
-                                   repairPrice: element.repairPrice,
-                                   servicePrice: element.servicePrice,
-                              ));
-                         }
+                        for (var element in _serviceRealization) {
+                          asu.realization.target!.serviceItems
+                              .add(ServiceRealization(
+                            remark: element.remark,
+                            done: element.done,
+                            partName: element.partName,
+                            repairPrice: element.repairPrice,
+                            servicePrice: element.servicePrice,
+                          ));
+                        }
                         asu.mpi.target =
                             Mpi(mpiId: widget.customer.mpi.target!.mpiId);
                         for (var element in data) {
@@ -621,6 +643,7 @@ class _RealizationDocState extends State<RealizationDoc> {
               )
             ]),
             body: InteractiveViewer(
+              transformationController: t,
               child:
                   LayoutBuilder(builder: (context, BoxConstraints constraints) {
                 return Center(
@@ -653,8 +676,7 @@ class _RealizationDocState extends State<RealizationDoc> {
                                               .withOpacity(0.5),
                                       spreadRadius: 5,
                                       blurRadius: 7,
-                                      offset: const Offset(
-                                          0, 3),  
+                                      offset: const Offset(0, 3),
                                     ),
                                   ],
                                 ),
@@ -1071,7 +1093,7 @@ class _RealizationDocState extends State<RealizationDoc> {
       Expanded(
         flex: 2,
         child: Container(
-         margin: const EdgeInsets.only(left: 10),
+          margin: const EdgeInsets.only(left: 10),
           child: const Text(
             "Harga Repair",
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
@@ -1081,7 +1103,7 @@ class _RealizationDocState extends State<RealizationDoc> {
       Expanded(
         flex: 2,
         child: Container(
-      margin: const EdgeInsets.only(left: 10),
+          margin: const EdgeInsets.only(left: 10),
           child: const Text(
             "Harga Service",
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
@@ -1090,9 +1112,9 @@ class _RealizationDocState extends State<RealizationDoc> {
       ),
       Expanded(
         flex: 2,
-        child: Container( margin: const EdgeInsets.only(left: 10),
+        child: Container(
+          margin: const EdgeInsets.only(left: 10),
           child: const Text(
-          
             "Remark",
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
           ),
@@ -1161,8 +1183,9 @@ class _RealizationDocState extends State<RealizationDoc> {
       ),
     ],
   );
-  Widget bottom() => Container(margin: EdgeInsets.only(top: 10),
-    child: Row(
+  Widget bottom() => Container(
+        margin: EdgeInsets.only(top: 10),
+        child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -1197,12 +1220,12 @@ class _RealizationDocState extends State<RealizationDoc> {
                 alignment: Alignment.centerLeft,
                 child: WebDatePicker(
                   small: true,
-                  initialDate:
-                      widget.customer.realization.target!.selesai == 'DD/MM/YYYY'
-                          ? null
-                          : DateTime.parse(
-                              widget.customer.realization.target!.selesai),
-                   style: const TextStyle(fontSize: 5),
+                  initialDate: widget.customer.realization.target!.selesai ==
+                          'DD/MM/YYYY'
+                      ? null
+                      : DateTime.parse(
+                          widget.customer.realization.target!.selesai),
+                  style: const TextStyle(fontSize: 5),
                   onChange: (v) {
                     if (v == null) {
                       return;
@@ -1242,11 +1265,12 @@ class _RealizationDocState extends State<RealizationDoc> {
               flex: 17,
               child: WebDatePicker(
                 small: true,
-                initialDate: widget.customer.realization.target!.dateOut ==
-                        'DD/MM/YYYY'
-                    ? null
-                    : DateTime.parse(widget.customer.realization.target!.dateOut),
-                 style: const TextStyle(fontSize: 5),
+                initialDate:
+                    widget.customer.realization.target!.dateOut == 'DD/MM/YYYY'
+                        ? null
+                        : DateTime.parse(
+                            widget.customer.realization.target!.dateOut),
+                style: const TextStyle(fontSize: 5),
                 onChange: (v) {
                   if (v == null) {
                     return;
@@ -1260,7 +1284,7 @@ class _RealizationDocState extends State<RealizationDoc> {
             )
           ],
         ),
-  );
+      );
   Widget top4 = Row(
     children: [
       Expanded(

@@ -28,9 +28,30 @@ class _SpkDocState extends State<SpkDoc> {
   TextEditingController estimasiSelesaiInput = TextEditingController();
   WidgetsToImageController controller = WidgetsToImageController();
   late Spk spk;
+   TransformationController t = TransformationController();
+  @override
+
   @override
   void initState() {
     super.initState();
+     t.value = Matrix4(
+      2.1,
+      0,
+      0,
+      0,
+      0,
+      2.1,
+      0,
+      0,
+      0,
+      0,
+      2.1,
+      0,
+      -640,
+      0,
+      0,
+      1,
+    );
     spk = widget.customer.spk.target!;
    
     estimasiSelesaiInput.text = spk.estimasiSelesai;
@@ -51,7 +72,7 @@ class _SpkDocState extends State<SpkDoc> {
     double width6 = MediaQuery.of(context).size.height / 7.73;
     return Scaffold(
       backgroundColor: Colors.white,
-      body:  InteractiveViewer(
+      body:  InteractiveViewer(transformationController: t,
         child: Center(
             child: Container(
                 width: double.infinity,
@@ -91,11 +112,11 @@ class _SpkDocState extends State<SpkDoc> {
                             data: ThemeData(
                               inputDecorationTheme: const InputDecorationTheme(
                                   contentPadding: EdgeInsets.only(
-                                      left: 5, bottom: 22, top: 5),
+                                      left: 3, bottom: 19, top: 2),
                                   hintStyle: TextStyle(
                                       color: Color.fromARGB(255, 251, 251, 251),
                                       fontSize: 15,
-                                      height: 2),
+                                      height: 1),
                                   border: InputBorder.none,
                                   focusedBorder: InputBorder.none,
                                   enabledBorder: InputBorder.none,
@@ -166,7 +187,7 @@ class _SpkDocState extends State<SpkDoc> {
                                                                   .size
                                                                   .height /
                                                               25,
-                                                          child: Row(
+                                                          child: Row(crossAxisAlignment: CrossAxisAlignment.center,
                                                             children: [
                                                               Text(
                                                                 'Pemilik :',

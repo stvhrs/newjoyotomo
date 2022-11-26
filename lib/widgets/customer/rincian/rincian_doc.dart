@@ -1,4 +1,3 @@
-
 import 'package:intl/intl.dart';
 import 'package:newJoyo/helper/border2.dart';
 import 'package:newJoyo/library/date_picker/src/web_date_picker.dart';
@@ -34,8 +33,29 @@ class _RincianDocState extends State<RincianDoc> {
   final small = const TextStyle(fontSize: 10);
   List<Payment> payments = [];
 
+  TransformationController t = TransformationController();
+  @override
+  @override
   @override
   void initState() {
+    t.value = Matrix4(
+      2.1,
+      0,
+      0,
+      0,
+      0,
+      2.1,
+      0,
+      0,
+      0,
+      0,
+      2.1,
+      0,
+      -640,
+      0,
+      0,
+      1,
+    );
     widget.customer.rcp.target!.payments[0] = Payment(
         date: widget.customer.realization.target!.selesai,
         keterangan: 'Grand Total',
@@ -57,7 +77,7 @@ class _RincianDocState extends State<RincianDoc> {
       BuildContext context,
       StateSetter setState,
     ) {
-      totaling() {  
+      totaling() {
         if (i != 0) {
           payment.saldo = payments[i - 1].saldo - payment.pay;
           payments[i].saldo = payments[i - 1].saldo - payment.pay;
@@ -130,7 +150,6 @@ class _RincianDocState extends State<RincianDoc> {
                               .parse(v)
                               .toDouble();
                       totaling();
-                  
                     },
                     style: small),
               ),
@@ -198,11 +217,12 @@ class _RincianDocState extends State<RincianDoc> {
                     backgroundColor: Colors.red.shade400,
                     child: const Icon(Icons.picture_as_pdf),
                     onPressed: () async {
-                  
+                    
+                     
                       ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('Loading.....')));
                       widget.customer.proses = 'Pembayaran';
-               
+
                       Customer cs = widget.customer;
                       cs.rcp.target!.payments.clear();
                       cs.rcp.target = RincianPembayarran(
@@ -224,6 +244,8 @@ class _RincianDocState extends State<RincianDoc> {
                   backgroundColor: Colors.green,
                   child: const Icon(Icons.print),
                   onPressed: () async {
+                   
+                      
                     final bytes = await controller.capture();
                     printPdf(bytes!);
                   }),
@@ -231,10 +253,11 @@ class _RincianDocState extends State<RincianDoc> {
           ]),
           body: Hero(
             tag: 4,
-            child:  InteractiveViewer(
+            child: InteractiveViewer(
+              transformationController: t,
               child: Center(
-                child:
-                    LayoutBuilder(builder: (context, BoxConstraints constraints) {
+                child: LayoutBuilder(
+                    builder: (context, BoxConstraints constraints) {
                   return Container(
                       width: double.infinity,
                       decoration: const BoxDecoration(
@@ -261,8 +284,9 @@ class _RincianDocState extends State<RincianDoc> {
                                   borderRadius: BorderRadius.circular(10),
                                   boxShadow: [
                                     BoxShadow(
-                                      color: const Color.fromARGB(255, 78, 77, 77)
-                                          .withOpacity(0.5),
+                                      color:
+                                          const Color.fromARGB(255, 78, 77, 77)
+                                              .withOpacity(0.5),
                                       spreadRadius: 5,
                                       blurRadius: 7,
                                       offset: const Offset(
@@ -275,7 +299,7 @@ class _RincianDocState extends State<RincianDoc> {
                                   child: Container(
                                       alignment: Alignment.center,
                                       //  padding: const EdgeInsets.all(20),
-            
+
                                       width: constraints.maxHeight / 1.4,
                                       height: constraints.maxHeight,
                                       child: Column(
@@ -290,11 +314,13 @@ class _RincianDocState extends State<RincianDoc> {
                                               padding: const EdgeInsets.only(
                                                   bottom: 5),
                                               child: Text(
-                                                widget.customer.rcp.target!.rcpId,
+                                                widget
+                                                    .customer.rcp.target!.rcpId,
                                                 style: const TextStyle(
                                                     fontSize: 12,
                                                     fontWeight: FontWeight.bold,
-                                                    fontStyle: FontStyle.italic),
+                                                    fontStyle:
+                                                        FontStyle.italic),
                                               ),
                                             ),
                                             Expanded(
@@ -328,7 +354,8 @@ class _RincianDocState extends State<RincianDoc> {
                                                                     .all(8.0),
                                                             child: Text(
                                                               textAlign:
-                                                                  TextAlign.right,
+                                                                  TextAlign
+                                                                      .right,
                                                               widget.customer
                                                                   .customerName,
                                                               style: bold,
@@ -389,9 +416,10 @@ class _RincianDocState extends State<RincianDoc> {
                                                                         )),
                                                                     Padding(
                                                                       padding:
-                                                                          const EdgeInsets
-                                                                              .all(3),
-                                                                      child: Text(
+                                                                          const EdgeInsets.all(
+                                                                              3),
+                                                                      child:
+                                                                          Text(
                                                                         'Nomor Rangka:',
                                                                         style:
                                                                             small,
@@ -409,9 +437,10 @@ class _RincianDocState extends State<RincianDoc> {
                                                                         )),
                                                                     Padding(
                                                                       padding:
-                                                                          const EdgeInsets
-                                                                              .all(3),
-                                                                      child: Text(
+                                                                          const EdgeInsets.all(
+                                                                              3),
+                                                                      child:
+                                                                          Text(
                                                                         'Tanggal Invoice: ',
                                                                         style:
                                                                             small,
@@ -419,9 +448,10 @@ class _RincianDocState extends State<RincianDoc> {
                                                                     ),
                                                                     Padding(
                                                                       padding:
-                                                                          const EdgeInsets
-                                                                              .all(3),
-                                                                      child: Text(
+                                                                          const EdgeInsets.all(
+                                                                              3),
+                                                                      child:
+                                                                          Text(
                                                                         'Tanggal Garansi: ',
                                                                         style:
                                                                             small,
@@ -436,7 +466,8 @@ class _RincianDocState extends State<RincianDoc> {
                                                                   Padding(
                                                                     padding: const EdgeInsets
                                                                             .only(
-                                                                        left: 40,
+                                                                        left:
+                                                                            40,
                                                                         top: 3,
                                                                         bottom:
                                                                             3),
@@ -449,7 +480,8 @@ class _RincianDocState extends State<RincianDoc> {
                                                                   Padding(
                                                                     padding: const EdgeInsets
                                                                             .only(
-                                                                        left: 40,
+                                                                        left:
+                                                                            40,
                                                                         top: 3,
                                                                         bottom:
                                                                             3),
@@ -468,11 +500,17 @@ class _RincianDocState extends State<RincianDoc> {
                                                                               .only(
                                                                           left:
                                                                               40,
-                                                                          top: 3,
+                                                                          top:
+                                                                              3,
                                                                           bottom:
                                                                               3),
-                                                                      child: Text(
-                                                                        widget.customer.spk.target!.tipeKendaraan,
+                                                                      child:
+                                                                          Text(
+                                                                        widget
+                                                                            .customer
+                                                                            .spk
+                                                                            .target!
+                                                                            .tipeKendaraan,
                                                                         style:
                                                                             small,
                                                                       )),
@@ -481,12 +519,13 @@ class _RincianDocState extends State<RincianDoc> {
                                                                               .only(
                                                                           left:
                                                                               40,
-                                                                          top: 3,
+                                                                          top:
+                                                                              3,
                                                                           bottom:
                                                                               3),
-                                                                      child: Text(
-                                                                        DateFormat(
-                                                                                'dd/MM/yyyy')
+                                                                      child:
+                                                                          Text(
+                                                                        DateFormat('dd/MM/yyyy')
                                                                             .format(
                                                                           DateTime.parse(widget
                                                                               .customer
@@ -502,10 +541,12 @@ class _RincianDocState extends State<RincianDoc> {
                                                                               .only(
                                                                           left:
                                                                               40,
-                                                                          top: 3,
+                                                                          top:
+                                                                              3,
                                                                           bottom:
                                                                               3),
-                                                                      child: Text(
+                                                                      child:
+                                                                          Text(
                                                                         DateFormat('dd/MM/yyyy').format(DateTime.parse(widget
                                                                             .customer
                                                                             .inv
@@ -548,14 +589,14 @@ class _RincianDocState extends State<RincianDoc> {
                                                       ? Row(
                                                           children: [
                                                             IconButton(
-                                                                color: Colors.red,
+                                                                color:
+                                                                    Colors.red,
                                                                 onPressed: () {
                                                                   setState(() {
                                                                     if (jumlahOpsi >
                                                                             1 &&
                                                                         jumlahOpsi ==
-                                                                            payments
-                                                                                .length) {
+                                                                            payments.length) {
                                                                       payments.removeAt(
                                                                           jumlahOpsi -
                                                                               1);
@@ -565,40 +606,49 @@ class _RincianDocState extends State<RincianDoc> {
                                                                     }
                                                                   });
                                                                 },
-                                                                icon: const Icon(Icons
-                                                                    .remove_circle)),
+                                                                icon: const Icon(
+                                                                    Icons
+                                                                        .remove_circle)),
                                                             IconButton(
-                                                                color:
-                                                                    Colors.green,
+                                                                color: Colors
+                                                                    .green,
                                                                 onPressed: () {
                                                                   print('asu');
                                                                   setState(() {
                                                                     payments.add(Payment(
-                                                                        date: DateTime
-                                                                                .now()
+                                                                        date: DateTime.now()
                                                                             .toIso8601String(),
                                                                         keterangan:
                                                                             'Keterangan',
-                                                                        saldo: payments[jumlahOpsi-1].saldo,
-                                                                        pay: 0));
+                                                                        saldo: payments[jumlahOpsi -
+                                                                                1]
+                                                                            .saldo,
+                                                                        pay:
+                                                                            0));
                                                                     jumlahOpsi =
                                                                         jumlahOpsi +
                                                                             1;
                                                                   });
-            
-                                                                  setState(() {});
+
+                                                                  setState(
+                                                                      () {});
                                                                 },
-                                                                icon: const Icon(Icons
-                                                                    .add_circle)),
+                                                                icon: const Icon(
+                                                                    Icons
+                                                                        .add_circle)),
                                                           ],
                                                         )
                                                       : const SizedBox(),
                                                   (payments.last.saldo < 1)
                                                       ? Padding(
-                                                        padding: const EdgeInsets.all(8.0),
-                                                        child: Image.asset(
-                                                            'images/lunas.png',scale: 3,),
-                                                      )
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(8.0),
+                                                          child: Image.asset(
+                                                            'images/lunas.png',
+                                                            scale: 3,
+                                                          ),
+                                                        )
                                                       : const Text(
                                                           'BELUM LUNAS',
                                                           style: TextStyle(

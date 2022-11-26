@@ -68,7 +68,7 @@ class _CustomerDetailsState extends State<CustomerDetails> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Column(
+                Column(crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       textAlign: TextAlign.left,
@@ -103,17 +103,17 @@ class _CustomerDetailsState extends State<CustomerDetails> {
                         )),
                   ],
                 ),
-                // IconButton(
-                //     onPressed: () {
-                //       Customer customer =
-                //           Provider.of<Trigger>(context, listen: false)
-                //               .selectedCustomer;
-                //       objectBox.deleteCustomer(customer.id);
-                //     },
-                //     icon: Icon(
-                //       Icons.delete,
-                //       color: Colors.red.shade900,
-                //     )),
+                IconButton(
+                    onPressed: () {
+                      Customer customer =
+                          Provider.of<Trigger>(context, listen: false)
+                              .selectedCustomer;
+                      objectBox.deleteCustomer(customer.id);
+                    },
+                    icon: Icon(
+                      Icons.delete,
+                      color: Colors.red.shade900,
+                    )),
               ],
             ),
             Row(

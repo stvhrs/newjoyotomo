@@ -119,7 +119,7 @@ class _MonthlyPagaeState extends State<MonthlyPagae> {
                   child: GroupListView(
                     sectionsCount: data.keys.length,
                     countOfItemInSection: (int section) {
-                      return data.values.toList()[section].length;
+                      return data.values.toList()[section].reversed.toList().length;
                     },
                     itemBuilder: (context, index) => Container(
                         padding: const EdgeInsets.all(8.0),

@@ -27,7 +27,32 @@ class _InvoiceDocState extends State<InvoiceDoc> {
       NumberFormat.currency(locale: "id_ID", decimalDigits: 0, symbol: 'Rp ');
   var asu = pw.Document();
   final WidgetsToImageController _widgetsToImageController =
-      WidgetsToImageController();
+      WidgetsToImageController();  TransformationController t = TransformationController();
+       void initState() {
+    super.initState();
+      for (var element in widget.customer.mpi.target!.items) {
+      totalMpiService = totalMpiService + element.price;
+    }
+
+    t.value = Matrix4(
+      2.1,
+      0,
+      0,
+      0,
+      0,
+      2.1,
+      0,
+      0,
+      0,
+      0,
+      2.1,
+      0,
+      -640,
+      0,
+      0,
+      1,
+    );
+  }
   Widget buildAttention(int i) {
     if (i == 1) {
       return const Icon(
@@ -98,14 +123,7 @@ class _InvoiceDocState extends State<InvoiceDoc> {
     );
   }
 
-  @override
-  void initState() {
-    for (var element in widget.customer.mpi.target!.items) {
-      totalMpiService = totalMpiService + element.price;
-    }
 
-    super.initState();
-  }
 _buildService(int i, BuildContext context) {
     return Container(
             margin: const EdgeInsets.only( top: 10),
@@ -218,7 +236,7 @@ _buildService(int i, BuildContext context) {
       ]),
       body: Hero(
         tag: 4,
-        child:  InteractiveViewer(
+        child:  InteractiveViewer(transformationController: t,
           child: Center(
             child: LayoutBuilder(builder: (context, BoxConstraints constraints) {
               return Container(
