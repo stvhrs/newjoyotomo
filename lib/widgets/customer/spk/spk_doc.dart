@@ -615,7 +615,7 @@ class _SpkDocState extends State<SpkDoc> {
                                                                             scale:
                                                                                 0.7,
                                                                             child: Radio(
-                                                                                activeColor: Colors.yellow,
+                                                                                activeColor: Colors.blue.shade300,
                                                                                 value: 2,
                                                                                 groupValue: spk.levelPekerjaan,
                                                                                 onChanged: (sd) {

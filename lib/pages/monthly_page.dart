@@ -58,7 +58,7 @@ class _MonthlyPagaeState extends State<MonthlyPagae> {
       return Colors.green;
     }
     if (i == 2) {
-      return Colors.amber ;
+      return Colors.blue.shade300 ;
     }
     if (i == 3) {
       return Colors.red;

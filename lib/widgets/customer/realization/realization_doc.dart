@@ -353,7 +353,7 @@ class _RealizationDocState extends State<RealizationDoc> {
                             setState(() {});
                           }
                         },
-                        initialValue: _countValue[i].text,
+                        initialValue:     _stockRealization[i].count.toString(),
                         inputFormatters: [
                           FilteringTextInputFormatter.digitsOnly,
                         ],

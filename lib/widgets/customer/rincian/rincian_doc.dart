@@ -31,7 +31,7 @@ class _RincianDocState extends State<RincianDoc> {
   WidgetsToImageController controller = WidgetsToImageController();
   final bold = const TextStyle(fontWeight: FontWeight.bold, fontSize: 10);
   final small = const TextStyle(fontSize: 10);
-  List<Payment> payments = [];
+  late List<Payment> payments = [];
 
   TransformationController t = TransformationController();
   @override
@@ -56,14 +56,18 @@ class _RincianDocState extends State<RincianDoc> {
       0,
       1,
     );
-    widget.customer.rcp.target!.payments[0] = Payment(
+ 
+
+    
+   
+
+    jumlahOpsi = widget.customer.rcp.target!.payments.length;
+    payments.addAll(widget.customer.rcp.target!.payments);
+    payments[0]= Payment(
         date: widget.customer.realization.target!.selesai,
         keterangan: 'Grand Total',
         saldo: widget.customer.realization.target!.biyaya,
         pay: 0);
-
-    jumlahOpsi = widget.customer.rcp.target!.payments.length;
-    payments.addAll(widget.customer.rcp.target!.payments);
     super.initState();
   }
 
@@ -203,9 +207,10 @@ class _RincianDocState extends State<RincianDoc> {
                     child: const Icon(Icons.save_as_rounded),
                     onPressed: () {
                       Customer cs = widget.customer;
-                      cs.rcp.target!.payments.clear();
+
                       cs.rcp.target = RincianPembayarran(
                           rcpId: widget.customer.rcp.target!.rcpId);
+                      cs.rcp.target!.payments.clear();
                       cs.rcp.target!.payments.addAll(payments);
                       cs.proses = 'Pembayaran';
                       objectBox.insertCustomer(cs);
@@ -217,25 +222,19 @@ class _RincianDocState extends State<RincianDoc> {
                     backgroundColor: Colors.red.shade400,
                     child: const Icon(Icons.picture_as_pdf),
                     onPressed: () async {
-                    
-                     
                       ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('Loading.....')));
-                      widget.customer.proses = 'Pembayaran';
+                      showPrint = false;
+                      rebuild();
 
-                      Customer cs = widget.customer;
-                      cs.rcp.target!.payments.clear();
-                      cs.rcp.target = RincianPembayarran(
-                          rcpId: widget.customer.rcp.target!.rcpId);
-                      cs.rcp.target!.payments.addAll(payments);
+                      await Future.delayed(
+                        const Duration(milliseconds: 200),
+                        () {},
+                      );
 
                       final bytes = await controller.capture();
-                      await createSpk(bytes!, cs.rcp.target!.rcpId, context,
-                          'Rincian Pembayaran');
-                      Provider.of<Trigger>(context, listen: false)
-                          .selectCustomer(widget.customer, true);
-
-                      objectBox.insertCustomer(cs);
+                      await createSpk(bytes!, widget.customer.rcp.target!.rcpId,
+                          context, 'Rincian Pembayaran');
                     })),
             Container(
               padding: const EdgeInsets.all(10.0),
@@ -244,8 +243,13 @@ class _RincianDocState extends State<RincianDoc> {
                   backgroundColor: Colors.green,
                   child: const Icon(Icons.print),
                   onPressed: () async {
-                   
-                      
+                    showPrint = false;
+                    rebuild();
+
+                    await Future.delayed(
+                      const Duration(milliseconds: 100),
+                      () {},
+                    );
                     final bytes = await controller.capture();
                     printPdf(bytes!);
                   }),
